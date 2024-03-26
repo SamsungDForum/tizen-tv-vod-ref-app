@@ -1,0 +1,39 @@
+.video-player-settings-panel-control {
+  position: absolute;
+  display: flex;
+  top: 134px;
+  left: 12px;
+  flex-direction: column;
+  width: 350px;
+  height: 834px;
+  padding-top: 34px;
+  z-index: 2;
+}
+
+.player-selection-picker-position {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.video-player-settings-panel-control > * {
+  color: #fff !important;
+}
+
+.video-player-settings-panel-control {
+  #listElement:hover,
+  #listElement:focus,
+  #additionalbtn:hover,
+  #additionalbtn:focus {
+    background-color: #fff !important;
+    color: #000 !important;
+  }
+
+  #listElement,
+  #additionalbtn,
+  #listTitle,
+  #menuTitle {
+    color: #fff !important;
+  }
+}

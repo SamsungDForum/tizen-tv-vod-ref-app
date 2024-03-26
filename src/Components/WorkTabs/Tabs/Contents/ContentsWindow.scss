@@ -1,0 +1,59 @@
+@import "../../../../colors2017.scss";
+
+.filtering-options-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.video-contents-tiles-container {
+  height: 100%;
+  position: relative;
+}
+
+.contents-window-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 96%;
+  padding-top: 45px;
+  overflow: hidden;
+  transform: translateX(75px);
+  transition: transform 0.1s linear;
+  z-index: 1;
+}
+
+.content-area {
+  overflow: hidden;
+  width: 100%;
+}
+
+.applied-filters {
+  display: flex;
+  padding: 20px 0 20px 35px;
+  max-width: 78.5em;
+  color: $unclickableText;
+  color: var(--unclickableText);
+}
+
+.applied-filters > div {
+  display: flex;
+  align-items: center;
+  height: 3.375rem;
+  text-align: center;
+}
+
+.active-filters-box {
+  border-radius: 5px;
+  padding: 12px;
+  margin-right: 10px;
+  background-color: $unclickable;
+  background-color: var(--unclickable);
+}
+
+.transformed {
+  transform: translateX(350px);
+}
+.additional-info-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

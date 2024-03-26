@@ -1,0 +1,130 @@
+@import '../../colors2017.scss';
+
+$success-color: #15ad15;
+$failure-color: #ff0000;
+$thickness: 0.20rem;
+
+$loader-size: 2.375rem;
+
+$checkmark-width: calc($loader-size / 2);
+$checkmark-height: calc($checkmark-width / 2);
+$checkmark-left: calc($loader-size / 7 + $loader-size / 12 - $thickness / 2);
+
+$crossmark-size: calc($loader-size * 3 / 5);
+
+.parent-loader {
+  display: flex;
+  z-index: 10;
+  align-items: center;
+  background-color: $unclickable;
+  background-color: var(--unclickable);
+  border-radius: 5px;
+  height: calc($loader-size + 1rem);
+  padding: 1rem;
+}
+
+.disappear {
+  animation: disappear 0.25s forwards;
+  animation-delay: 1s;
+}
+
+.loader {
+  border: $thickness solid #f3f3f3;
+  border-radius: 50%;
+  width: $loader-size;
+  height: $loader-size;
+  margin-right: 1.25rem;
+}
+
+.loading {
+  border-top: $thickness solid #3498db;
+  animation: spin 2s linear infinite;
+}
+
+.success {
+  border-color: $success-color;
+  animation: fall-in 0.75s;
+}
+
+.failure {
+  border-color: $failure-color;
+  animation: fall-in 0.75s;
+}
+
+@keyframes spin {
+  0% { 
+    transform: rotate(0deg);
+  }
+
+  100% { 
+    transform: rotate(360deg);
+  }
+}
+
+.checkmark {
+  border-bottom: $success-color $thickness solid;
+  border-left: $success-color $thickness solid;
+  position: relative;
+  height: $checkmark-height;
+  width: $checkmark-width;
+  top: $checkmark-height;
+  left: $checkmark-left;
+  transform: rotate(-45deg);
+}
+
+.crossmark {
+  position: relative;
+  top: calc(50% - $crossmark-size / 2);
+  left: calc(50% - $thickness / 2);
+
+  &:before, &:after {
+    position: absolute;
+    content: '';
+    height: $crossmark-size;
+    width: $thickness;
+    background-color: $failure-color;
+  }
+
+  &:before {
+    transform: rotate(45deg);
+  }
+
+  &:after {
+    transform: rotate(-45deg);
+  }
+}
+
+@mixin transformation($s) {
+	-webkit-transform: scale($s, $s);
+	transform: scale($s, $s);
+}
+
+@keyframes fall-in {
+  0% {
+		@include transformation(1.75);
+		opacity: 0;
+  }
+  
+  50% {
+		@include transformation(1);
+		opacity: 1;
+  }
+  
+  60% {
+		@include transformation(1.1);
+  }
+  
+  100% {
+		@include transformation(1);
+  }
+}
+
+@keyframes disappear {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}

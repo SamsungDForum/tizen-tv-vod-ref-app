@@ -1,0 +1,171 @@
+@import "./colors2017.scss";
+@import "./colors.scss";
+
+body {
+  font-family: "Josefin Sans", Helvetica, Arial, sans-serif;
+  font-size: 120%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Color change to match #111, doesn't affect player */
+.video-react {
+  background-color: transparent !important;
+  position: unset !important;
+}
+.video-react-control-bar {
+  position: absolute !important;
+  bottom: 0 !important;
+}
+.video-react-loading-spinner {
+  z-index: 2 !important;
+}
+.show {
+  display: block !important;
+}
+
+// react-hot-toast bg
+.go2072408551{
+  background-color: $notiBg !important;
+  color: $notiColor !important;
+  background-color: var(--notiBg) !important;
+  color: var(--notiColor) !important;
+}
+
+html,
+body,
+div#root {
+  height: 1080px;
+  width: 1920px;
+  background-color: transparent;
+  color: whitesmoke;
+  margin: 0em;
+  box-sizing: border-box;
+}
+.app-div {
+  position: relative;
+  height: 1080px;
+  width: 1920px;
+}
+
+html {
+  background-color: black;
+}
+body {
+  background: $appBackground;
+  background-color: var(--appBackground);
+}
+
+.hide {
+  display: none !important;
+}
+
+.hidden > *  {
+  color: transparent !important;
+  background-color: transparent !important;
+}
+.hidden >*::after{
+  background-color: transparent !important;
+}
+
+.set-min-width-to-100-percent {
+  min-width: 100% !important;
+}
+
+.version-message-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: absolute;
+  top: 0.7em;
+  max-height: 3em;
+  left: 85.5em;
+  max-width: 12em;
+  min-width: 12em;
+  flex-wrap: nowrap;
+  align-items: center;
+  z-index: 11;
+  text-shadow: 2px 1px 2px $textMessageBox;
+  text-shadow: 2px 1px 2px var(--textMessageBox);
+}
+
+@keyframes fade-out-animation-frames {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.fade-out-animation {
+  animation-name: fade-out-animation-frames;
+  animation-duration: 200ms;
+  animation-fill-mode: forwards;
+}
+
+.ml-btn {
+  padding-left: 20px !important;
+}
+.center-btn {
+  justify-content: center !important;
+}
+.call-to-action-btn {
+  position: relative;
+}
+
+.call-to-action-btn::after {
+  content: "";
+  width: 20px;
+  height: 3px;
+  border-radius: 5px;
+  background-color: $primaryColor;
+  background-color: var(--primaryColor);
+  position: absolute;
+  bottom: 5px;
+  transition: width 0.3s ease;
+}
+.call-to-action-btn:hover::after,
+.call-to-action-btn:focus::after {
+  content: "";
+  width: 50px;
+  height: 3px;
+  border-radius: 5px;
+  background-color: $primaryColor;
+  background-color: var(--primaryColor);
+  position: absolute;
+  bottom: 5px;
+}
+.call-to-action-btn:disabled:hover::after {
+  width: 20px;
+}
+
+.version-info {
+  color: $versionText;
+  color: var(--versionText);
+}
+
+.player-button {
+  color: $playerOptionBtnText !important;
+  color: var(--playerOptionBtnText) !important;
+}
+.animated-player-button:focus {
+  color: $playerOptionBtnTextFocus !important;
+  color: var(--playerOptionBtnTextFocus) !important;
+  background-color: $playerOptionBtnBgFocus !important;
+  background-color: var(--playerOptionBtnBgFocus) !important;
+}
+
+.btn-flex-right {
+  position: relative;
+  justify-content: right !important;
+  margin-bottom: 5px;
+}
+

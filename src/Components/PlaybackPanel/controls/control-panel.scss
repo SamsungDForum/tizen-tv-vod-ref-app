@@ -1,0 +1,50 @@
+@import "../../../colors2017.scss";
+
+.video-player-button svg {
+  fill: $videoBtnFill;
+  fill: var(--videoBtnFill);
+  height: 100%;
+  width: 80%;
+}
+
+.video-player-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border-radius: 50%;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.video-player-play-pause-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  height: 65px;
+  width: 65px;
+}
+
+.video-player-rew-control,
+.video-player-ffw-control,
+.video-player-restart-control {
+  width: 45px;
+  height: 45px;
+}
+
+.video-player-fullscreen-control {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  margin-left: 200px;
+}
+
+.centered-player-btn {
+  outline: none;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}

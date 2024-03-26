@@ -1,0 +1,17 @@
+{
+  "overrides": [
+    {
+      "files": "*.js",
+      "options": {
+        "printWidth": 120,
+        "arrowParens": "always"
+      }
+    },
+    {
+      "files": "*.css",
+      "options": {
+        "printWidth": 80
+      }
+    }
+  ]
+}

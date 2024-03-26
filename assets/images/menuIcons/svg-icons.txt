@@ -1,0 +1,26 @@
+.SVG:
+https://iconduck.com/icons/58318/grid
+https://iconduck.com/icons/13718/film
+https://iconduck.com/icons/167884/so-puzzle
+https://iconduck.com/icons/53856/lock-locked
+https://iconduck.com/icons/194699/gui-file-video
+https://iconduck.com/icons/58405/layers
+https://iconduck.com/emojis/99696/warning-sign
+https://iconduck.com/icons/2354/cloud-upload-outline
+
+https://iconduck.com/icons/150117/restart
+https://iconduck.com/icons/102962/play
+https://iconduck.com/icons/102955/pause
+https://iconduck.com/icons/102979/rewind
+https://iconduck.com/icons/102882/fast-forward
+https://iconduck.com/icons/9544/notebook-reference
+https://iconduck.com/icons/149197/picture-in-picture-bottom
+
+https://iconduck.com/icons/2168/heart
+https://iconduck.com/icons/2112/color-palette
+https://iconduck.com/icons/148832/filter-horizontal-solid
+https://iconduck.com/icons/4221/scroll-v
+https://iconduck.com/icons/178957/message-edit
+
+.PNG in player
+https://iconduck.com/illustrations/108497/multi-editor-no-staged-files-empty

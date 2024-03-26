@@ -1,0 +1,98 @@
+@import "../../../colors2017.scss";
+
+.animated-button:focus,
+.animated-button:hover {
+  outline: none;
+  border: 1px solid transparent;
+  color: $focusTextColor;
+  color: var(--focusTextColor);
+  background-color: $focusBgColor;
+  background-color: var(--focusBgColor);
+  border-radius: 5px;
+}
+
+.animated-button:focus .small-gray-text,
+.animated-button:hover .small-gray-text {
+  color: $grayedElementFocus;
+  color: var(--grayedElementFocus);
+}
+
+.animated-button:focus svg,
+.animated-button:hover svg {
+  fill: $primaryColor;
+  fill: var(--primaryColor);
+}
+
+.styled-button {
+  transition: box-shadow 0.15s, transform 0.15s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 58px;
+  background-color: transparent;
+  border-radius: 1px;
+  font-size: 18px;
+  font-weight: bold;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  cursor: pointer;
+  color: $text;
+  color: var(--text);
+  overflow: hidden;
+}
+.styled-button:disabled {
+  color: gray;
+  cursor: default;
+}
+.styled-button:disabled:hover {
+  background-color: transparent;
+}
+.modal-picker-button span {
+  background-color: transparent;
+}
+
+.small-gray-text {
+  display: flex;
+  align-items: center;
+  font-size: 0.8em;
+  height: 100%;
+  color: $grayedElement;
+  color: var(--grayedElement);
+  padding: 0 5px;
+}
+
+.green-indicators,
+.red-indicators {
+  color: transparent !important;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin: 0 5px;
+}
+.green-indicators {
+  background-color: green;
+}
+.red-indicators {
+  background-color: red;
+}
+
+.icon-with-name {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 5px;
+}
+
+.button-icon {
+  width: 35px;
+  height: 35px;
+  margin-right: 20px;
+}
+
+.icon-with-name svg {
+  width: 100%;
+  height: 100%;
+  fill: $grayedElement;
+  fill: var(--grayedElement);
+}

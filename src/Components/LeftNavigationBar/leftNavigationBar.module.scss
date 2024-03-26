@@ -1,0 +1,41 @@
+@import "../../colors2017.scss";
+
+.sidebar {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  padding-top: 31px;
+  padding-right: 17px;
+  border-right: 1px solid rgba(170, 170, 170, 0.17);
+  padding-left: 0.5em;
+  width: 75px;
+  overflow: hidden;
+  transition: width 0.1s linear;
+  height: 100%;
+  z-index: 2;
+}
+
+.expanded-sidebar {
+  width: 350px;
+  transition: width 0.1s linear;
+  overflow: visible;
+}
+
+.option-title {
+  font-size: 15px;
+  color: transparent;
+  text-transform: uppercase;
+  padding: 5px 0;
+}
+
+.expanded-sidebar .option-title {
+  color: $text;
+  color: var(--text);
+}
+
+.button-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}

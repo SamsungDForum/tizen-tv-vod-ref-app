@@ -1,0 +1,12 @@
+@import "../../colors2017.scss";
+
+.poster-image {
+  background-repeat: no-repeat;
+  background-blend-mode: multiply;
+  background-color: transparent;
+  background-size: cover;
+  text-shadow: 0 0 1px black, 0 0 1px black, 0 0 1px black;
+  filter: saturate(1.25);
+  color: $textOnTiles;
+  color: var(--textOnTiles);
+}

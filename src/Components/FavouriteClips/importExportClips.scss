@@ -1,0 +1,9 @@
+@import "../../colors2017.scss";
+
+.option-title {
+  font-size: 15px;
+  text-transform: uppercase;
+  color: $text;
+  color: var(--text);
+  padding: 5px 0;
+}

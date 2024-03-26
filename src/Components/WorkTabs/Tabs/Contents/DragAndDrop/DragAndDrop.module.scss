@@ -1,0 +1,48 @@
+@import "../../../../../colors2017.scss";
+
+.drop-zone {
+  width: 60em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 500;
+  font-size: 20px;
+  cursor: pointer;
+  color: $text;
+  color: var(--text);
+  border: 4px dashed $primaryColor;
+  border: 4px dashed var(--primaryColor);
+  border-radius: 10px;
+  flex-direction: column;
+  margin: 0 auto;
+  padding-bottom: 10px;
+}
+.span-warning {
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.drop-zone-container {
+  padding-bottom: 20px;
+}
+
+.drop-input {
+  display: none;
+}
+
+.upload-icon svg {
+  width: 70px;
+  height: 70px;
+  fill: $primaryColor;
+  fill: var(--primaryColor);
+}
+
+.centered {
+  width: 100%;
+  transition: all 0.1s linear;
+}
+.center-when-open-bar {
+  width: calc(100% - 350px);
+  transition: all 0.1s linear;
+}

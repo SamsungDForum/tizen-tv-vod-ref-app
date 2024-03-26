@@ -1,0 +1,41 @@
+@import "../../../colors2017.scss";
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0px;
+  width: 251px;
+  height: 100%;
+  border-left: 1px solid rgba(170, 170, 170, 0.21);
+  border-right: 1px solid rgba(170, 170, 170, 0.11);
+  padding-top: 16px;
+}
+
+.menu-on-video {
+  right: -268px;
+  background-color: transparent;
+}
+
+.menu-on-video-with-logs {
+  right: -268px;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.default-menu {
+  right: -251px;
+  background-color: $appBackground;
+  background-color: var(--appBackground);
+}
+
+.menu-title {
+  margin: 0 0 10px 10px;
+  color: var(--text);
+}
+.menu-scroll-box {
+  font-size: 20px;
+  overflow-y: auto;
+}
+.support-no-float{
+  background-color: rgba(0, 0, 0, 0.8);
+}

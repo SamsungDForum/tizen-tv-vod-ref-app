@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules", // if it doesn't work, select 'Use Workspace Version' as TypeScript version in VSCode
+        "options": {
+          "classnameTransform": "camelCaseOnly"
+        }
+      }
+    ],
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "allowJs": true,
+    "checkJs": false, // use @ts-use at the top of .js file to include it
+    "strict": true,
+    "noImplicitAny": false, // this needs to be set as true when the code base goes fully to ts
+    "jsx": "react",
+    "outDir": "tsBuild",
+    "esModuleInterop": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+  },
+  "include": ["src/", "libs/", "types/", "src/helpers/SvgIcons.js"]
+}

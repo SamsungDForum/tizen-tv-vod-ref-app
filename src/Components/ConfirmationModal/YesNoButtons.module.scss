@@ -1,0 +1,55 @@
+@import "../../colors2017.scss";
+
+.dialog-buttons-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center !important;
+  align-items: center;
+  height: 100%;
+  width: 30%;
+}
+
+.dialog-buttons-box {
+  display: flex;
+  margin-top: 10px;
+}
+
+.yes-no-dialog-buttons-panel {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: $appBackground;
+  background-color: var(--appBackground);
+  color: $text;
+  color: var(--text);
+  z-index: 100;
+  top: 0em;
+  left: 0;
+}
+
+.modalButton{
+  width: 313px;
+  padding: 10px 20px;
+}
+
+.dialog-button-yes,
+.dialog-button-no {
+  justify-content: center !important;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 5px !important;
+  background-color: $exitModalBtns !important;
+  background-color: var(--exitModalBtns) !important;
+  border-bottom: 5px solid transparent !important;
+}
+
+.dialog-button-yes:focus,
+.dialog-button-yes:hover,
+.dialog-button-no:focus,
+.dialog-button-no:hover {
+  border-bottom: 5px solid $primaryColor !important;
+  border-bottom: 5px solid var(--primaryColor) !important;
+  background-color: $focusBgColor !important;
+  background-color: var(--focusBgColor) !important;
+}

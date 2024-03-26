@@ -1,0 +1,108 @@
+@import "../../../../../../colors2017.scss";
+
+.poster-image {
+  background-repeat: no-repeat;
+  background-blend-mode: multiply;
+  background-color: transparent;
+  background-size: cover;
+  text-shadow: 0 0 1px black, 0 0 1px black, 0 0 1px black;
+  filter: saturate(1.25);
+}
+
+.video-asset-id {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+}
+.video-asset-name {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 5px;
+}
+.video-asset-id,
+.video-asset-name {
+  z-index: 1 !important;
+  color: #fff;
+}
+
+.favourite-tag {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 1;
+}
+.favourite-tag svg {
+  width: 20px;
+  height: 20px;
+  fill: red;
+}
+
+.asset-view-asset {
+  width: 304px;
+  height: 168px;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  padding: 0.5rem 1.2rem;
+  transform: none;
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  transition-property: transform;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-out;
+  font-family: "Josefin Sans", Helvetica, Arial, sans-serif;
+  font-size: 1.1em;
+  text-align: center;
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+}
+
+.asset-view-asset:focus {
+  transform: scale(1.08);
+  border-style: double;
+  border: 3px solid $primaryColor;
+  border: 3px solid var(--primaryColor);
+}
+
+.asset-view-asset-clicked::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+  background-color: $playingVideoBg !important;
+  background-color: var(--playingVideoBg) !important;
+  color: $playingVideoText !important;
+  color: var(--playingVideoText) !important;
+}
+
+.no-filters-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 500px;
+  width: 100%;
+  color: $text;
+  color: var(--text);
+}
+
+.darkerBg {
+  background-color: rgba(0, 0, 0, 0.65) !important;
+}
+
+.centered {
+  width: 100%;
+  transition: all 0.1s linear;
+}
+.center-when-open-bar {
+  width: calc(100% - 350px);
+  transition: all 0.1s linear;
+}

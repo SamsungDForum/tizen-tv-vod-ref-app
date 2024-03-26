@@ -1,0 +1,21 @@
+@import "../../colors2017.scss";
+
+.tab-workspace {
+  display: flex;
+  height: 1080px;
+  width: 100em;
+  flex-direction: row;
+  justify-content: flex-start;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.tab-workspace-min {
+  background-color: $appOverlay;
+  background-color: var(--appOverlay);
+}
+
+.tab-workspace-max {
+  top: 6em;
+  height: 48em;
+}

@@ -1,0 +1,10 @@
+@import "../../colors2017.scss";
+
+.message-box {
+  font-size: 18px;
+}
+
+.message-box-message {
+  color: $textMessageBox;
+  color: var(--textMessageBox);
+}

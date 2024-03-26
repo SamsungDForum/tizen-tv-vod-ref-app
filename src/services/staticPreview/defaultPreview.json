@@ -1,0 +1,54 @@
+{
+  "sections":[
+    {
+      "title":"All",
+      "tiles":[
+        {
+          "title":"Elephant Dreams",
+          "position":2,
+          "subtitle":"ID: 2",
+          "image_ratio":"16by9",
+          "image_url":"https://i.ytimg.com/vi/kPdv44HtEoA/maxresdefault.jpg",
+          "action_data":"{\"videoId\": 2}",
+          "is_playable":true
+        },
+        {
+          "title":"Formula 1",
+          "position":3,
+          "subtitle":"ID: 3",
+          "image_ratio":"16by9",
+          "image_url":"https://i.ytimg.com/vi/viQC-6xoJ3E/hq720.jpg",
+          "action_data":"{\"videoId\": 3}",
+          "is_playable":true
+        },
+        {
+          "title":"Google Car",
+          "position":4,
+          "subtitle":"ID: 4",
+          "image_ratio":"16by9",
+          "image_url":"https://i.ytimg.com/vi/cdgQpa1pUUE/hq720.jpg",
+          "action_data":"{\"videoId\": 4}",
+          "is_playable":true
+        },
+        {
+          "title":"[Widevine] Sintel",
+          "position":7,
+          "subtitle":"ID: 7",
+          "image_ratio":"16by9",
+          "image_url":"https://i.ytimg.com/vi/c2gB83g_HSc/hq720.jpg",
+          "action_data":"{\"videoId\": 7}",
+          "is_playable":true
+        },
+        {
+          "title":"[Playready] BigBunny",
+          "position":8,
+          "subtitle":"ID: 8",
+          "image_ratio":"16by9",
+          "image_url":"https://i.ytimg.com/vi/aqz-KE-bpKQ/hq720.jpg",
+          "action_data":"{\"videoId\": 8}",
+          "is_playable":true
+        }
+      ]
+    }
+  ]
+}

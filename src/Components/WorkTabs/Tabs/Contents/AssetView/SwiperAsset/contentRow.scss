@@ -1,0 +1,27 @@
+@import "../../../../../../colors2017.scss";
+
+.swiper {
+  padding-right: 74%;
+  z-index: 0;
+}
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #000;
+  height: 168px;
+  width: 304px;
+}
+.swiper-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.swiper-row-title {
+  font-size: 24px;
+  margin: 0;
+  padding: 0 0 0 4.5rem;
+  color: $text;
+  color: var(--text);
+}

@@ -1,0 +1,19 @@
+{
+  "pvod": {
+    "name": "pvod-reference-app",
+    "version": "2.4.0",
+    "packageId": "4hKkWyp7UR",
+    "packageName": "PvodMvsReferenceApp",
+    "applicationName": "PVOD Reference App"
+  },
+
+  "bootstrap": {
+    "name": "pvod-reference-app-hot-reload-bootstrap",
+    "version": "1.0.0",
+    "packageId": "pvodLoader",
+    "packageName": "HotReloadBootstrap",
+    "applicationName": "PVOD Reference App Hot Reload"
+  },
+
+  "fileDeviceConfiguration": ""
+}

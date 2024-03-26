@@ -1,0 +1,57 @@
+@import "../../../colors2017.scss";
+
+.list > button {
+  width: 250px;
+  flex-wrap: wrap;
+  padding-left: 20px;
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+  z-index: 1;
+}
+
+.additional-options {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  left: 250px;
+  justify-content: flex-start;
+  top: 0;
+  padding-top: 16px;
+  height: 100%;
+  border-left: 1px solid rgba(170, 170, 170, 0.11);
+  border-right: 1px solid rgba(170, 170, 170, 0.11);
+}
+
+.additional-options button {
+  display: flex;
+  justify-content: center;
+  width: 250px;
+}
+
+.list-title {
+  margin: 0 0 10px 10px;
+  color: var(--text);
+}
+.list-scroll-box {
+  overflow-y: auto;
+}
+
+.list-on-video {
+  background-color: transparent;
+}
+
+.list-on-video-with-logs {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.default-list {
+  background-color: $appBackground;
+  background-color: var(--appBackground);
+}
+
+.support-no-float{
+  background-color: rgba(0, 0, 0, 0.8);
+}

@@ -1,0 +1,81 @@
+@import "../../../../colors2017.scss";
+.adv-option-label-container {
+  font-family: "Josefin Sans", Helvetica, Arial, sans-serif;
+  font-weight: bolder;
+  padding-bottom: 0.4em;
+  color: $text;
+  color: var(--text);
+  text-align: center;
+}
+
+.adv-option-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 80px 10px 0 4rem;
+}
+
+.adv-option-section-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-height: 440px;
+  max-width: 500px;
+  font-family: "Josefin Sans", Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  color: $text;
+  color: var(--text);
+  margin-bottom: 30px;
+}
+
+.bar-char-container,
+.pie-char-container {
+  display: flex;
+  height: 300px;
+  width: 500px;
+}
+
+.bar-char-container canvas,
+.pie-char-container canvas {
+  max-height: 300px !important;
+  max-width: 500px !important;
+}
+
+.pie-char-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.div-inside {
+  display: inline-block;
+  padding: 0 0.5em;
+  text-align: right;
+  width: 50%;
+}
+
+.pieInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  line-height: 20px;
+  text-align: center;
+}
+
+.pieTotal {
+  margin: 10px;
+  height: 20px;
+  width: 70px;
+  border: 1px solid rgba(54, 162, 235, 1);
+  background-color: rgba(54, 162, 235, 0.7);
+}
+
+.pieDropped {
+  margin: 10px;
+  height: 20px;
+  width: 70px;
+  border: 1px solid rgba(255, 99, 132, 1);
+  background-color: rgba(255, 99, 132, 0.7);
+}

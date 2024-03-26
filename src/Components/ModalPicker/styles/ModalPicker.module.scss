@@ -1,0 +1,29 @@
+@import "../../../colors2017.scss";
+
+.modal-picker {
+  font-family: sans-serif;
+  display: flex;
+  width: 100%;
+  border-left: 5px solid transparent;
+}
+
+.modal-picker-label {
+  font-weight: bold;
+  justify-self: end;
+  padding-right: 1rem;
+  padding-right: 20px;
+  text-decoration: none;
+}
+
+.modal-picker-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  width: 100%;
+}
+
+.expanded-background {
+  border-left: 5px solid $primaryColor;
+  border-left: 5px solid var(--primaryColor);
+  z-index: 1;
+}
