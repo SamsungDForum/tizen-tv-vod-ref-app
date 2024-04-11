@@ -8,7 +8,7 @@ function YesNoButtons({ onYesCallback, onNoCallback, messageText }) {
 
   React.useEffect(() => {
     navKeys.initialize(id);
-    navKeys.focusNo();  
+    navKeys.focusOk();  
     return () => {
       navKeys.destroy(id);
     };
