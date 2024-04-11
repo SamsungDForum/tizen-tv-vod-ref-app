@@ -22,6 +22,21 @@ const type = "shaka";
 const version = [
   {
     type: type,
+    version: "4.4.0",
+    args: {
+      src: "https://cdn.jsdelivr.net/npm/shaka-player@4.4.0/dist/shaka-player.compiled.min.js",
+    },
+  },
+  {
+    type: type,
+    version: "4.4.0 debug",
+    args: {
+      src: "https://cdn.jsdelivr.net/npm/shaka-player@4.4.0/dist/shaka-player.compiled.debug.js",
+    },
+    isDefault: true,
+  },
+  {
+    type: type,
     version: "4.2.1",
     args: {
       src: "https://cdn.jsdelivr.net/npm/shaka-player@4.2.1/dist/shaka-player.compiled.min.js",
@@ -33,7 +48,6 @@ const version = [
     args: {
       src: "https://cdn.jsdelivr.net/npm/shaka-player@4.2.1/dist/shaka-player.compiled.debug.js",
     },
-    isDefault: true,
   },
 ];
 
