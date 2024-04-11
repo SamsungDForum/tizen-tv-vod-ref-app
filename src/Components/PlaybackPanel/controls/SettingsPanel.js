@@ -67,9 +67,9 @@ function SettingsPanel() {
 
   return (
     <div className={(isVideoFullScreenOn ? classScreen : " hide") + (isOverlayVisible ? "" : " fade-out-animation")}>
-      <p className="option-title">General:</p>
+      <p className="video-option-title">General:</p>
       <GeneralSettings className={"player-button animated-player-button"} />
-      <div ref={playerSettingsRef}>
+      <div className="player-settings-box" ref={playerSettingsRef}>
         <div className="nonExpandBorder">
           <StyledButton
             icon={<LogSvgIcon />}
@@ -81,7 +81,7 @@ function SettingsPanel() {
           />
         </div>
 
-        <p className="option-title">Video settings:</p>
+        <p className="video-option-title">Video settings:</p>
         <ModalPicker
           data={subList}
           initialLabel={sub}

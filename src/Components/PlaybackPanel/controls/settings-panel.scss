@@ -20,6 +20,10 @@
 .video-player-settings-panel-control > * {
   color: #fff !important;
 }
+.player-settings-box{
+  display: flex;
+  flex-direction: column;
+}
 
 .video-player-settings-panel-control {
   #listElement:hover,
@@ -36,4 +40,7 @@
   #menuTitle {
     color: #fff !important;
   }
+}
+.player-button:hover{
+  color: #000 !important;
 }
