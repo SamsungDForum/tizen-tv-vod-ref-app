@@ -113,6 +113,14 @@ export const PauseSvgIcon = () => {
   );
 };
 
+export const StopSvgIcon = () => {
+  return (
+    <svg height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg">
+      <path d="m392 432h-272a40 40 0 0 1 -40-40v-272a40 40 0 0 1 40-40h272a40 40 0 0 1 40 40v272a40 40 0 0 1 -40 40z" />
+    </svg>
+  );
+};
+
 export const LogSvgIcon = () => {
   return (
     <svg height="48" viewBox="0 0 32 32" width="48" xmlns="http://www.w3.org/2000/svg">

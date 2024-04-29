@@ -13,6 +13,8 @@ import { setChannelID } from "../ChannelZapping/ChannelZappingSlice";
 import { dispatch } from "../../reduxStore/store";
 import ChannelInfo from "./ChannelInfo";
 import toast from "react-hot-toast";
+import { setMedia } from "../usePlayerFactory/utils/playAsset";
+import { setVideoFullScreenOn } from "./VideoFullScreenSlice";
 
 export function PlaybackPanel({ playbackSettings, playerRef }) {
   const [subtitleText, setSubtitleText] = React.useState("");
@@ -25,6 +27,7 @@ export function PlaybackPanel({ playbackSettings, playerRef }) {
   const subtitleOption = useSelector((state) => state.setting.subtitle);
   const data = useSelector((state) => state.ChannelZapping.channelList);
   const allowFloating = reqTizenVersion(4);
+
 
   const playbackHandlers = {
     onSubtitleTextUpdate: (text) => setSubtitleText(text),
@@ -46,6 +49,12 @@ export function PlaybackPanel({ playbackSettings, playerRef }) {
       playerRef.current.seek(0);
       playerRef.current.play();
     },
+    onHandleAbort: () => {
+      playerRef.current.pause();
+      playerRef.current.seek(0);
+      dispatch(setVideoFullScreenOn(false))
+      setMedia(undefined)
+    }
   };
 
   function renderSubtitleText() {
@@ -179,10 +188,10 @@ export function PlaybackPanel({ playbackSettings, playerRef }) {
   return (
     <>
       <Overlay isActivated={isVideoFullScreenOn && isOverlayVisible} />
-      <div
-        className={`${"video-window-big"} ${allowFloating && !isVideoFullScreenOn ? "floating-video" : ""} ${
-          media && Object.entries(media).length > 0 ? "background-black" : ""
-        }`}
+
+      
+      <div  className={`${"video-window-big"} ${allowFloating && !isVideoFullScreenOn ? "floating-video" : ""} ${
+          media && Object.entries(media).length > 0 ? "background-black" : "" } ${media === undefined && 'hide'}`}
       >
         <LoadingSpinner playerRef={playerRef} />
         <div

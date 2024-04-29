@@ -7,7 +7,7 @@ import { setVideoFullScreenOn } from "./../VideoFullScreenSlice";
 import { dispatch } from "./../../../reduxStore/store";
 import { nav, navConfig } from "../../../../libs/spatial-navigation";
 import { useSelector } from "react-redux";
-import { RevindSvgIcon, FastForwardSvgIcon, RestartSvgIcon } from "../../../helpers/SvgIcons";
+import { RevindSvgIcon, FastForwardSvgIcon, RestartSvgIcon, StopSvgIcon } from "../../../helpers/SvgIcons";
 
 export const ControlPanel = function (props) {
   const switchOffVideoFullScreen = function (evt) {
@@ -58,6 +58,12 @@ export const ControlPanel = function (props) {
           icon={<FastForwardSvgIcon />}
           className="video-player-ffw-control video-player-button"
           onClick={props.buttonClickHandlers.onFastForwardClick}
+        ></ControlPanelButton>
+
+        <ControlPanelButton
+          icon={<StopSvgIcon />}
+          className="video-player-stop-control video-player-button"
+          onClick={props.buttonClickHandlers.onHandleAbort}
         ></ControlPanelButton>
       </div>
     </div>

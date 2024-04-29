@@ -19,10 +19,9 @@ export default function PlayerWindow(props) {
 
   useEffect(() => {
     if (media !== undefined) {
-      if (Object.keys(media).length > 0) {
-        setIsFloatingFocusable(true);
-        setVideoBg(true);
-      }
+      const isMediaOk = (Object.keys(media).length > 0);
+      setIsFloatingFocusable(isMediaOk);
+      setVideoBg(isMediaOk);
     }
   }, [media]);
 
@@ -73,7 +72,7 @@ export default function PlayerWindow(props) {
         })}
       >
         <PlaybackPanel playbackSettings={props.playbackSettings} playerRef={playerRef} />
-        {isFloatingFocusable && allowFloating ? <FullscreenVideo /> : null}
+        {isFloatingFocusable && allowFloating && media !== undefined ? <FullscreenVideo /> : null}
       </div>
     </div>
   );
