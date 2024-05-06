@@ -17,6 +17,7 @@
     "noImplicitAny": false, // this needs to be set as true when the code base goes fully to ts
     "jsx": "react",
     "outDir": "tsBuild",
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

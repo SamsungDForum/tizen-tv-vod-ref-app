@@ -23,7 +23,7 @@ declare module 'react-redux' {
     ContentFilters: FiltersState;
     playAsset: PlayAssetState;
     OverlayVisible: OverlayVisibleState;
-    settings: SettingState;
+    setting: SettingState;
     VideoFullScreen: VideoFullScreenState;
     FavouriteClips: FavouriteClipsState;
     ColorsMode: ColorsModeState;

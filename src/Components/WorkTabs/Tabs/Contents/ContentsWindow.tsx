@@ -1,12 +1,13 @@
+// @ts-nocheck
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useTypedSelector } from "../../../../reduxStore/useTypedSelector";
 import CommonVideoContents from "../../../../data/VideoContent.json";
-import { refreshNavigationSection } from "../Contents/AssetView/Navigation";
+import { refreshNavigationSection } from "./AssetView/Navigation";
 import DragAndDrop from "./DragAndDrop/DragAndDrop";
-import { navKeys } from "./../navigation";
+import { navKeys } from "../navigation";
 import { isContentValid } from "./ContentValidator";
 import { getFilteredList, useSelectedFilters, filterBy } from "./ContentFilters";
-import { FiltersPanel, getFilterHandlers } from "./ContentFilters/FiltersPanel";
+import { getFilterHandlers } from "./ContentFilters/FiltersPanel";
 import LoadingStateIndicator from "../../../LoadingStateIndicator";
 import "./ContentsWindow.scss";
 import { FilterLabels } from "./ContentFilters/FiltersSlice";
@@ -17,6 +18,7 @@ import Content from "./AssetView/SwiperAsset/Content";
 import { tabsEnum } from "../../NavigationTabSlice";
 import { setChannelList } from "../../../ChannelZapping/ChannelZappingSlice";
 import toast from "react-hot-toast";
+import { Media } from "../../../usePlayerFactory/utils/playAssetCurrentTypes";
 
 function onMount() {
   navKeys.initialize((evt) => navKeys.onKeyEvent(evt));
@@ -25,22 +27,43 @@ function onMount() {
   };
 }
 
-export default function ContentsWindow({ customContent, currentPlayer, setDroppedContent, droppedContent }) {
-  const defaultCustom = [{ title: "", list: [] }];
-  const [customPlaylist, setCustomPlaylist] = useState(defaultCustom);
+type FilteredContent = {
+  title: string;
+  list: Array<Media>;
+}
+
+type PlayerInfo = {
+  id: number;
+  trackId: number;
+  label: string;
+  type: string;
+  version: string;
+  args: {
+    src: string;
+  };
+};
+
+type Props = {
+  isCustomContent: boolean;
+  currentPlayer: PlayerInfo;
+  droppedContent: any;
+  setDroppedContent: any;
+}
+
+export default function ContentsWindow({ isCustomContent, currentPlayer, droppedContent, setDroppedContent }: Props) {
+  const [customPlaylist, setCustomPlaylist] = useState<Array<FilteredContent>>([{ title: "", list: [] }]);
   const currentFilters = useSelectedFilters();
-  const curNavigationTab = useSelector((state) => state.navigationTab.value);
-  const media = useSelector((state) => state.playAsset.value.media);
+  const curNavigationTab = useTypedSelector(state => state.navigationTab.value);
   const [appliedFilters, setAppliedFilters] = useState(null);
-  const playbackSettings = useSelector((state) => state.setting);
-  const previewState = useSelector((state) => state.PreviewLoading.value.loadingState);
+  const playbackSettings = useTypedSelector(state => state.setting);
+  const previewState = useTypedSelector(state => state.PreviewLoading.value.loadingState);
   const {
     source: { current: currPlayer },
   } = playbackSettings;
 
-  const customAllContent = useSelector((state) => state.CustomCommon.myCustomCommon);
-  const favClips = useSelector((state) => state.FavouriteClips.myClips);
-  const isCustomCommon = useSelector((state) => state.CustomCommon.isCustomCommon);
+  const customAllContent = useTypedSelector(state => state.CustomCommon.myCustomCommon);
+  const favClips = useTypedSelector(state => state.FavouriteClips.myClips);
+  const isCustomCommon = useTypedSelector(state => state.CustomCommon.isCustomCommon);
   const newClipsState = customAllContent ? JSON.stringify(favClips) : null;
   const [commonClipList, setCommonClipList] = useState(CommonVideoContents);
 
@@ -55,7 +78,7 @@ export default function ContentsWindow({ customContent, currentPlayer, setDroppe
   useEffect(onMount, []);
 
   useEffect(async () => {
-    if (!customContent) {
+    if (!isCustomContent) {
       return;
     }
     let content = null;
@@ -95,8 +118,8 @@ export default function ContentsWindow({ customContent, currentPlayer, setDroppe
     refreshNavigationSection();
   }, [customPlaylist, curNavigationTab, currentFilters]);
 
-  let commonPlayList = null;
-  if (customContent !== true) {
+  let commonPlayList: Array<FilteredContent> = [];
+  if (isCustomContent !== true) {
     commonPlayList = getFilteredContents(commonClipList);
   }
 
@@ -128,17 +151,17 @@ export default function ContentsWindow({ customContent, currentPlayer, setDroppe
     setAppliedFilters(results);
   }, [currentFilters]);
 
-  const currentRowID = useSelector((state) => state.ChannelZapping.currentRowID);
+  const currentRowID = useTypedSelector(state => state.ChannelZapping.currentRowID);
 
   useEffect(() => {
     if (curNavigationTab === tabsEnum.allClips) {
-      dispatch(setChannelList(customContent ? customPlaylist[currentRowID] : commonPlayList[currentRowID]));
+      dispatch(setChannelList(isCustomContent ? customPlaylist[currentRowID] : commonPlayList[currentRowID]));
     } else if (curNavigationTab === tabsEnum.favoriteClips) {
       if (customPlaylist[currentRowID]?.list.length > 0) {
         dispatch(setChannelList(customPlaylist[currentRowID]));
       }
     }
-  }, [curNavigationTab, currentFilters, customContent, customPlaylist, commonClipList, currentRowID]);
+  }, [curNavigationTab, currentFilters, isCustomContent, customPlaylist, commonClipList, currentRowID]);
 
   return (
     <>
@@ -157,7 +180,7 @@ export default function ContentsWindow({ customContent, currentPlayer, setDroppe
         </div>
       )}
 
-      {customContent === true && typeof tizen === "undefined" ? (
+      {isCustomContent === true && typeof tizen === "undefined" ? (
         <DragAndDrop onSuccessHandler={setDroppedContent} onErrorHandler={toast.error} />
       ) : null}
 
@@ -168,10 +191,8 @@ export default function ContentsWindow({ customContent, currentPlayer, setDroppe
         }}
       >
         <Content
-          curNavigationTab={curNavigationTab}
-          clickedVideoId={media?.id}
-          customContent={customContent}
-          child={customContent ? customPlaylist : commonPlayList}
+          isCustomContent={isCustomContent}
+          child={isCustomContent ? customPlaylist : commonPlayList}
         />
       </div>
     </>

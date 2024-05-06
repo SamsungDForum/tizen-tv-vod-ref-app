@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
 import { dispatch } from "../../reduxStore/store";
 import { setChannelID } from "./ChannelZappingSlice";
 import { setMedia } from "../usePlayerFactory/utils/playAsset";
 import { KeyName, getKey } from "../KeyEvents";
 import { debounce } from "lodash";
-const channel = () => {
-  const isVideoFullScreenOn = useSelector((state) => state.VideoFullScreen.value);
-  const media = useSelector((state) => state.playAsset.value.media);
+import { useTypedSelector } from "../../reduxStore/useTypedSelector";
+import { get } from "../../data/VideoContentProvider";
 
-  const channelId = useSelector((state) => state.ChannelZapping.channelID);
-  const data = useSelector((state) => state.ChannelZapping.channelList);
+const channel = () => {
+  const media = useTypedSelector(state => state.playAsset.value.media);
+
+  const channelId = useTypedSelector(state => state.ChannelZapping.channelID);
+  const data = useTypedSelector(state => state.ChannelZapping.channelList);
+
 
   React.useEffect(() => {
     const playerWindow = document.getElementById("top-player-window");
 
     const handleKeyDown = (e) => {
       const key = getKey(e);
-      const index = data?.list?.findIndex((item) => item?.id === media?.id);
+      const index = data?.list?.findIndex(id => id === media?.id);
 
       if (index !== -1) {
         if (key === KeyName.CHANNEL_DOWN) {
@@ -45,8 +47,8 @@ const channel = () => {
 
   React.useEffect(() => {
     const getData = debounce(() => {
-      if (data[channelId]?.list?.id !== media?.id) {
-        setMedia(data?.list[channelId]);
+      if (data?.list[channelId] !== media?.id) {
+        setMedia(get(data?.list[channelId]));
       }
     }, 500);
 

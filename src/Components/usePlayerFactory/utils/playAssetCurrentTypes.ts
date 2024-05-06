@@ -2,19 +2,19 @@ type Media = {
   id: number;
   name: string;
   requiresAuth: boolean;
-  live: boolean | undefined;
+  live?: boolean;
   url: string;
   poster: string;
-  contentType: string | undefined;
-  licenseServerURL: string | undefined;
-  drmType: string | undefined;
-  drmPreference: string[] | undefined;
+  contentType?: string;
+  licenseServerURL?: string;
+  drmType?: string;
+  drmPreference?: string[];
   widthResolution: number[];
   heightResolution: number[];
-  audio: string[];
-  manifest: 'DASH' | 'HLS' | 'MSS' | undefined;
+  audio?: string[];
+  manifest?: string;
   container: string | string[];
-  excludedFrom: string | string[] | undefined;
+  excludedFrom?: string | string[];
 };
 
 type Audio = {

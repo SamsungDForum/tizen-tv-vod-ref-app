@@ -6,7 +6,10 @@ export const ChannelZapping = createSlice({
   name: "ChannelZapping",
   initialState: {
     channelID: 0,
-    channelList: [],
+    channelList: {
+      title: '',
+      list: []
+    },
     currentRowID: savedCurrentRowID ? savedCurrentRowID : 0,
   },
   reducers: {
@@ -14,7 +17,10 @@ export const ChannelZapping = createSlice({
       state.channelID = action.payload;
     },
     setChannelList: (state, action) => {
-      state.channelList = action.payload;
+      state.channelList = {
+        title: action.payload.title,
+        list: [...action.payload.list].map(item => item.id)
+      };
     },
     setCurrentRowID: (state, action) => {
       state.currentRowID = action.payload;

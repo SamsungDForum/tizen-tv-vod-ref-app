@@ -1,27 +1,30 @@
-import React, { useRef, useState, useEffect } from "react";
+// @ts-nocheck
+import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "./contentRow.scss";
 import { Keyboard } from "swiper/modules";
 import Asset from "./Asset";
 import { tabsEnum } from "../../../../NavigationTabSlice";
-import { useSelector } from "react-redux";
+import { useTypedSelector } from "../../../../../../reduxStore/useTypedSelector";
 import { KeyName, getKey } from "../../../../../KeyEvents";
 import { dispatch } from "../../../../../../reduxStore/store";
 import { setCurrentRowID } from "../../../../../ChannelZapping/ChannelZappingSlice";
+import { Media } from "../../../../../usePlayerFactory/utils/playAssetCurrentTypes";
 
-const ContentRow = ({ child, pxtransform, setPxtransform, contentRowID }) => {
-  const curNavigationTab = useSelector((state) => state.navigationTab.value);
+type Props = {
+  child: {
+    title: string;
+    list: Array<Media>;
+  };
+  pxtransform: number;
+  setPxtransform: (px: number) => void;
+  contentRowID: number;
+  key: React.Key;
+};
 
-  function boxDiff(minuend, subtrahend) {
-    const diff = {};
-
-    const keys = ["top", "bottom", "right", "left"];
-    for (const key of keys) {
-      diff[key] = minuend[key] - subtrahend[key];
-    }
-    return diff;
-  }
+const ContentRow = ({ child, pxtransform, setPxtransform, contentRowID }: Props) => {
+  const curNavigationTab = useTypedSelector(state => state.navigationTab.value);
 
   const [currentSwiper, setCurrentSwiper] = useState(null);
 

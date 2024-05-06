@@ -1,17 +1,25 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState } from "react";
 import "swiper/css";
 import "./content.scss";
-import { useSelector } from "react-redux";
 import ContentRow from "./ContentRow";
 import AssetWarningDisplay from "../AssetWarningDisplay";
+import { Media } from "../../../../../usePlayerFactory/utils/playAssetCurrentTypes";
 
-const Content = ({ child }) => {
-  const arrayCheckOutput = child.every((obj) => obj.list.length === 0);
+type Props = {
+  isCustomContent: boolean;
+  child: Array<{
+    title: string;
+    list: Array<Media>;
+  }>;
+};
+
+const Content = ({ child }: Props) => {
+  const isEveryArrayPopulated = child.every((obj) => obj.list.length === 0);
   const [pxtransform, setPxtransform] = useState(0);
 
   return (
     <>
-      {!arrayCheckOutput ? (
+      {!isEveryArrayPopulated ? (
         <div className="swiper-container">
           {child.map((key, index) => {
             let contentRowID = index;

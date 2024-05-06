@@ -85,6 +85,7 @@ module.exports = (env) => {
             path.resolve(projectRoot, "node_modules", "internmap", "src"),
             path.resolve(projectRoot, "node_modules", "swiper"),
             path.resolve(projectRoot, "node_modules", "react-hot-toast", "dist"),
+            path.resolve(projectRoot, "node_modules", "goober", "dist"),
           ],
           use: {
             loader: "babel-loader",

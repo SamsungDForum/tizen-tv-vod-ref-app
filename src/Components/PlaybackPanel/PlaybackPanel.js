@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { ControlPanel } from "./controls/ControlPanel";
 import "./PlaybackPanel.scss";
 import { toggleSettingPanel } from "../usePlayerFactory/utils/setting";
@@ -7,25 +6,26 @@ import { navKeys } from "./navigation";
 import { VideoContainer } from "./VideoContainer";
 import Overlay from "./../ModalPicker/Overlay";
 import { reqTizenVersion } from "../../helpers/reqTizenVersion";
-import classNames from "classnames";
 import LoadingSpinner from "./loadingSpinner/LoadingSpinner";
 import { setChannelID } from "../ChannelZapping/ChannelZappingSlice";
 import { dispatch } from "../../reduxStore/store";
+import { useTypedSelector } from "../../reduxStore/useTypedSelector";
 import ChannelInfo from "./ChannelInfo";
 import toast from "react-hot-toast";
 import { setMedia } from "../usePlayerFactory/utils/playAsset";
 import { setVideoFullScreenOn } from "./VideoFullScreenSlice";
 
 export function PlaybackPanel({ playbackSettings, playerRef }) {
-  const [subtitleText, setSubtitleText] = React.useState("");
-  const playbackState = React.useRef(undefined);
-  const StashedKey = React.useRef(undefined);
+  const [subtitleText, setSubtitleText] = useState("");
+  const playbackState = useRef(undefined);
+  const StashedKey = useRef(undefined);
   const overlayTimeoutID = useRef(-1);
-  const media = useSelector((state) => state.playAsset.value.media);
-  const isVideoFullScreenOn = useSelector((state) => state.VideoFullScreen.value);
-  const isOverlayVisible = useSelector((state) => state.OverlayVisible.value);
-  const subtitleOption = useSelector((state) => state.setting.subtitle);
-  const data = useSelector((state) => state.ChannelZapping.channelList);
+  const media = useTypedSelector(state => state.playAsset.value.media);
+  const isVideoFullScreenOn = useTypedSelector(state => state.VideoFullScreen.value);
+  const isOverlayVisible = useTypedSelector(state => state.OverlayVisible.value);
+  const subtitleOption = useTypedSelector(state => state.setting.subtitle);
+  const data = useTypedSelector(state => state.ChannelZapping.channelList);
+  const isLogOverlayedOn = useTypedSelector(state => state.LogOverlayScreen.value);
   const allowFloating = reqTizenVersion(4);
 
 
@@ -80,7 +80,6 @@ export function PlaybackPanel({ playbackSettings, playerRef }) {
     return false;
   }
 
-  const isLogOverlayedOn = useSelector((state) => state.LogOverlayScreen.value);
   const setLogContainerClass = (overlayOn) =>
     overlayOn === false
       ? "hide"
@@ -155,7 +154,7 @@ export function PlaybackPanel({ playbackSettings, playerRef }) {
 
   React.useEffect(() => {
     if (data?.list?.length !== 0) {
-      const index = data?.list?.findIndex((item) => item?.id === media?.id);
+      const index = data?.list?.findIndex(id => id === media?.id);
       if (index !== -1) {
         dispatch(setChannelID(index));
       }

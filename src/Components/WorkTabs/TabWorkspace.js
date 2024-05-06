@@ -9,17 +9,16 @@ import styles from "./TabWorkspace.module.scss";
 import LeftNavigationBar from "../LeftNavigationBar/LeftNavigationBar";
 import ConfirmationModal from "../ConfirmationModal/ConfirmationModal";
 
-const renderSwitch = function (param, props, droppedContent, setDroppedContent, isLeftBarOpen) {
+const renderSwitch = function(activeTab, props, isLeftBarOpen, droppedContent, setDroppedContent) {
   const isLogOverlayedOn = useSelector((state) => state.LogOverlayScreen.value);
 
-  switch (param) {
+  switch (activeTab) {
     case tabsEnum.allClips:
       return (
         <div className={`contents-window-wrapper ${isLeftBarOpen ? "transformed" : ""}`}>
           <ContentsWindow
-            setNavigationState={props.setNavigationState}
             currentPlayer={props.currentPlayer}
-            customContent={false}
+            isCustomContent={false}
           />
         </div>
       );
@@ -27,9 +26,8 @@ const renderSwitch = function (param, props, droppedContent, setDroppedContent, 
       return (
         <div className={`contents-window-wrapper ${isLeftBarOpen ? "transformed" : ""}`}>
           <ContentsWindow
-            setNavigationState={props.setNavigationState}
             currentPlayer={props.currentPlayer}
-            customContent={true}
+            isCustomContent={true}
             droppedContent={droppedContent}
             setDroppedContent={setDroppedContent}
           />
@@ -56,13 +54,13 @@ const renderSwitch = function (param, props, droppedContent, setDroppedContent, 
 export default function TabWorkspace(props) {
   const curNavigationTab = useSelector((state) => state.navigationTab.value);
   const isVideoFullScreenOn = useSelector((state) => state.VideoFullScreen.value);
-  const [droppedContent, setDroppedContent] = useState(null);
   const isLeftBarOpen = useSelector((state) => state.LeftNavBar.isOpen);
+  const [droppedContent, setDroppedContent] = useState(null);
 
   return (
     <div className={isVideoFullScreenOn ? "hide" : `${styles.tabWorkspace} ${styles.tabWorkspaceMin}`}>
       <LeftNavigationBar />
-      {renderSwitch(curNavigationTab, props, droppedContent, setDroppedContent, isLeftBarOpen)}
+        {renderSwitch(curNavigationTab, props, isLeftBarOpen, droppedContent, setDroppedContent)}
       <ConfirmationModal />
     </div>
   );
