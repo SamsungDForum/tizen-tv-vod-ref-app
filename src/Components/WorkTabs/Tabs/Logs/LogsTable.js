@@ -57,7 +57,7 @@ function LogsTable({ data, logs, logFilters, isAutoscroll }) {
           {({ onSectionRendered, scrollToRow }) => (
             <List
               width={width}
-              height={972}
+              height={900}
               rowHeight={calculatedItemHeight}
               rowRenderer={renderRow}
               rowCount={data.length}

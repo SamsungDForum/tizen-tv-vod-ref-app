@@ -58,11 +58,11 @@ export function VideoContainer({
 
       {isVideoFullScreenOn ? (
         <div
-          className={`logs-on-video ${isOverlayVisible ? "logs-on-video-with-overlay" : "logs-on-video-no-overlay"}`}
+        className={`logs-on-video ${isOverlayVisible ? "logs-on-video-with-overlay" : "logs-on-video-no-overlay"}`}
         >
           <LogsWindow
             logsContainerClass={logsClass}
-            styles={`${isShowPlayerLogs && isVideoFullScreenOn ? "block" : "none"}`}
+            styles={`${isShowPlayerLogs && isVideoFullScreenOn && isOverlayVisible ? "1" : "0"}`}
           />
         </div>
       ) : null}

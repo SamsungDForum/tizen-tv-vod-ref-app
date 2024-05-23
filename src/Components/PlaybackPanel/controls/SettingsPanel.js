@@ -54,7 +54,7 @@ function SettingsPanel() {
     } else {
       cfg.leaveFor = {
         down: "@progress-control-bar",
-        right: "@progress-control-bar",
+        right: "@playback-controls-nav-panel",
       };
     }
 

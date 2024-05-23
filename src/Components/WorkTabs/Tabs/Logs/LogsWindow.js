@@ -57,7 +57,7 @@ export default function LogsWindow({ logsContainerClass, styles }) {
   }, [isVideoFullScreenOn]);
 
   return (
-    <div tabIndex="0" className={logsContainerClass} style={{ display: `${styles}` }}>
+    <div tabIndex="0" className={logsContainerClass} style={{ opacity: `${styles}` }}>
       {filteredLogs.length === 0 ? (
         <div className="no-logs-area">
           <div className="not-found-image">

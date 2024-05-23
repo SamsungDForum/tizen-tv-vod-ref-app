@@ -17,7 +17,12 @@ function onKeyEvent(evt, state) {
       dispatch(dispatch(showConfirmation(false)));
       break;
     case KeyName.ENTER:
-      handleEnterButton(evt);
+      if (!isOverlayVisible && isVideoFullScreenOn && !evt.target.id.includes("log-entry")) {
+        focusSettingsControlsPanel();
+      } else {
+        handleEnterButton(evt);
+      }
+
       navKeys.startHidingVideoOverlay(overlayTimeoutID);
       break;
     default:
@@ -32,7 +37,11 @@ function onKeyUpEvent(evt, state) {
     case KeyName.BACK:
       if (domRef.getViewPickerButton() === evt.target) break;
       if (isOverlayVisible && isVideoFullScreenOn) {
-        tryToHideBackOverlay();
+        if (evt.target.id.includes("log-entry")) {
+          focusSettingsControlsPanel();
+        } else {
+          tryToHideBackOverlay();
+        }
         return;
       } else {
         if (!isVideoFullScreenOn && domRef.getPlayerSelectButton()?.id === evt.target.id) {
@@ -43,8 +52,10 @@ function onKeyUpEvent(evt, state) {
         break;
       }
   }
-
-  navKeys.startHidingVideoOverlay(overlayTimeoutID);
+  if (evt.target.id.includes("log-entry")) {
+  } else {
+    navKeys.startHidingVideoOverlay(overlayTimeoutID);
+  }
 }
 
 function onNavigationEvent(evt, state) {

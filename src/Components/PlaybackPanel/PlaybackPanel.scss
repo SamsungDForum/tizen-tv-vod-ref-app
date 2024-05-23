@@ -122,27 +122,19 @@
   text-align: center;
   z-index: 2;
   top: 1em;
-  left: 2em;
+  left: 50%;
+  transform: translateX(-50%);
   color: $videoClipTitle;
   color: var(--videoClipTitle);
 }
 
 .logs-on-video {
   position: absolute;
-  z-index: 3;
-}
-
-.logs-on-video-with-overlay {
-  top: 0em;
+  top: 3em;
   right: 5px;
   width: 80%;
-  height: 90%;
+  height: 83.3%;
   z-index: 1;
-}
-
-.logs-on-video-no-overlay {
-  width: 100%;
-  height: 100%;
 }
 
 .floating-video {

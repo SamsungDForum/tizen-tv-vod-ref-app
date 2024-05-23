@@ -161,6 +161,7 @@ export function PlaybackPanel({ playbackSettings, playerRef }) {
     }
   }, [isVideoFullScreenOn]);
 
+
   const [showLoading, setShowLoading] = useState(false);
   const [playerState, setPlayerState] = useState({});
 
@@ -226,7 +227,7 @@ export function PlaybackPanel({ playbackSettings, playerRef }) {
             (isVideoFullScreenOn ? "video-clip-title" : "hide") + (isOverlayVisible ? "" : " fade-out-animation")
           }
         >
-          {media?.name}
+         ID:{media?.id} - {media?.name}
         </div>
 
         <ControlPanel
