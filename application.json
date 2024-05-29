@@ -10,7 +10,7 @@
   "bootstrap": {
     "name": "pvod-reference-app-hot-reload-bootstrap",
     "version": "1.0.0",
-    "packageId": "pvodLoader",
+    "packageId": "pvodRefApp",
     "packageName": "HotReloadBootstrap",
     "applicationName": "PVOD Reference App Hot Reload"
   },

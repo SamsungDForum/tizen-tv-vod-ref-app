@@ -1,3 +1,4 @@
+const devServer = require("./webpack.devserver").devServer;
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
@@ -7,29 +8,15 @@ const tag = [path.parse(__filename).name];
 
 const projectRoot = path.join(__dirname, "..");
 
+
+
 module.exports = (env) => {
   console.log(tag, env);
 
   const config = {
     mode: env.production ? "production" : env.development ? "development" : "none",
 
-    devServer: {
-      static: false,
-      hot: true,
-      compress: true,
-      host: "0.0.0.0",
-      port: 8081,
-      client: {
-        logging: "info",
-        overlay: true,
-      },
-      server: {
-        type: "http",
-      },
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-    },
+    devServer: require("./webpack.devserver").devServer,
     devtool: false,
     context: path.join(projectRoot, "src"),
 

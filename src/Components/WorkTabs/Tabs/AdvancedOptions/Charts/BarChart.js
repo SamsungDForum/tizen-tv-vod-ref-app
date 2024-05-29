@@ -44,12 +44,11 @@ export const BarChart = ({ width, height, data }) => {
           rx={1}
         />
         <text
-          x={xScale(d.value) - 7}
+          x={xScale(0) + boundsWidth - 7}
           y={y + yScale.bandwidth() / 2}
           textAnchor="end"
           alignmentBaseline="central"
           fontSize={12}
-          opacity={xScale(d.value) > 90 ? 1 : 0} // hide label if bar is not wide enough
           fill="white"
         >
           {d.value}
@@ -58,7 +57,7 @@ export const BarChart = ({ width, height, data }) => {
           x={xScale(0) + 7}
           y={y + yScale.bandwidth() / 2}
           textAnchor="start"
-          alignmentBaseline="central"
+          alignmentBaseline="left"
           fontSize={12}
           fill="white"
         >
@@ -85,11 +84,11 @@ export const BarChart = ({ width, height, data }) => {
   ));
 
   return (
-      <svg width={width} height={height}>
-        <g width={boundsWidth} height={boundsHeight} transform={`translate(${[MARGIN.left, MARGIN.top].join(",")})`}>
-          {grid}
-          {allShapes}
-        </g>
-      </svg>
+    <svg width={width} height={height}>
+      <g width={boundsWidth} height={boundsHeight} transform={`translate(${[MARGIN.left, MARGIN.top].join(",")})`}>
+        {grid}
+        {allShapes}
+      </g>
+    </svg>
   );
 };

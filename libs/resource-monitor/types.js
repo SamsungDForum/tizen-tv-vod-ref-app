@@ -6,6 +6,12 @@
  */
 
 /**
+ * @typedef TizenWebApplicationInfo
+ * @property {number} cpuUsage
+ * @property {number} memoryUsage
+ */
+
+/**
  * @typedef MemoryAttribution
  * @property {object[]} attribution
  * @property {number} bytes

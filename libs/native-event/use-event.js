@@ -47,17 +47,7 @@ function onUnmount(state) {
     state.current.eventOptions
   );
 
-  (state.current =
-    state.current.onMount =
-    state.current.eventTarget =
-    state.current.eventType =
-    state.current.eventOptions =
-    state.current.setState =
-    state.current.eventHandler =
-    state.current.recvEvent =
-    state.current.lastEvent =
-      null),
-    null;
+  state.current = null;
 }
 
 /** @type {EventHookMountHandler} */
@@ -100,7 +90,7 @@ function useStateEvent(eventTarget, eventType, options) {
 }
 
 /**
- * useEvent hook. Returns last recieved event and last recieved event getter.
+ * useEvent hook. Returns last received event and last received event getter.
  * @param {EventTarget} eventTarget EventTarget instance to subscribe to
  * @param {string} eventType event name
  * @param {AddEventListenerOptions} [options] event subscription options

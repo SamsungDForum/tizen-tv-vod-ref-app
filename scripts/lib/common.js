@@ -14,7 +14,7 @@ const tag = [path.parse(__filename).name];
  */
 
 function serverHotReload() {
-  let { host, port, server } = require("./../webpack.common").devServer;
+  let { host, port, server } = require("./../webpack.devserver").devServer;
 
   if (host == "0.0.0.0") {
     const netIfs = require("node:os").networkInterfaces();
