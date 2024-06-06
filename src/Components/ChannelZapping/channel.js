@@ -8,18 +8,17 @@ import { useTypedSelector } from "../../reduxStore/useTypedSelector";
 import { get } from "../../data/VideoContentProvider";
 
 const channel = () => {
-  const media = useTypedSelector(state => state.playAsset.value.media);
+  const media = useTypedSelector((state) => state.playAsset.value.media);
 
-  const channelId = useTypedSelector(state => state.ChannelZapping.channelID);
-  const data = useTypedSelector(state => state.ChannelZapping.channelList);
-
+  const channelId = useTypedSelector((state) => state.ChannelZapping.channelID);
+  const data = useTypedSelector((state) => state.ChannelZapping.channelList);
 
   React.useEffect(() => {
     const playerWindow = document.getElementById("top-player-window");
 
     const handleKeyDown = (e) => {
       const key = getKey(e);
-      const index = data?.list?.findIndex(id => id === media?.id);
+      const index = data?.list?.findIndex((id) => id === media?.id);
 
       if (index !== -1) {
         if (key === KeyName.CHANNEL_DOWN) {
@@ -46,6 +45,9 @@ const channel = () => {
   }, [channelId, media?.id]);
 
   React.useEffect(() => {
+    // Prevent setting "null" media if channel list is not present. 
+    if (data.list.length == 0) return;
+
     const getData = debounce(() => {
       if (data?.list[channelId] !== media?.id) {
         setMedia(get(data?.list[channelId]));
