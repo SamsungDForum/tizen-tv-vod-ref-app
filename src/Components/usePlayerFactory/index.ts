@@ -35,15 +35,16 @@ const usePlayerFactory = (playerType: PlayerConfig) => {
   }, [player]);
 
   useEffect(() => {
-    if (media != null) {
-      if (player != null) {
-        player.setAsset(media, keySystem);
-      } else {
-        // Temp workaround.
-        // Player creation is async, react hook notifications will be received prior to player creation.
-        // Store asset till player is created.
-        setPlayAsset([media, keySystem]);
-      }
+    // media is null during initial start, contains empty object after reload if no media was selected.
+    if(media == null || Object.keys(media).length == 0) return;
+   
+    if (player != null) {
+      player.setAsset(media, keySystem);
+    } else {
+      // Temp workaround.
+      // Player creation is async, react hook notifications will be received prior to player creation.
+      // Store asset till player is created.
+      setPlayAsset([media, keySystem]);
     }
   }, [media, keySystem]);
 
