@@ -1,3 +1,9 @@
+/* Copyright
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import { dispatch } from "../../reduxStore/store";
 import { startPreviewLoading, setPreviewLoadingState  } from "../PreviewLoadingSlice";
 import { REQUEST_PORT_TIMEOUT, REQUEST_PORT_INTERVAL, MESSAGE_PORT_NAME, DYNAMIC_PREVIEW_SERVICE_ID, STATIC_PREVIEW_SERVICE_ID, SETTING_PREVIEW_THROTTLE_TIME, SETTING_PREVIEW_TIME_NEEDED } from "./constants";

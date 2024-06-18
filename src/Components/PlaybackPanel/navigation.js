@@ -1,3 +1,9 @@
+/* Copyright
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import { domRef } from "../DOMhelper";
 import { containsOpenedPickers } from "../ModalPicker/utilities/navigation";
 import { nav } from "../../../libs/spatial-navigation";

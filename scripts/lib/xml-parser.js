@@ -1,3 +1,9 @@
+/* Copyright
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 const fs = require("node:fs");
 const path = require("node:path");
 const xml2js = require("xml2js");

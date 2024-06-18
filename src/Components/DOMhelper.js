@@ -1,3 +1,9 @@
+/* Copyright
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import yesNoButtonsStyles from "./ConfirmationModal/YesNoButtons.module.scss";
 import tabWorkspaceStyles from "./WorkTabs/TabWorkspace.module.scss";
 import playerWindowStyles from "./PlayerWindow/PlayerWindow.module.scss";
