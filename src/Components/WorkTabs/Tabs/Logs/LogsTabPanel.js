@@ -8,7 +8,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { dispatch } from "../../../../reduxStore/store";
 import "./LogsWindow.scss";
-import SaveButton from "./SaveButton/SaveButton";
 import { navKeys } from "./../navigation";
 import { saveLogs } from "./logger";
 import { toggleFilters, toogleActiveFilters, starterLogFilters } from "./Options/LogOverlayScreenSlice";
