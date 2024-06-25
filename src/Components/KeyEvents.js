@@ -44,6 +44,8 @@ const keyCodeToKeyName = {
   XF86AudioNext: KeyName.FFW,
   XF86AudioRewind: KeyName.REW,
   XF86AudioStop: KeyName.STOP,
+  PageUp: KeyName.CHANNEL_UP,
+  PageDown: KeyName.CHANNEL_DOWN,
   XF86RaiseChannel: KeyName.CHANNEL_UP,
   XF86LowerChannel: KeyName.CHANNEL_DOWN,
   ColorF0Red: KeyName.RED,
@@ -59,14 +61,18 @@ const keyMapping = {
   38: KeyName.ARROW_UP,
   39: KeyName.ARROW_RIGHT,
   40: KeyName.ARROW_DOWN,
-  188: KeyName.CHANNEL_DOWN,
+  34: KeyName.CHANNEL_DOWN,
   428: KeyName.CHANNEL_DOWN,
-  190: KeyName.CHANNEL_UP,
+  33: KeyName.CHANNEL_UP,
   427: KeyName.CHANNEL_UP,
   10009: KeyName.BACK,
 };
 
 const getKey = function (evt) {
+  if(evt.code === "PageUp" || evt.code === "PageDown" ) {
+    evt.preventDefault()
+  }
+
   if (evt?.nativeEvent?.keyIdentifier === "ColorF0Red") {
     return KeyName.RED;
   }
