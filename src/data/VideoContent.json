@@ -68,6 +68,24 @@
     "container": "MP4"
   },
   {
+    "id": 9,
+    "name": "[Widevine] TOS",
+    "requiresAuth": true,
+    "url": "https://media.axprod.net/TestVectors/v6.1-MultiDRM/Manifest_1080p.mpd",
+    "licenseServerURL": "https://drm-widevine-licensing.axtest.net/AcquireLicense",
+    "licenseRequestHeaders": {
+      "X-AxDRM-Message": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2ZXJzaW9uIjoxLCJjb21fa2V5X2lkIjoiNjllNTQwODgtZTllMC00NTMwLThjMWEtMWViNmRjZDBkMTRlIiwibWVzc2FnZSI6eyJ0eXBlIjoiZW50aXRsZW1lbnRfbWVzc2FnZSIsImtleXMiOlt7ImlkIjoiNmU1YTFkMjYtMjc1Ny00N2Q3LTgwNDYtZWFhNWQxZDM0YjVhIn1dfX0.yF7PflOPv9qHnu3ZWJNZ12jgkqTabmwXbDWk_47tLNE"
+    },
+    "poster": "https://upload.wikimedia.org/wikipedia/commons/7/70/Tos-poster.png",
+    "drmType": "com.widevine.alpha",
+    "contentType": "application/dash+xml",
+    "widthResolution": [1920, 1280, 960, 640, 320],
+    "heightResolution": [1080, 720, 540, 360, 180],
+    "audio": ["unkn"],
+    "manifest": "DASH",
+    "container": "MP4"
+  },
+  {
     "id": 12,
     "name": "[Widevine] [Parkour] FHD Widevine Encrypted MPEG DASH",
     "requiresAuth": true,
