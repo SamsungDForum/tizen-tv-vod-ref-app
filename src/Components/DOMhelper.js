@@ -56,4 +56,7 @@ export const domRef = {
   getVideoPlayerSettingsPanelControl() {
     return document.getElementsByClassName("video-player-settings-panel-control")[0];
   },
+  getVideoLogs(){
+    return document.getElementsByClassName('log-video-container')[0]
+  }
 };

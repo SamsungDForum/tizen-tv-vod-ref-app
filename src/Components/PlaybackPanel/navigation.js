@@ -20,6 +20,7 @@ function onKeyEvent(evt, state) {
 
   switch (key) {
     case KeyName.BACK:
+      containsOpenedPickers() && startHidingVideoOverlay(overlayTimeoutID)
       dispatch(dispatch(showConfirmation(false)));
       break;
     case KeyName.ENTER:
@@ -80,12 +81,30 @@ function onNavigationEvent(evt, state) {
 }
 
 function startHidingVideoOverlay(overlayTimeoutID) {
+  resetOverlayHiding(overlayTimeoutID);
+  scheduleOverlayHiding(overlayTimeoutID);
+}
+
+function hideOverlayIfNoModalOpened(overlayTimeoutID) {
+  // Hide overlay controls if there is no collision with 'modal elements' on the screen
+  const isNoFocuseOnLogs = domRef.getVideoLogs()?.querySelector("div:focus") === null;
+  const isNoPickerOpen = !containsOpenedPickers();
+  if (isNoFocuseOnLogs && isNoPickerOpen) {
+    dispatch(setOverlayIsVisible(false));
+  }
+}
+
+function resetOverlayHiding(overlayTimeoutID) {
+  // Set the overlay to be visible immediately
   dispatch(setOverlayIsVisible(true));
-  if (overlayTimeoutID.current !== -1) clearTimeout(overlayTimeoutID.current);
+  // Cancel current timeout
+  clearTimeout(overlayTimeoutID.current);
+  overlayTimeoutID.current = -1;
+}
+
+function scheduleOverlayHiding(overlayTimeoutID) {
   overlayTimeoutID.current = setTimeout(() => {
-    if (!containsOpenedPickers(domRef.getPlayerWindow())) {
-      dispatch(setOverlayIsVisible(false));
-    }
+    hideOverlayIfNoModalOpened(overlayTimeoutID);
   }, 10000);
 }
 
@@ -156,6 +175,6 @@ export const navKeys = {
   },
 
   playerWindowContainsModals: function () {
-    return containsOpenedPickers(domRef.getPlayerWindow());
+    return containsOpenedPickers();
   },
 };

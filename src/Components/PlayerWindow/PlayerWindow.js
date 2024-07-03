@@ -14,6 +14,9 @@ import classNames from "classnames";
 import FullscreenVideo from "../PlaybackPanel/FullscreenVideo";
 import { KeyName, getKey } from "../KeyEvents";
 import { reqTizenVersion } from "../../helpers/reqTizenVersion";
+import { setVideoFullScreenOn } from "../PlaybackPanel/VideoFullScreenSlice";
+import { setMedia } from "../usePlayerFactory/utils/playAsset";
+import { dispatch } from "../../reduxStore/store";
 
 export default function PlayerWindow(props) {
   const playerRef = React.useRef(null);
@@ -25,7 +28,7 @@ export default function PlayerWindow(props) {
 
   useEffect(() => {
     if (media !== undefined) {
-      const isMediaOk = (Object.keys(media).length > 0);
+      const isMediaOk = Object.keys(media).length > 0;
       setIsFloatingFocusable(isMediaOk);
       setVideoBg(isMediaOk);
     }
@@ -34,6 +37,13 @@ export default function PlayerWindow(props) {
   useEffect(() => {
     setVideoBg(true);
   }, []);
+
+  function handleStopBtn() {
+    playerRef.current.pause();
+    playerRef.current.seek(0);
+    dispatch(setVideoFullScreenOn(false));
+    setMedia(undefined);
+  }
 
   const playerWindow = React.useRef(null);
   React.useEffect(() => {
@@ -51,15 +61,21 @@ export default function PlayerWindow(props) {
         case KeyName.FFW:
           return playerRef.current.forward(10);
         case KeyName.STOP:
-          return playerRef.current.seek(0);
+          return handleStopBtn();
       }
     };
 
-    playerWindow?.current?.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      playerWindow?.current?.removeEventListener("keydown", handleKeyDown);
-    };
+    if (!allowFloating) {
+      window.addEventListener("keydown", handleKeyDown);
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+      };
+    } else {
+      playerWindow?.current?.addEventListener("keydown", handleKeyDown);
+      return () => {
+        playerWindow?.current?.removeEventListener("keydown", handleKeyDown);
+      };
+    }
   }, []);
 
   return (

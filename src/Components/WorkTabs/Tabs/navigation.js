@@ -12,7 +12,7 @@ function tryToFocusBackMenuBarViewPicker(tabs, evt) {
   if(evt.target.id === 'fullscreen'){
     domRef.getViewPickerButton()?.focus();
   }
-  if (isEventTargetAncestor(tabs, evt.target) && !containsOpenedPickers(tabs)) {
+  if (isEventTargetAncestor(tabs, evt.target) && !containsOpenedPickers()) {
     domRef.getViewPickerButton()?.focus();
   }
 }

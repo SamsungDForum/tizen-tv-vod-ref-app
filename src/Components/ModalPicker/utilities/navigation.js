@@ -12,7 +12,7 @@ const log = {
 };
 
 /**
- * @param {string} id 
+ * @param {string} id
  * @returns {string}
  */
 function getDatasetKey(id) {
@@ -32,25 +32,25 @@ function getDatasetSelector(key) {
 }
 
 /**
- * @param {string} id 
+ * @param {string} id
  * @returns {void}
  */
 function restrictNavigation(id) {
   // disable sections (all)
   for (const sectionId of nav.getSections()) {
-    if(sectionId !== 'next-side-menu-panel' && sectionId !== 'side-menu-panel'){
+    if (sectionId !== 'next-side-menu-panel' && sectionId !== 'side-menu-panel') {
       nav.disable(sectionId)
     }
   }
   // add picker's nav section
   const pickerSection = getDatasetKey(id);
-  nav.add({ id: pickerSection, leaveFor: { left: '@asset-view',  right: '@next-side-menu-panel' }, selector: getDatasetSelector(pickerSection) });
+  nav.add({ id: pickerSection, leaveFor: { left: '@asset-view', right: '@next-side-menu-panel' }, selector: getDatasetSelector(pickerSection) });
 
   console.log(log.name, restrictNavigation.name, "to:", `'${pickerSection}'`, log.done);
 }
 
 /**
- * @param {string} id 
+ * @param {string} id
  * @returns {void}
  */
 function freeNavigation(id) {
@@ -63,15 +63,15 @@ function freeNavigation(id) {
   console.log(log.name, freeNavigation.name, "from:", `'${pickerSection}'`, log.done);
 }
 
-function containsOpenedPickers(domElement) {
-  if (domElement === undefined) return false;
-  let result = domElement.classList.contains("modal-picker-open");
-  for (let i = 0; i < domElement.childElementCount; i++) {
-    if (!result) {
-      result = containsOpenedPickers(domElement.children[i]);
+function containsOpenedPickers() {
+  let sections = document.querySelectorAll("section").values();
+  for (const section of sections) {
+    const v = section.classList.value;
+    if (v.indexOf("modal-picker") >= 0 && v.indexOf("expanded-background") >= 0) {
+      return true;
     }
   }
-  return result;
+  return false;
 }
 
 export { getNavTag, restrictNavigation, freeNavigation, containsOpenedPickers, getDatasetKey, getDatasetSelector };
