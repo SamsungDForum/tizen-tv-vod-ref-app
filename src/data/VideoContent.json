@@ -91,13 +91,14 @@
     "requiresAuth": true,
     "url": "https://bitmovin-a.akamaihd.net/content/art-of-motion_drm/mpds/11331.mpd",
     "poster": "https://i.ytimg.com/vi/EdiZDBwNoIo/maxresdefault.jpg",
-    "licenseServerURL": "https://widevine-proxy.appspot.com/proxy",
+    "licenseServerURL": "https://cwip-shaka-proxy.appspot.com/no_auth",
     "drmType": "com.widevine.alpha",
     "widthResolution": [1920, 1280, 960, 640, 480, 320],
     "heightResolution": [1080, 720, 540, 360, 270, 180],
     "audio": ["en"],
     "manifest": "DASH",
-    "container": "MP4"
+    "container": "MP4",
+    "excludedFrom": "dashjs"
   },
   {
     "id": 14,
