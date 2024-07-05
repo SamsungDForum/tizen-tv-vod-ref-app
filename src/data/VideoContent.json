@@ -165,7 +165,7 @@
     "audio": ["de", "fr", "en", "es", "it"],
     "manifest": "DASH",
     "container": ["MP4", "WEBM"],
-    "excludedFrom": ["bitmovin", "hlsjs"]
+    "excludedFrom": ["bitmovin", "hlsjs", "dashjs"]
   },
   {
     "id": 19,
