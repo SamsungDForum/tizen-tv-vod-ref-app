@@ -7,6 +7,7 @@
 import Dashjs from "../";
 
 function licenseRequest(this: Dashjs, request): Promise<void> {
+  // Sample implementation
   // https://reference.dashif.org/dash.js/nightly/samples/drm/license-wrapping.html
   if (this.licenseRequestHeaders) {
     request.headers = { ...request.headers, ...this.licenseRequestHeaders };

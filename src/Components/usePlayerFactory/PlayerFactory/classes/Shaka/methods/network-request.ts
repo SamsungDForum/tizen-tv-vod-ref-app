@@ -7,6 +7,7 @@
 import Shaka from "../";
 
 const networkRequest = function (this: Shaka, type, request, _context): void {
+  // header request type
   // https://shaka-player-demo.appspot.com/docs/api/shaka.net.NetworkingEngine.html#.RequestType
   if (this.licenseRequestHeaders && type == 2) {
     request.headers = { ...request.headers, ...this.licenseRequestHeaders };
