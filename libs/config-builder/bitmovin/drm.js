@@ -23,21 +23,20 @@ const keyNameToSystem = {
 
 function fromType({ drmType, licenseServerURL, licenseRequestHeaders }) {
   const systemName = keySystemToName[drmType];
+
   if (systemName) {
-    return licenseRequestHeaders
-      ? {
-          [systemName]: {
-            ...sourceConfig[systemName],
-            LA_URL: licenseServerURL,
-            headers: { ...licenseRequestHeaders },
-          },
-        }
-      : {
-          [systemName]: {
-            ...sourceConfig[systemName],
-            LA_URL: licenseServerURL,
-          },
-        };
+    const config = {
+      [systemName]: {
+        ...sourceConfig[systemName],
+        LA_URL: licenseServerURL,
+      },
+    };
+
+    if (licenseRequestHeaders) {
+      config[systemName].headers = { ...config[systemName].headers, ...licenseRequestHeaders };
+    }
+
+    return config;
   }
 }
 

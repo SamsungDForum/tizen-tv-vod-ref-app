@@ -56,7 +56,7 @@
     "id": 8,
     "name": "[Playready] TOS",
     "requiresAuth": true,
-    "url": "http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest(format=mpd-time-csf)",
+    "url": "https://test.playready.microsoft.com/media/profficialsite/tearsofsteel_4k.ism/manifest.mpd",
     "poster": "https://upload.wikimedia.org/wikipedia/commons/7/70/Tos-poster.png",
     "licenseServerURL": "https://test.playready.microsoft.com/service/rightsmanager.asmx?cfg=(persist:false,sl:150)",
     "contentType": "application/dash+xml",
@@ -81,7 +81,7 @@
     "contentType": "application/dash+xml",
     "widthResolution": [1920, 1280, 960, 640, 320],
     "heightResolution": [1080, 720, 540, 360, 180],
-    "audio": ["unkn"],
+    "audio": ["en", "en-AU", "en-ET"],
     "manifest": "DASH",
     "container": "MP4"
   },
