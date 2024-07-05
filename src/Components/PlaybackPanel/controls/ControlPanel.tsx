@@ -4,31 +4,28 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+
 import "./control-panel.scss";
 import PlayPauseButton from "./PlayPauseButton";
 import FullscreenButton from "./FullscreenButton";
+import { playbackHandlers } from "../PlaybackPanel";
 import ControlPanelButton from "./ControlPanelButton";
-import { setVideoFullScreenOn } from "./../VideoFullScreenSlice";
-import { dispatch } from "./../../../reduxStore/store";
 import { nav, navConfig } from "../../../../libs/spatial-navigation";
-import { useSelector } from "react-redux";
+import { useTypedSelector } from "../../../reduxStore/useTypedSelector";
+import { SpatialCfg } from "../../../../libs/spatial-navigation/spatialCfgTypes";
 import { RevindSvgIcon, FastForwardSvgIcon, RestartSvgIcon, StopSvgIcon } from "../../../helpers/SvgIcons";
 
-export const ControlPanel = function (props) {
-  const switchOffVideoFullScreen = function (evt) {
-    if (evt.nativeEvent.type === "click") {
-      dispatch(setVideoFullScreenOn(false));
-    }
-    evt.preventDefault();
-    evt.stopPropagation();
-  };
+type Props = {
+  buttonClickHandlers: ReturnType<typeof playbackHandlers>;
+};
+export function ControlPanel({ buttonClickHandlers }: Props) {
+  const isVideoFullScreenOn = useTypedSelector((state) => state.VideoFullScreen.value);
+  const isOverlayVisible = useTypedSelector((state) => state.OverlayVisible.value);
 
-  const isVideoFullScreenOn = useSelector((state) => state.VideoFullScreen.value);
-
-  React.useEffect(() => {
+  useEffect(() => {
     const navSection = "playback-controls-nav-panel";
-    const cfg = { ...navConfig };
+    const cfg: SpatialCfg = { ...navConfig };
     cfg.selector = ".video-player-button";
     cfg.leaveFor = { up: "@progress-control-bar", right: "@logs-messages-navigation-section" };
 
@@ -40,38 +37,34 @@ export const ControlPanel = function (props) {
 
   return (
     <div
-      className={
-        (isVideoFullScreenOn ? "video-player-control-panel-container" : "hide") +
-        (props.isOverlayVisible ? "" : " fade-out-animation")
-      }
+      className={`
+        ${isVideoFullScreenOn ? "video-player-control-panel-container" : "hide"} 
+        ${!isOverlayVisible && " fade-out-animation"}`}
     >
-      <FullscreenButton onClick={switchOffVideoFullScreen} />
-
+      <FullscreenButton />
       <div className="centered-player-btn">
         <ControlPanelButton
           icon={<RestartSvgIcon />}
           className="video-player-restart-control video-player-button"
-          onClick={props.buttonClickHandlers.onRestartClick}
-        ></ControlPanelButton>
-
+          onClick={buttonClickHandlers.onRestartClick}
+        />
         <ControlPanelButton
           icon={<RevindSvgIcon />}
           className="video-player-rew-control video-player-button"
-          onClick={props.buttonClickHandlers.onRewindClick}
-        ></ControlPanelButton>
-        <PlayPauseButton onClick={props.buttonClickHandlers.onPlayPauseClick} />
+          onClick={buttonClickHandlers.onRewindClick}
+        />
+        <PlayPauseButton onClick={buttonClickHandlers.onPlayPauseClick} />
         <ControlPanelButton
           icon={<FastForwardSvgIcon />}
           className="video-player-ffw-control video-player-button"
-          onClick={props.buttonClickHandlers.onFastForwardClick}
-        ></ControlPanelButton>
-
+          onClick={buttonClickHandlers.onFastForwardClick}
+        />
         <ControlPanelButton
           icon={<StopSvgIcon />}
           className="video-player-stop-control video-player-button"
-          onClick={props.buttonClickHandlers.onHandleAbort}
-        ></ControlPanelButton>
+          onClick={buttonClickHandlers.onHandleAbort}
+        />
       </div>
     </div>
   );
-};
+}

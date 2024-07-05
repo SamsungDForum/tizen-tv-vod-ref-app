@@ -4,22 +4,32 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import React, { useEffect, useRef } from "react";
 import "./settings-panel.scss";
 import ModalPicker from "../../ModalPicker";
-import { setAudioLanguage, setSubtitleLanguage, setVideoQuality, setKeySystem } from "../../usePlayerFactory/utils/playAsset";
-import { useSelector } from "react-redux";
+import {
+  setAudioLanguage,
+  setSubtitleLanguage,
+  setVideoQuality,
+  setKeySystem,
+} from "../../usePlayerFactory/utils/playAsset";
+import React, { useEffect, useRef } from "react";
+import { dispatch } from "../../../reduxStore/store";
+import { LogSvgIcon } from "../../../helpers/SvgIcons";
+import StyledButton from "../../ModalPicker/StyledButton";
 import { nav, navConfig } from "../../../../libs/spatial-navigation";
 import GeneralSettings from "../../LeftNavigationBar/GeneralSettings";
-import StyledButton from "../../ModalPicker/StyledButton";
-import { LogSvgIcon } from "../../../helpers/SvgIcons";
-import { dispatch } from "../../../reduxStore/store";
-import { toggleShowPlayerLogs } from "../../WorkTabs/Tabs/Logs/Options/LogOverlayScreenSlice";
+import { useTypedSelector } from "../../../reduxStore/useTypedSelector";
+import { SpatialCfg } from "../../../../libs/spatial-navigation/spatialCfgTypes";
 import { getExpandableSections } from "../../LeftNavigationBar/LeftNavigationBar";
+import { toggleShowPlayerLogs } from "../../WorkTabs/Tabs/Logs/Options/LogOverlayScreenSlice";
+
 function SettingsPanel() {
-  const playbackSettings = useSelector((state) => state.setting);
+  const playbackSettings = useTypedSelector((state) => state.setting);
+  const isVideoFullScreenOn = useTypedSelector((state) => state.VideoFullScreen.value);
+  const isOverlayVisible = useTypedSelector((state) => state.OverlayVisible.value);
+  const isShowPlayerLogs = useTypedSelector((state) => state.LogOverlayScreen.showPlayerLogs);
+  const playerSettingsRef = useRef(null);
   const {
-    source: { current: currPlayer },
     subtitle: {
       current: sub,
       list: [...subList],
@@ -38,16 +48,9 @@ function SettingsPanel() {
     },
   } = playbackSettings;
 
-  const classNormalScreen = "video-player-settings-panel-control";
-  const isVideoFullScreenOn = useSelector((state) => state.VideoFullScreen.value);
-  const classScreen = isVideoFullScreenOn ? classNormalScreen : "hide";
-  const isOverlayVisible = useSelector((state) => state.OverlayVisible.value);
-  const isShowPlayerLogs = useSelector((state) => state.LogOverlayScreen.showPlayerLogs);
-  const playerSettingsRef = useRef(null);
-
   useEffect(() => {
     const navSection = "settings-controls-panel";
-    const cfg = { ...navConfig };
+    const cfg: SpatialCfg = { ...navConfig };
     cfg.defaultElement = "#video-player-logsbutton";
     cfg.enterTo = "default-element";
     cfg.selector = `${getExpandableSections(playerSettingsRef)}, #video-player-logsbutton`;
@@ -72,7 +75,12 @@ function SettingsPanel() {
   }, [isShowPlayerLogs]);
 
   return (
-    <div className={(isVideoFullScreenOn ? classScreen : " hide") + (isOverlayVisible ? "" : " fade-out-animation")}>
+    <div
+      className={`
+        ${isVideoFullScreenOn ? "video-player-settings-panel-control" : " hide"} 
+        ${!isOverlayVisible && " fade-out-animation"}
+    `}
+    >
       <p className="video-option-title">General:</p>
       <GeneralSettings className={"player-button animated-player-button"} />
       <div className="player-settings-box" ref={playerSettingsRef}>

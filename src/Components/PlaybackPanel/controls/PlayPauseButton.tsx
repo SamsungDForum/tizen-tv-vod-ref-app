@@ -7,28 +7,31 @@
 import React, { useEffect, useState } from "react";
 import { PlaySvgIcon, PauseSvgIcon } from "../../../helpers/SvgIcons";
 
-function PlayPauseButton(props) {
+type Props = {
+  onClick: () => void;
+};
+function PlayPauseButton({ onClick }: Props) {
   const [playIcon, setPlayIcon] = useState(true);
 
-  function onButtonClick(evt) {
-    props.onClick();
+  function onButtonClick() {
+    onClick();
   }
 
   useEffect(() => {
     let video = document.getElementById("elVideo");
 
-    video.addEventListener("play", () => {
+    video?.addEventListener("play", () => {
       setPlayIcon(false);
     });
-    video.addEventListener("pause", () => {
+    video?.addEventListener("pause", () => {
       setPlayIcon(true);
     });
 
     return () => {
-      video.removeEventListener("play", () => {
+      video?.removeEventListener("play", () => {
         setPlayIcon(false);
       });
-      video.removeEventListener("pause", () => {
+      video?.removeEventListener("pause", () => {
         setPlayIcon(true);
       });
     };
@@ -39,7 +42,7 @@ function PlayPauseButton(props) {
       className={`${
         playIcon ? "video-player-play-control" : "video-player-pause-control"
       } video-player-button video-player-play-pause-button`}
-      onClick={(evt) => onButtonClick(evt)}
+      onClick={() => onButtonClick()}
       tabIndex={-1}
     >
       {playIcon ? <PlaySvgIcon /> : <PauseSvgIcon />}

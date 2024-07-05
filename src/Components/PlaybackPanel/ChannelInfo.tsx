@@ -10,18 +10,18 @@ import { useTypedSelector } from "../../reduxStore/useTypedSelector";
 
 const ChannelInfo = () => {
   const allowFloating = reqTizenVersion(4);
-  const isVideoFullScreenOn = useTypedSelector(state => state.VideoFullScreen.value);
-  const media = useTypedSelector(state => state.playAsset.value.media);
-  const data = useTypedSelector(state => state.ChannelZapping.channelList);
-  const channelId = useTypedSelector(state => state.ChannelZapping.channelID);
-  const isOverlayVisible = useTypedSelector(state => state.OverlayVisible.value);
+  const isVideoFullScreenOn = useTypedSelector((state) => state.VideoFullScreen.value);
+  const media = useTypedSelector((state) => state.playAsset.value.media);
+  const data = useTypedSelector((state) => state.ChannelZapping.channelList);
+  const channelId = useTypedSelector((state) => state.ChannelZapping.channelID);
+  const isOverlayVisible = useTypedSelector((state) => state.OverlayVisible.value);
 
   return (
     <div
-      className={
-        (isVideoFullScreenOn ? "channel-info" : allowFloating ? "channel-info-floating" : null) +
-        (isOverlayVisible && media?.id !== undefined ? "" : " hide")
-      }
+      className={`
+        ${isVideoFullScreenOn ? "channel-info" : allowFloating && "channel-info-floating"}
+        ${isOverlayVisible && media?.id !== undefined ? "" : " hide"}
+      `}
     >
       <div className="row-title">
         <p>Band:</p> <span>{data?.title}</span>

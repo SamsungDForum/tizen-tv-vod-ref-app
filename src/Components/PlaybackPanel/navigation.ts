@@ -10,21 +10,27 @@ import { nav } from "../../../libs/spatial-navigation";
 import { KeyName, getKey, isEventTargetAncestor } from "../KeyEvents";
 import { setVideoFullScreenOn } from "./VideoFullScreenSlice";
 import { setOverlayIsVisible } from "./OverlayVisibleSlice";
-import { dispatch } from "./../../reduxStore/store";
-import { useSelector } from "react-redux";
+import { dispatch } from "../../reduxStore/store";
 import { showConfirmation } from "../ConfirmationModal/ConfirmationModalSlice";
 
-function onKeyEvent(evt, state) {
+export function onKeyEvent(
+  evt,
+  state: [boolean, { current: number }, boolean]
+) {
   const [isOverlayVisible, overlayTimeoutID, isVideoFullScreenOn] = state;
   const key = getKey(evt);
 
   switch (key) {
     case KeyName.BACK:
-      containsOpenedPickers() && startHidingVideoOverlay(overlayTimeoutID)
+      containsOpenedPickers() && startHidingVideoOverlay(overlayTimeoutID);
       dispatch(dispatch(showConfirmation(false)));
       break;
     case KeyName.ENTER:
-      if (!isOverlayVisible && isVideoFullScreenOn && !evt.target.id.includes("log-entry")) {
+      if (
+        !isOverlayVisible &&
+        isVideoFullScreenOn &&
+        !evt.target?.id.includes("log-entry")
+      ) {
         focusSettingsControlsPanel();
       } else {
         handleEnterButton(evt);
@@ -37,7 +43,10 @@ function onKeyEvent(evt, state) {
   }
 }
 
-function onKeyUpEvent(evt, state) {
+export function onKeyUpEvent(
+  evt: { target: HTMLElement },
+  state: [boolean, { current: number }, boolean]
+) {
   const [isOverlayVisible, overlayTimeoutID, isVideoFullScreenOn] = state;
   const key = getKey(evt);
   switch (key) {
@@ -51,7 +60,10 @@ function onKeyUpEvent(evt, state) {
         }
         return;
       } else {
-        if (!isVideoFullScreenOn && domRef.getPlayerSelectButton()?.id === evt.target.id) {
+        if (
+          !isVideoFullScreenOn &&
+          domRef.getPlayerSelectButton()?.id === evt.target.id
+        ) {
           domRef.getViewPickerButton()?.focus();
         } else {
           dispatch(setVideoFullScreenOn(false));
@@ -65,14 +77,23 @@ function onKeyUpEvent(evt, state) {
   }
 }
 
-function onNavigationEvent(evt, state) {
-  const [isOverlayVisible, overlayTimeoutID, isVideoFullScreenOn] = state;
+function onNavigationEvent(
+  evt: { type: string; srcElement: HTMLElement; target: { id?: string } },
+  state: [boolean, { current: number }, boolean]
+) {
+  const [isVideoFullScreenOn] = state;
 
   if (evt.type === "sn:willunfocus") {
-    if (isVideoFullScreenOn && isEventTargetAncestor(domRef.getAssetView(), evt.srcElement)) {
+    if (
+      isVideoFullScreenOn &&
+      isEventTargetAncestor(domRef.getAssetView(), evt.srcElement)
+    ) {
       focusSettingsControlsPanel();
     }
-    if (!isVideoFullScreenOn && isEventTargetAncestor(domRef.getPlayerWindow(), evt.srcElement)) {
+    if (
+      !isVideoFullScreenOn &&
+      isEventTargetAncestor(domRef.getPlayerWindow(), evt.srcElement)
+    ) {
       if (domRef.getPlayerSelectButton()?.id !== evt.target.id) {
         focusVideoTilesSection();
       }
@@ -80,21 +101,26 @@ function onNavigationEvent(evt, state) {
   }
 }
 
-function startHidingVideoOverlay(overlayTimeoutID) {
+export function startHidingVideoOverlay(overlayTimeoutID: {
+  current?: number | NodeJS.Timeout;
+}) {
   resetOverlayHiding(overlayTimeoutID);
   scheduleOverlayHiding(overlayTimeoutID);
 }
 
-function hideOverlayIfNoModalOpened(overlayTimeoutID) {
+function hideOverlayIfNoModalOpened() {
   // Hide overlay controls if there is no collision with 'modal elements' on the screen
-  const isNoFocuseOnLogs = domRef.getVideoLogs()?.querySelector("div:focus") === null;
+  const isNoFocuseOnLogs =
+    domRef.getVideoLogs()?.querySelector("div:focus") === null;
   const isNoPickerOpen = !containsOpenedPickers();
   if (isNoFocuseOnLogs && isNoPickerOpen) {
     dispatch(setOverlayIsVisible(false));
   }
 }
 
-function resetOverlayHiding(overlayTimeoutID) {
+function resetOverlayHiding(overlayTimeoutID: {
+  current?: number | NodeJS.Timeout;
+}) {
   // Set the overlay to be visible immediately
   dispatch(setOverlayIsVisible(true));
   // Cancel current timeout
@@ -102,13 +128,15 @@ function resetOverlayHiding(overlayTimeoutID) {
   overlayTimeoutID.current = -1;
 }
 
-function scheduleOverlayHiding(overlayTimeoutID) {
+function scheduleOverlayHiding(overlayTimeoutID: {
+  current?: number | NodeJS.Timeout;
+}) {
   overlayTimeoutID.current = setTimeout(() => {
-    hideOverlayIfNoModalOpened(overlayTimeoutID);
+    hideOverlayIfNoModalOpened();
   }, 10000);
 }
 
-function handleEnterButton(evt) {
+export function handleEnterButton(evt: Event) {
   if (isEventTargetAncestor(domRef.getAssetView(), evt.target)) {
     dispatch(setVideoFullScreenOn(true));
     return;
@@ -119,16 +147,13 @@ function handleEnterButton(evt) {
   }
 }
 
-function tryToHideBackOverlay() {
-  if (!navKeys.playerWindowContainsModals()) dispatch(setOverlayIsVisible(false));
+export function tryToHideBackOverlay() {
+  if (!navKeys.playerWindowContainsModals())
+    dispatch(setOverlayIsVisible(false));
 }
 
 function focusSettingsControlsPanel() {
   nav.focus("settings-controls-panel");
-}
-
-function focusPlaybackControls() {
-  nav.focus("playback-controls-nav-panel");
 }
 
 function focusVideoTilesSection() {
@@ -136,7 +161,15 @@ function focusVideoTilesSection() {
 }
 
 export const navKeys = {
-  initialize: function (onKeyEvent, onNavigationEvent, onKeyUpEvent) {
+  initialize: function (
+    onKeyEvent: {
+      (this: Window, ev: KeyboardEvent): void;
+      (this: Window, ev: MouseEvent): void;
+      (this: Window, ev: KeyboardEvent): void;
+    },
+    onNavigationEvent: EventListenerOrEventListenerObject,
+    onKeyUpEvent: (this: Window, ev: KeyboardEvent) => void
+  ) {
     //TV remote control
     window.addEventListener("keypress", onKeyEvent);
     //PC mouse
@@ -149,7 +182,15 @@ export const navKeys = {
     window.addEventListener("keydown", onKeyEvent);
   },
 
-  destroy: function (onKeyEvent, onNavigationEvent, onKeyUpEvent) {
+  destroy: function (
+    onKeyEvent: {
+      (this: Window, ev: KeyboardEvent): void;
+      (this: Window, ev: MouseEvent): void;
+      (this: Window, ev: KeyboardEvent): void;
+    },
+    onNavigationEvent: EventListenerOrEventListenerObject,
+    onKeyUpEvent: (this: Window, ev: KeyboardEvent) => void
+  ) {
     //TV remote control
     window.removeEventListener("keypress", onKeyEvent);
     //PC mouse
@@ -170,7 +211,7 @@ export const navKeys = {
 
   startHidingVideoOverlay: startHidingVideoOverlay,
 
-  isENTER: function (key) {
+  isENTER: function (key: string) {
     return key === KeyName.ENTER;
   },
 

@@ -6,7 +6,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { PlaybackPanel } from "../PlaybackPanel";
+import PlaybackPanel from "../PlaybackPanel/PlaybackPanel";
 import "../../../assets/resource/config.xml";
 import styles from "./PlayerWindow.module.scss";
 import SettingsPanel from "../PlaybackPanel/controls/SettingsPanel";

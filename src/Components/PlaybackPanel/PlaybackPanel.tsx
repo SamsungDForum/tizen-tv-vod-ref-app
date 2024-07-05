@@ -1,42 +1,31 @@
-/* Copyright
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
-import React, { useRef, useState, useEffect } from "react";
-import { ControlPanel } from "./controls/ControlPanel";
 import "./PlaybackPanel.scss";
-import { toggleSettingPanel } from "../usePlayerFactory/utils/setting";
-import { navKeys } from "./navigation";
-import { VideoContainer } from "./VideoContainer";
-import Overlay from "./../ModalPicker/Overlay";
-import { reqTizenVersion } from "../../helpers/reqTizenVersion";
-import LoadingSpinner from "./loadingSpinner/LoadingSpinner";
-import { setChannelID } from "../ChannelZapping/ChannelZappingSlice";
-import { dispatch } from "../../reduxStore/store";
-import { useTypedSelector } from "../../reduxStore/useTypedSelector";
-import ChannelInfo from "./ChannelInfo";
+import React, { useEffect, useRef, useState } from "react";
+import { SettingState } from "redux-states";
 import toast from "react-hot-toast";
+
+import { toggleSettingPanel } from "../usePlayerFactory/utils/setting";
+import { useTypedSelector } from "../../reduxStore/useTypedSelector";
+import { setChannelID } from "../ChannelZapping/ChannelZappingSlice";
+import { reqTizenVersion } from "../../helpers/reqTizenVersion";
 import { setMedia } from "../usePlayerFactory/utils/playAsset";
 import { setVideoFullScreenOn } from "./VideoFullScreenSlice";
+import LoadingSpinner from "./loadingSpinner/LoadingSpinner";
+import { type PlayerMethods } from "./VideoReactPlayer";
+import { ControlPanel } from "./controls/ControlPanel";
+import { dispatch } from "../../reduxStore/store";
+import VideoContainer from "./VideoContainer";
+import Overlay from "../ModalPicker/Overlay";
+import ChannelInfo from "./ChannelInfo";
+import { navKeys } from "./navigation";
 
-export function PlaybackPanel({ playbackSettings, playerRef }) {
-  const [subtitleText, setSubtitleText] = useState("");
-  const playbackState = useRef(undefined);
-  const StashedKey = useRef(undefined);
-  const overlayTimeoutID = useRef(-1);
-  const media = useTypedSelector(state => state.playAsset.value.media);
-  const isVideoFullScreenOn = useTypedSelector(state => state.VideoFullScreen.value);
-  const isOverlayVisible = useTypedSelector(state => state.OverlayVisible.value);
-  const subtitleOption = useTypedSelector(state => state.setting.subtitle);
-  const data = useTypedSelector(state => state.ChannelZapping.channelList);
-  const isLogOverlayedOn = useTypedSelector(state => state.LogOverlayScreen.value);
-  const allowFloating = reqTizenVersion(4);
-
-
-  const playbackHandlers = {
-    onSubtitleTextUpdate: (text) => setSubtitleText(text),
+type PlaybackHandlerProps = {
+  setSubtitleText: React.Dispatch<React.SetStateAction<string>>;
+  playerRef: React.MutableRefObject<PlayerMethods | null>;
+  subtitleText: string;
+};
+export function playbackHandlers({ setSubtitleText, playerRef, subtitleText }: PlaybackHandlerProps) {
+  return {
+    onSubtitleTextUpdate: (text: string) => setSubtitleText(text),
     onPlayPauseClick: () => {
       if (playerRef.current.getState().player.paused) {
         playerRef.current.play();
@@ -44,7 +33,7 @@ export function PlaybackPanel({ playbackSettings, playerRef }) {
         playerRef.current.pause();
       }
     },
-    onSetSubtitlesClick: (_) => setSubtitleText(renderSubtitleText()),
+    onSetSubtitlesClick: () => setSubtitleText(renderSubtitleText(subtitleText)),
     onRewindClick: () => {
       playerRef.current.replay(10);
     },
@@ -58,14 +47,38 @@ export function PlaybackPanel({ playbackSettings, playerRef }) {
     onHandleAbort: () => {
       playerRef.current.pause();
       playerRef.current.seek(0);
-      dispatch(setVideoFullScreenOn(false))
-      setMedia(undefined)
-    }
+      dispatch(setVideoFullScreenOn(false));
+      setMedia(undefined);
+    },
   };
+}
 
-  function renderSubtitleText() {
-    return subtitleOption.current !== "off" ? subtitleText : "";
-  }
+function renderSubtitleText(subtitleText: string) {
+  const subtitleOption = useTypedSelector((state) => state.setting.subtitle);
+
+  return subtitleOption.current !== "off" ? subtitleText : "";
+}
+
+type Props = {
+  playbackSettings: SettingState;
+  playerRef: React.MutableRefObject<PlayerMethods | null>;
+};
+type PlaybackStateType = { src: string; paused: boolean; height: string | number };
+type PlayerStates = { currentTime: number };
+
+const PlaybackPanel = ({ playbackSettings, playerRef }: Props) => {
+  const [showLoading, setShowLoading] = useState(false);
+  const [subtitleText, setSubtitleText] = useState("");
+  const [playerState, setPlayerState] = useState({});
+
+  const playbackState = useRef<PlaybackStateType | undefined>(undefined);
+  const overlayTimeoutID = useRef(-1);
+
+  const media = useTypedSelector((state) => state.playAsset.value.media);
+  const isVideoFullScreenOn = useTypedSelector((state) => state.VideoFullScreen.value);
+  const isOverlayVisible = useTypedSelector((state) => state.OverlayVisible.value);
+  const data = useTypedSelector((state) => state.ChannelZapping.channelList);
+  const allowFloating = reqTizenVersion(4);
 
   function handlePlaybackStateChange() {
     if (!sameVideoSource()) {
@@ -86,21 +99,10 @@ export function PlaybackPanel({ playbackSettings, playerRef }) {
     return false;
   }
 
-  const setLogContainerClass = (overlayOn) =>
-    overlayOn === false
-      ? "hide"
-      : isVideoFullScreenOn === false
-      ? isOverlayVisible
-        ? "log-container-overlay"
-        : "log-container-overlay-only"
-      : isOverlayVisible
-      ? "log-container-overlay-fullscreen"
-      : "log-container-overlay-fullscreen-only";
-
-  React.useEffect(() => {
+  useEffect(() => {
     try {
       if (playbackSettings.source.current) {
-        navKeys.startHidingVideoOverlay(overlayTimeoutID, isVideoFullScreenOn);
+        navKeys.startHidingVideoOverlay(overlayTimeoutID);
         if (playerRef.current) {
           playerRef.current.subscribeToStateChange(handlePlaybackStateChange);
           setTimeout(() => {
@@ -122,25 +124,20 @@ export function PlaybackPanel({ playbackSettings, playerRef }) {
     }
   }, [playbackSettings.source.current]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     toggleSettingPanel();
   }, []);
 
-  React.useEffect(() => {
-    StashedKey.current = undefined;
+  useEffect(() => {
     playerRef.current.subscribeToStateChange(handlePlaybackStateChange);
   }, [isVideoFullScreenOn]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     navKeys.initialize(onKeyEvent, onNavigationEvent, onKeyUpEvent);
     return () => {
       navKeys.destroy(onKeyEvent, onNavigationEvent, onKeyUpEvent);
     };
   }, [isOverlayVisible, isVideoFullScreenOn]);
-
-  function onKeyEvent(evt) {
-    navKeys.onKeyEvent(evt);
-  }
 
   function onNavigationEvent(evt) {
     navKeys.onNavigationEvent(evt, [isOverlayVisible, overlayTimeoutID, isVideoFullScreenOn]);
@@ -154,24 +151,16 @@ export function PlaybackPanel({ playbackSettings, playerRef }) {
     navKeys.onKeyEvent(evt, [isOverlayVisible, overlayTimeoutID, isVideoFullScreenOn]);
   }
 
-  React.useEffect(() => {
-    StashedKey.current = undefined;
-  }, [media]);
-
-  React.useEffect(() => {
+  useEffect(() => {
     if (data?.list?.length !== 0) {
-      const index = data?.list?.findIndex(id => id === media?.id);
+      const index = data?.list?.findIndex((id) => id === media?.id);
       if (index !== -1) {
         dispatch(setChannelID(index));
       }
     }
   }, [isVideoFullScreenOn]);
 
-
-  const [showLoading, setShowLoading] = useState(false);
-  const [playerState, setPlayerState] = useState({});
-
-  function handleBind(state) {
+  function handleBind(state: PlayerStates) {
     if (state.currentTime > 0 && isVideoFullScreenOn) {
       setShowLoading(false);
     } else if (isVideoFullScreenOn) {
@@ -195,11 +184,12 @@ export function PlaybackPanel({ playbackSettings, playerRef }) {
     <>
       <Overlay isActivated={isVideoFullScreenOn && isOverlayVisible} />
 
-      
-      <div  className={`${"video-window-big"} ${allowFloating && !isVideoFullScreenOn ? "floating-video" : ""} ${
-          media && Object.entries(media).length > 0 ? "background-black" : "" } ${media === undefined && 'hide'}`}
+      <div
+        className={`${"video-window-big"} ${allowFloating && !isVideoFullScreenOn ? "floating-video" : ""} ${
+          media && Object.entries(media).length > 0 ? "background-black" : ""
+        } ${media === undefined && "hide"}`}
       >
-        <LoadingSpinner playerRef={playerRef} />
+        <LoadingSpinner showLoading={showLoading} setShowLoading={setShowLoading} terminateTimeout={500} />
         <div
           className={`${
             allowFloating && !isVideoFullScreenOn && media?.id !== undefined ? "id-while-floating" : "hide"
@@ -210,15 +200,7 @@ export function PlaybackPanel({ playbackSettings, playerRef }) {
 
         <ChannelInfo />
 
-        <VideoContainer
-          isOverlayVisible={isOverlayVisible}
-          playbackHandlers={playbackHandlers}
-          playbackSettings={playbackSettings}
-          playerRef={playerRef}
-          renderSubtitleText={renderSubtitleText}
-          setLogContainerClass={setLogContainerClass}
-          isLogOverlayedOn={isLogOverlayedOn}
-        />
+        <VideoContainer playbackSettings={playbackSettings} playerRef={playerRef} />
       </div>
 
       <div
@@ -229,20 +211,23 @@ export function PlaybackPanel({ playbackSettings, playerRef }) {
         }}
       >
         <div
-          className={
-            (isVideoFullScreenOn ? "video-clip-title" : "hide") + (isOverlayVisible ? "" : " fade-out-animation")
-          }
+          className={`${isVideoFullScreenOn ? "video-clip-title" : "hide"} ${
+            !isOverlayVisible && "fade-out-animation"
+          }`}
         >
-         ID:{media?.id} - {media?.name}
+          ID:{media?.id} - {media?.name}
         </div>
 
         <ControlPanel
-          isOverlayVisible={isOverlayVisible}
-          buttonClickHandlers={playbackHandlers}
-          {...playbackSettings}
-          navKeys={navKeys}
+          buttonClickHandlers={playbackHandlers({
+            playerRef: playerRef,
+            setSubtitleText: setSubtitleText,
+            subtitleText: subtitleText,
+          })}
         />
       </div>
     </>
   );
-}
+};
+
+export default PlaybackPanel;

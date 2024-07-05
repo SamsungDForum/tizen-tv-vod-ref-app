@@ -42,8 +42,8 @@ const usePlayerFactory = (playerType: PlayerConfig) => {
 
   useEffect(() => {
     // media is null during initial start, contains empty object after reload if no media was selected.
-    if(media == null || Object.keys(media).length == 0) return;
-   
+    if (media == null || Object.keys(media).length == 0) return;
+
     if (player != null) {
       player.setAsset(media, keySystem);
     } else {
@@ -75,7 +75,7 @@ const usePlayerFactory = (playerType: PlayerConfig) => {
     }
   }, [quality]);
 
-  return [player, destroyPlayer];
+  return { player, destroyPlayer };
 };
 
 export default usePlayerFactory;

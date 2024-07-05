@@ -5,15 +5,16 @@
  */
 
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { nav, navConfig } from "../../../libs/spatial-navigation";
+import { useTypedSelector } from "../../reduxStore/useTypedSelector";
 import { setVideoFullScreenOn } from "./VideoFullScreenSlice";
 import { dispatch } from "../../reduxStore/store";
+import { nav, navConfig } from "../../../libs/spatial-navigation";
+import { SpatialCfg } from "../../../libs/spatial-navigation/spatialCfgTypes";
 
 const FullscreenVideo = () => {
-  const isVideoFullScreenOn = useSelector((state) => state.VideoFullScreen.value);
+  const isVideoFullScreenOn = useTypedSelector((state) => state.VideoFullScreen.value);
 
-  const switchOffVideoFullScreen = function (evt) {
+  const switchOffVideoFullScreen = function (evt: React.MouseEvent) {
     dispatch(setVideoFullScreenOn(true));
     evt.preventDefault();
     evt.stopPropagation();
@@ -22,9 +23,13 @@ const FullscreenVideo = () => {
   useEffect(() => {
     if (!isVideoFullScreenOn) {
       const navSection = "fullscreen-video-button";
-      const cfg = { ...navConfig };
+      const cfg: SpatialCfg = { ...navConfig };
       cfg.selector = "#fullscreen";
-      cfg.leaveFor = { left: "@left-navigation-bar", down: "@asset-view", up: "" };
+      cfg.leaveFor = {
+        left: "@left-navigation-bar",
+        down: "@asset-view",
+        up: "",
+      };
       nav.add(navSection, cfg);
       return () => {
         nav.remove(navSection);
@@ -36,11 +41,7 @@ const FullscreenVideo = () => {
     <>
       {!isVideoFullScreenOn && (
         <section className={"fullscreen-section"}>
-          <button
-            id="fullscreen"
-            className={"fullscreen-btn"}
-            onClick={(evt) => switchOffVideoFullScreen(evt)}
-          ></button>
+          <button id="fullscreen" className={"fullscreen-btn"} onClick={(evt) => switchOffVideoFullScreen(evt)} />
         </section>
       )}
     </>

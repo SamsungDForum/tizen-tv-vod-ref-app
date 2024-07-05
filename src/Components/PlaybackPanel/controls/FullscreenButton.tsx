@@ -5,10 +5,13 @@
  */
 
 import React from "react";
+import { dispatch } from "../../../reduxStore/store";
 import { MinimizeSvgIcon } from "../../../helpers/SvgIcons";
-function FullscreenButton(props) {
-  function onButtonClick(evt) {
-    props.onClick(evt);
+import { setVideoFullScreenOn } from "../VideoFullScreenSlice";
+
+function FullscreenButton() {
+  function onButtonClick(evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    switchOffVideoFullScreen(evt);
   }
 
   return (
@@ -23,3 +26,11 @@ function FullscreenButton(props) {
 }
 
 export default FullscreenButton;
+
+export function switchOffVideoFullScreen(evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  if (evt.nativeEvent.type === "click") {
+    dispatch(setVideoFullScreenOn(false));
+  }
+  evt.preventDefault();
+  evt.stopPropagation();
+}

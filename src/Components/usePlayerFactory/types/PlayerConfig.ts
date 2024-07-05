@@ -15,7 +15,7 @@ type PlayerConfig = {
   args: {
     src: string;
   };
-  isDefault: boolean;
+  isDefault?: boolean;
 };
 
 export type { PlayerConfig };

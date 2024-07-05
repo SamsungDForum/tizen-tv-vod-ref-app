@@ -9,5 +9,6 @@ declare module "redux-states" {
     autoscroll: boolean;
     stringArray: Array<string>;
     showPlayerLogs: boolean;
+    value: boolean;
   }
 }

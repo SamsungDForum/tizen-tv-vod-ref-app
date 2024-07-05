@@ -4,7 +4,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { 
+import {
   type NavigationTabState,
   type LogOverlayScreenState,
   type FiltersState,
@@ -19,10 +19,11 @@ import {
   type ChannelZappingState,
   type LeftNavBarState,
   type ConfirmationModalState,
-  type PreviewLoadingState
-} from 'redux-states';
+  type PreviewLoadingState,
+  type SubtitleOverlayState,
+} from "redux-states";
 
-declare module 'react-redux' {  
+declare module "react-redux" {
   export interface IRootState {
     navigationTab: NavigationTabState;
     LogOverlayScreen: LogOverlayScreenState;
@@ -39,5 +40,6 @@ declare module 'react-redux' {
     LeftNavBar: LeftNavBarState;
     ModalSlice: ConfirmationModalState;
     PreviewLoading: PreviewLoadingState;
+    SubtitleOverlay: SubtitleOverlayState;
   }
 }

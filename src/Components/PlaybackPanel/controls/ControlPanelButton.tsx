@@ -5,14 +5,20 @@
  */
 
 import React from "react";
-function ControlPanelButton(props) {
-  function onButtonClick(evt) {
-    props.onClick();
+
+type Props = {
+  className: string;
+  icon: JSX.Element;
+  onClick: (text?: string) => void;
+};
+function ControlPanelButton({ className, icon, onClick }: Props) {
+  function onButtonClick() {
+    onClick();
   }
 
   return (
-    <button id={props.id} className={props.className} onClick={(evt) => onButtonClick(evt)} tabIndex={-1}>
-      {props.icon}
+    <button className={className} onClick={() => onButtonClick()} tabIndex={-1}>
+      {icon}
     </button>
   );
 }

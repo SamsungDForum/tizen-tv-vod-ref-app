@@ -7,7 +7,12 @@
 import React, { useEffect } from "react";
 import styles from "./LoadingSpinner.module.scss";
 
-const LoadingSpinner = ({ showLoading, setShowLoading, terminateTimeout }) => {
+type Props = {
+  showLoading: boolean;
+  setShowLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  terminateTimeout: number;
+};
+const LoadingSpinner = ({ showLoading, setShowLoading, terminateTimeout }: Props) => {
   useEffect(() => {
     if (showLoading) {
       const spinnerTimeout = setTimeout(() => {
