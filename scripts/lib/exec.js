@@ -19,7 +19,7 @@ const tag = [path.parse(__filename).name];
  */
 async function invoke(exe, ...args) {
   try {
-    return await procTools.snoopProc(spawn(exe, args, { env: process.env }));
+    return await procTools.snoopProc(spawn(exe, args, { shell: true }));
   } catch (error) {
     errorExit(1, tag, [invoke.name], colour.red, "Error", colour.reset, error);
   }
