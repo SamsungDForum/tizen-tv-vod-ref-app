@@ -685,22 +685,6 @@
     "container": "MP4"
   },
   {
-    "id": 64,
-    "name": "Bitmovin Super Speedway SmoothStreaming + PlayReady",
-    "requiresAuth": true,
-    "url": "https://test.playready.microsoft.com/smoothstreaming/SSWSS720H264/SuperSpeedway_720.ism/manifest",
-    "poster": "https://reference.dashif.org/dash.js/nightly/samples/lib/img/mss-1.jpg",
-    "contentType": "application/vnd.ms-sstr+xml",
-    "licenseServerURL": "https://playready.directtaps.net/pr/svc/rightsmanager.asmx?PlayRight=1&ContentKey=EAtsIJQPd5pFiRUrV9Layw==",
-    "drmType": "com.microsoft.playready",
-    "widthResolution": [1280, 992, 768, 592, 448, 368, 284, 224],
-    "heightResolution": [720, 560, 432, 332, 252, 208, 160, 128],
-    "audio": ["unkn"],
-    "manifest": "MSS",
-    "container": "Containerless",
-    "excludedFrom": "shaka"
-  },
-  {
     "id": 1,
     "name": "BigBunny",
     "requiresAuth": false,
