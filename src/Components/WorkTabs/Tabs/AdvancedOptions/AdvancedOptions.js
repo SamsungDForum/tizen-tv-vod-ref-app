@@ -12,8 +12,8 @@ import { BarChart } from "./Charts/BarChart";
 import Pie from "./Charts/PieGraph";
 import { MemoryInfo, VideoFrameInfo } from "./info";
 import { MemoryGraph, CpuUsageGraph } from "./graph";
-
 import { formatBytes } from "./format";
+import { ErrorOccurred } from "./ErrorOccurred";
 
 function unuseResourceMonitor() {
   resourceMonitor.unuse();
@@ -26,6 +26,7 @@ function useResourceMonitor() {
 
 export default function AdvancedOptions() {
   const [ev] = useStateEvent(resourceMonitor, eventTypeMonitor);
+  const isTizenDeviceData = ev.detail?.tizen != undefined;
 
   useEffect(useResourceMonitor, []);
 
@@ -52,7 +53,14 @@ export default function AdvancedOptions() {
         <div style={styles.advInfo}>
           <div className={styles.advOptionLabelContainer}>CPU Usage</div>
           <div className={styles.pieCharContainer}>
-            <CpuUsageGraph data={ev} width={210} height={210} innerRadius={0} outerRadius={100} />
+            {isTizenDeviceData ? (
+              <CpuUsageGraph data={ev} width={210} height={210} innerRadius={0} outerRadius={100} />
+            ) : (
+              <ErrorOccurred
+                size="20%"
+                explainMsg="This error occurred because the device is using an insufficient version of Tizen"
+              />
+            )}
           </div>
         </div>
       </div>

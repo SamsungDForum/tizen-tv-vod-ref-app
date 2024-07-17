@@ -85,3 +85,47 @@
   border: 1px solid rgba(255, 99, 132, 1);
   background-color: rgba(255, 99, 132, 0.7);
 }
+
+.plot-title {
+  margin-bottom: 30px;
+  width: 100%;
+  text-align: center;
+}
+
+.plot-area-cpu {
+  width: 650px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  margin-top: 33px;
+}
+
+.plot-area-memory {
+  width: 650px;
+  height: 300px;
+}
+
+.error-text {
+  color: $playerSmallText;
+  font-size: 18px;
+  text-align: center;
+}
+
+[data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  visibility: hidden;
+
+  background: $grayedElementFocus;
+  color: $grayedElement;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 300;
+  max-width: 160px;
+  margin: -60px 0px 0px -40px;
+}
+
+[data-tooltip]:hover::before {
+  visibility: visible;
+}

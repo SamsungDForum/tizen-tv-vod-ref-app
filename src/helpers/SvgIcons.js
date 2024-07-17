@@ -229,3 +229,11 @@ export const WarningSvgIcon = () => {
     </svg>
   );
 };
+
+export const InformationIcon = () => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="#b9b9b9" viewBox="0 0 24 24">
+      <path d="m12 2a10 10 0 1 0 10 10 10.01114 10.01114 0 0 0 -10-10zm0 18a8 8 0 1 1 8-8 8.00917 8.00917 0 0 1 -8 8zm0-8.5a1 1 0 0 0 -1 1v3a1 1 0 0 0 2 0v-3a1 1 0 0 0 -1-1zm0-4a1.25 1.25 0 1 0 1.25 1.25 1.25 1.25 0 0 0 -1.25-1.25z" />
+    </svg>
+  );
+};

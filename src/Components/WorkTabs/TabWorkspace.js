@@ -14,18 +14,16 @@ import { tabsEnum } from "./NavigationTabSlice";
 import styles from "./TabWorkspace.module.scss";
 import LeftNavigationBar from "../LeftNavigationBar/LeftNavigationBar";
 import ConfirmationModal from "../ConfirmationModal/ConfirmationModal";
+import PlottingSection from "./Tabs/AdvancedOptions/PlottingSection";
 
-const renderSwitch = function(activeTab, props, isLeftBarOpen, droppedContent, setDroppedContent) {
+const renderSwitch = function (activeTab, props, isLeftBarOpen, droppedContent, setDroppedContent) {
   const isLogOverlayedOn = useSelector((state) => state.LogOverlayScreen.value);
 
   switch (activeTab) {
     case tabsEnum.allClips:
       return (
         <div className={`contents-window-wrapper ${isLeftBarOpen ? "transformed" : ""}`}>
-          <ContentsWindow
-            currentPlayer={props.currentPlayer}
-            isCustomContent={false}
-          />
+          <ContentsWindow currentPlayer={props.currentPlayer} isCustomContent={false} />
         </div>
       );
     case tabsEnum.favoriteClips:
@@ -43,6 +41,7 @@ const renderSwitch = function(activeTab, props, isLeftBarOpen, droppedContent, s
       return (
         <div className={`contents-window-wrapper ${isLeftBarOpen ? "transformed" : ""}`}>
           <AdvancedOptions />
+          <PlottingSection />
         </div>
       );
     case tabsEnum.logsMessages:
@@ -66,7 +65,7 @@ export default function TabWorkspace(props) {
   return (
     <div className={isVideoFullScreenOn ? "hide" : `${styles.tabWorkspace} ${styles.tabWorkspaceMin}`}>
       <LeftNavigationBar />
-        {renderSwitch(curNavigationTab, props, isLeftBarOpen, droppedContent, setDroppedContent)}
+      {renderSwitch(curNavigationTab, props, isLeftBarOpen, droppedContent, setDroppedContent)}
       <ConfirmationModal />
     </div>
   );
