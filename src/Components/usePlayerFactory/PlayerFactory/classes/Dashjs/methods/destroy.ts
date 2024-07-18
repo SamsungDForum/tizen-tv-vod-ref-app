@@ -7,11 +7,13 @@
 import Dashjs from "../";
 
 function closePlayer(this: Dashjs, player: dashjs.MediaPlayerClass) {
-  console.debug(Dashjs.name, closePlayer.name, "unregister request filter");
+  console.log(Dashjs.name, closePlayer.name);
 
-  player.unregisterLicenseRequestFilter(this.licenseRequest);
-  this.licenseRequestHeaders = null;
+  player.reset();
+  console.debug(Dashjs.name, closePlayer.name, "player reset");
+
   player.destroy();
+  console.debug(Dashjs.name, closePlayer.name, "player destroyed");
 
   return player;
 }

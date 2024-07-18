@@ -11,7 +11,6 @@ import createPlayer from "./createPlayer";
 import destroy from "./destroy";
 import load from "./load";
 import setAsset from "./setAsset";
-import licenseRequest from "./license-request";
 
 export {
   changeCurrentAudio,
@@ -21,5 +20,4 @@ export {
   destroy,
   load,
   setAsset,
-  licenseRequest,
 };

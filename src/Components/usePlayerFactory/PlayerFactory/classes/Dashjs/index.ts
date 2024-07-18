@@ -14,7 +14,6 @@ import {
   destroy,
   load,
   setAsset,
-  licenseRequest,
 } from "./methods";
 import {
   Audio,
@@ -38,16 +37,11 @@ class Dashjs implements IPlayer, Loadable, Destructible {
       .then((player) => {
         EventManager.registerEvents(player, "dashjs");
 
-        console.debug(Dashjs.name, "registering license request filter");
-        player.registerLicenseRequestFilter(this.licenseRequest);
-
         // For integration tests
         publish(EventEnum.DashJSPlayer, player);
         return player;
       });
   }
-
-  licenseRequest: (request) => Promise<void> = licenseRequest.bind(this);
 
   load: () => Promise<any> = load;
 

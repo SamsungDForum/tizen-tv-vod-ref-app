@@ -7,20 +7,19 @@
 import { useEffect, useState } from "react";
 import PlayerFactory from "./PlayerFactory";
 import type { PlayerConfig } from "./types/PlayerConfig";
-import {
-  KeySystem,
-  Media,
-  playAssetItemToString,
-} from "./utils/playAssetCurrentTypes";
+import { playAssetItemToString } from "./utils/playAssetCurrentTypes";
 import { IPlayer } from "./interfaces/IPlayer";
 import { useTypedSelector } from "../../reduxStore/useTypedSelector";
 
 const usePlayerFactory = (playerType: PlayerConfig) => {
   const [player, setPlayer] = useState<IPlayer | null | undefined>(null);
+  const destroyPlayer = () => PlayerFactory.destroy();
 
-  const [playAsset, setPlayAsset] = useState<
-    [Media | null, KeySystem | undefined]
-  >([null, undefined]);
+  // Run prior to any effect accessing player
+  useEffect(() => {
+    setPlayer(PlayerFactory.create(playerType));
+  }, []);
+
   const media = useTypedSelector((state) => state.playAsset.value.media);
   const audio = useTypedSelector((state) => state.playAsset.value.audio);
   const subtitle = useTypedSelector((state) => state.playAsset.value.subtitle);
@@ -29,29 +28,11 @@ const usePlayerFactory = (playerType: PlayerConfig) => {
     (state) => state.playAsset.value.keySystem
   );
 
-  const destroyPlayer = () => PlayerFactory.destroy();
-
-  useEffect(() => {
-    setPlayer(PlayerFactory.create(playerType));
-  }, []);
-
-  useEffect(() => {
-    if (player == null || playAsset[0] == null) return;
-    player.setAsset(playAsset[0], playAsset[1]);
-  }, [player]);
-
   useEffect(() => {
     // media is null during initial start, contains empty object after reload if no media was selected.
-    if(media == null || Object.keys(media).length == 0) return;
-   
-    if (player != null) {
-      player.setAsset(media, keySystem);
-    } else {
-      // Temp workaround.
-      // Player creation is async, react hook notifications will be received prior to player creation.
-      // Store asset till player is created.
-      setPlayAsset([media, keySystem]);
-    }
+    if (media == null || Object.keys(media).length == 0) return;
+
+    player?.setAsset(media, keySystem);
   }, [media, keySystem]);
 
   useEffect(() => {
