@@ -2,7 +2,7 @@
 #
 # Before launching this script, please make sure 'node_modules' folder do not exist in the relative path ../../ 
 
-for i in $(find ../../ -type f -name '*.ts' -o -type f -name '*.js'  ) 
+for i in $(find ../../ -type f -name '*.ts' -o -type f -name '*.js' -o -type f -name '*.tsx'  ) 
 do
   if ! grep -q Copyright $i 
   then

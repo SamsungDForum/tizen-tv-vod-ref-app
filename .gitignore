@@ -13,3 +13,4 @@ device-configuration.json
 src/version.json
 .loaderapp
 .local
+/.metadata/
