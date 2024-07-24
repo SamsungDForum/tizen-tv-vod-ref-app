@@ -4,21 +4,14 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import PlayerFactory from "./PlayerFactory";
 import type { PlayerConfig } from "./types/PlayerConfig";
 import { playAssetItemToString } from "./utils/playAssetCurrentTypes";
-import { IPlayer } from "./interfaces/IPlayer";
 import { useTypedSelector } from "../../reduxStore/useTypedSelector";
 
 const usePlayerFactory = (playerType: PlayerConfig) => {
-  const [player, setPlayer] = useState<IPlayer | null | undefined>(null);
-  const destroyPlayer = () => PlayerFactory.destroy();
-
-  // Run prior to any effect accessing player
-  useEffect(() => {
-    setPlayer(PlayerFactory.create(playerType));
-  }, []);
+  const player = PlayerFactory.create(playerType);
 
   const media = useTypedSelector((state) => state.playAsset.value.media);
   const audio = useTypedSelector((state) => state.playAsset.value.audio);
@@ -32,31 +25,32 @@ const usePlayerFactory = (playerType: PlayerConfig) => {
     // media is null during initial start, contains empty object after reload if no media was selected.
     if (media == null || Object.keys(media).length == 0) return;
 
-    player?.setAsset(media, keySystem);
+    player.setAsset(media, keySystem);
+    console.log("usePlayerFactory asset change queued:",media, keySystem);
   }, [media, keySystem]);
 
   useEffect(() => {
-    if (player != null && audio != null) {
+    if (audio != null) {
       player.changeCurrentAudio(audio);
-      console.log(`audio has changed - ${playAssetItemToString(audio)}`);
+      console.log("usePlayerFactory audio change queued:",playAssetItemToString(audio));
     }
   }, [audio]);
 
   useEffect(() => {
-    if (player != null && subtitle != null) {
+    if (subtitle != null) {
       player.changeCurrentSubtitles(subtitle);
-      console.log(`subtitile has changed - ${playAssetItemToString(subtitle)}`);
+      console.log("usePlayerFactory subtitile change queued:",playAssetItemToString(subtitle));
     }
   }, [subtitle]);
 
   useEffect(() => {
     if (player != null && quality != null) {
       player.changeCurrentVideoQuality(quality);
-      console.log(`quality has changed - ${playAssetItemToString(quality)}`);
+      console.log("usePlayerFactory quality change queued:",playAssetItemToString(quality));
     }
   }, [quality]);
 
-  return [player, destroyPlayer];
+  return [player, PlayerFactory.destroy];
 };
 
 export default usePlayerFactory;
