@@ -11,5 +11,15 @@ import createPlayer from "./createPlayer";
 import destroy from "./destroy";
 import load from "./load";
 import setAsset from "./setAsset";
+import networkRequest from "./network-request";
 
-export { changeCurrentAudio, changeCurrentSubtitles, changeCurrentVideoQuality, createPlayer, destroy, load, setAsset };
+export {
+  changeCurrentAudio,
+  changeCurrentSubtitles,
+  changeCurrentVideoQuality,
+  createPlayer,
+  destroy,
+  load,
+  setAsset,
+  networkRequest,
+};

@@ -21,9 +21,23 @@ const keyNameToSystem = {
   playready: "com.microsoft.playready",
 };
 
-function fromType({ drmType, licenseServerURL }) {
+function fromType({ drmType, licenseServerURL, licenseRequestHeaders }) {
   const systemName = keySystemToName[drmType];
-  return systemName && { [systemName]: { ...sourceConfig[systemName], LA_URL: licenseServerURL } };
+
+  if (systemName) {
+    const config = {
+      [systemName]: {
+        ...sourceConfig[systemName],
+        LA_URL: licenseServerURL,
+      },
+    };
+
+    if (licenseRequestHeaders) {
+      config[systemName].headers = { ...config[systemName].headers, ...licenseRequestHeaders };
+    }
+
+    return config;
+  }
 }
 
 function fromKeySystems(keySystems) {
