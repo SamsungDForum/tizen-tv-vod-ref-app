@@ -56,7 +56,7 @@
     "id": 8,
     "name": "[Playready] TOS",
     "requiresAuth": true,
-    "url": "https://test.playready.microsoft.com/media/profficialsite/tearsofsteel_4k.ism/manifest.mpd",
+    "url": "http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest(format=mpd-time-csf)",
     "poster": "https://upload.wikimedia.org/wikipedia/commons/7/70/Tos-poster.png",
     "licenseServerURL": "https://test.playready.microsoft.com/service/rightsmanager.asmx?cfg=(persist:false,sl:150)",
     "contentType": "application/dash+xml",
@@ -68,37 +68,18 @@
     "container": "MP4"
   },
   {
-    "id": 9,
-    "name": "[Widevine] TOS",
-    "requiresAuth": true,
-    "url": "https://media.axprod.net/TestVectors/v6.1-MultiDRM/Manifest_1080p.mpd",
-    "licenseServerURL": "https://drm-widevine-licensing.axtest.net/AcquireLicense",
-    "licenseRequestHeaders": {
-      "X-AxDRM-Message": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2ZXJzaW9uIjoxLCJjb21fa2V5X2lkIjoiNjllNTQwODgtZTllMC00NTMwLThjMWEtMWViNmRjZDBkMTRlIiwibWVzc2FnZSI6eyJ0eXBlIjoiZW50aXRsZW1lbnRfbWVzc2FnZSIsImtleXMiOlt7ImlkIjoiNmU1YTFkMjYtMjc1Ny00N2Q3LTgwNDYtZWFhNWQxZDM0YjVhIn1dfX0.yF7PflOPv9qHnu3ZWJNZ12jgkqTabmwXbDWk_47tLNE"
-    },
-    "poster": "https://upload.wikimedia.org/wikipedia/commons/7/70/Tos-poster.png",
-    "drmType": "com.widevine.alpha",
-    "contentType": "application/dash+xml",
-    "widthResolution": [1920, 1280, 960, 640, 320],
-    "heightResolution": [1080, 720, 540, 360, 180],
-    "audio": ["en", "en-AU", "en-ET"],
-    "manifest": "DASH",
-    "container": "MP4"
-  },
-  {
     "id": 12,
     "name": "[Widevine] [Parkour] FHD Widevine Encrypted MPEG DASH",
     "requiresAuth": true,
     "url": "https://bitmovin-a.akamaihd.net/content/art-of-motion_drm/mpds/11331.mpd",
     "poster": "https://i.ytimg.com/vi/EdiZDBwNoIo/maxresdefault.jpg",
-    "licenseServerURL": "https://cwip-shaka-proxy.appspot.com/no_auth",
+    "licenseServerURL": "https://widevine-proxy.appspot.com/proxy",
     "drmType": "com.widevine.alpha",
     "widthResolution": [1920, 1280, 960, 640, 480, 320],
     "heightResolution": [1080, 720, 540, 360, 270, 180],
     "audio": ["en"],
     "manifest": "DASH",
-    "container": "MP4",
-    "excludedFrom": "dashjs"
+    "container": "MP4"
   },
   {
     "id": 14,
@@ -166,7 +147,7 @@
     "audio": ["de", "fr", "en", "es", "it"],
     "manifest": "DASH",
     "container": ["MP4", "WEBM"],
-    "excludedFrom": ["bitmovin", "hlsjs", "dashjs"]
+    "excludedFrom": ["bitmovin", "hlsjs"]
   },
   {
     "id": 19,
@@ -684,6 +665,22 @@
     "audio": ["en"],
     "manifest": "DASH",
     "container": "MP4"
+  },
+  {
+    "id": 64,
+    "name": "Bitmovin Super Speedway SmoothStreaming + PlayReady",
+    "requiresAuth": true,
+    "url": "https://test.playready.microsoft.com/smoothstreaming/SSWSS720H264/SuperSpeedway_720.ism/manifest",
+    "poster": "https://reference.dashif.org/dash.js/nightly/samples/lib/img/mss-1.jpg",
+    "contentType": "application/vnd.ms-sstr+xml",
+    "licenseServerURL": "https://playready.directtaps.net/pr/svc/rightsmanager.asmx?PlayRight=1&ContentKey=EAtsIJQPd5pFiRUrV9Layw==",
+    "drmType": "com.microsoft.playready",
+    "widthResolution": [1280, 992, 768, 592, 448, 368, 284, 224],
+    "heightResolution": [720, 560, 432, 332, 252, 208, 160, 128],
+    "audio": ["unkn"],
+    "manifest": "MSS",
+    "container": "Containerless",
+    "excludedFrom": "shaka"
   },
   {
     "id": 1,

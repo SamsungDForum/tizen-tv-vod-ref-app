@@ -6,22 +6,8 @@
 
 import type { IPlayer } from "../../../interfaces/IPlayer";
 import type { PlayerConfig } from "../../../types/PlayerConfig";
-import {
-  changeCurrentAudio,
-  changeCurrentSubtitles,
-  changeCurrentVideoQuality,
-  createPlayer,
-  destroy,
-  load,
-  setAsset,
-} from "./methods";
-import {
-  Audio,
-  KeySystem,
-  Media,
-  Quality,
-  Subtitle,
-} from "../../../utils/playAssetCurrentTypes";
+import { changeCurrentAudio, changeCurrentSubtitles, changeCurrentVideoQuality, createPlayer, destroy, load, setAsset } from "./methods";
+import { Audio, KeySystem, Media, Quality, Subtitle } from "../../../utils/playAssetCurrentTypes";
 import { Loadable } from "../../../interfaces/Loadable";
 import EventManager from "../../../EventManager";
 import { Destructible } from "../../../interfaces/Destructible";
@@ -29,35 +15,39 @@ import { EventEnum, publish } from "../../../utils/event";
 
 class Dashjs implements IPlayer, Loadable, Destructible {
   public player: Promise<dashjs.MediaPlayerClass>;
-  public licenseRequestHeaders: {} | null | undefined = null;
-
+  
   constructor(readonly config: PlayerConfig) {
     this.player = this.load()
       .then(() => this.createPlayer())
-      .then((player) => {
-        EventManager.registerEvents(player, "dashjs");
+      .then(player => { 
+        EventManager.registerEvents(player, 'dashjs');
 
         // For integration tests
         publish(EventEnum.DashJSPlayer, player);
         return player;
       });
-  }
+  } 
 
-  load: () => Promise<any> = load;
+  load: () => Promise<any> 
+    = load;
+    
+  createPlayer: () => Promise<dashjs.MediaPlayerClass> 
+    = createPlayer;
+  
+  setAsset: (media: Media, keySystem: KeySystem) => void 
+    = setAsset;
 
-  createPlayer: () => Promise<dashjs.MediaPlayerClass> = createPlayer;
+  changeCurrentAudio: (audio: Audio) => void 
+    = changeCurrentAudio;
 
-  setAsset: (media: Media, keySystem: KeySystem) => void = setAsset;
+  changeCurrentVideoQuality: (quality: Quality) => void
+    = changeCurrentVideoQuality;
 
-  changeCurrentAudio: (audio: Audio) => void = changeCurrentAudio;
+  changeCurrentSubtitles: (subtitles: Subtitle) => void 
+    = changeCurrentSubtitles;
 
-  changeCurrentVideoQuality: (quality: Quality) => void =
-    changeCurrentVideoQuality;
-
-  changeCurrentSubtitles: (subtitles: Subtitle) => void =
-    changeCurrentSubtitles;
-
-  destroy: () => Promise<any> = destroy;
+  destroy: () => Promise<any>
+    = destroy;
 }
 
 export default Dashjs;

@@ -15,7 +15,6 @@ type Media = {
   licenseServerURL?: string;
   drmType?: string;
   drmPreference?: string[];
-  licenseRequestHeaders?: {};
   widthResolution: number[];
   heightResolution: number[];
   audio?: string[];
@@ -44,15 +43,13 @@ type KeySystem = {
   option: string | null;
 };
 
-const playAssetItemToString = function (
-  item: Audio | Subtitle | Quality | KeySystem
-): string {
+const playAssetItemToString = function(item: Audio | Subtitle | Quality | KeySystem): string {
   let str = `${item.category}`;
-  if (item.option) {
+  if(item.option) {
     str += ` ${item.option}`;
   }
   return str;
-};
+}
 
 export { playAssetItemToString };
 export type { Media, Audio, Subtitle, Quality, KeySystem };

@@ -7,47 +7,34 @@
 import type { Media } from "../../../../utils/playAssetCurrentTypes";
 
 function createDrmConfig(media: Media):
-  | undefined
+  | undefined 
   | {
       [key: string]: {
         serverURL?: string;
         priority?: number;
-        httpRequestHeaders?: {};
       };
-    } {
-  if (!isAuthicationRequired(media)) {
-    return;
+    }  {
+  if(!isAuthicationRequired(media)) {
+      return;
   }
 
-  if (isDrmLicenseProvided(media)) {
-    if (media.drmType == null) {
+  if(isDrmLicenseProvided(media)) {
+    if(media.drmType == null) {
       return;
     }
-
-    const config = {
+    
+    return {
       [media.drmType]: {
-        serverURL: media.licenseServerURL,
-        priority: 0,
+          serverURL: media.licenseServerURL
       },
     };
-
-    if (media.licenseRequestHeaders) {
-      config[media.drmType]["httpRequestHeaders"] = {
-        ...media.licenseRequestHeaders,
-      };
-    }
-
-    return config;
   }
 
-  if (isDrmPreferenceProvided(media)) {
+  if(isDrmPreferenceProvided(media)) {
     return media.drmPreference?.reduce((result, item) => {
-      return {
-        [item]: {
-          priority: 0,
-        },
-        ...result,
-      };
+        return { [item]: {
+            priority: 0
+        }, ...result};
     }, {});
   }
 
@@ -58,11 +45,11 @@ function createDrmConfig(media: Media):
   }
 
   function isDrmLicenseProvided(media: Media) {
-    return media.hasOwnProperty("licenseServerURL");
+    return media.hasOwnProperty('licenseServerURL');
   }
 
   function isDrmPreferenceProvided(media: Media) {
-    return media.hasOwnProperty("drmPreference");
+    return media.hasOwnProperty('drmPreference');
   }
 }
 
