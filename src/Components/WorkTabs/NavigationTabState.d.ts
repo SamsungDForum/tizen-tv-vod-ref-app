@@ -5,9 +5,13 @@
  */
 
 declare module "redux-states" {
-  type tabsEnum = "All Clips" | "Favorite Clips" | "Logs Messages" | "Advanced";
+  export type TabsEnum =
+    | "All Clips"
+    | "Favorite Clips"
+    | "Logs Messages"
+    | "Advanced";
 
   export interface NavigationTabState {
-    value: tabsEnum; 
+    value: TabsEnum;
   }
 }

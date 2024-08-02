@@ -5,22 +5,17 @@
  */
 
 import React from "react";
-import styles from ".././AdvancedOptions.module.scss";
+import styles from ".././AdvancedContent.module.scss";
 import LineChart from "../Charts/LineChart";
-import { PlotProps } from "./PlotTypes";
+import { ChartProps } from "./ChartTypes";
+import { resourceBuffer } from "../../../../../../libs/resource-buffer";
 
-export const chartDataSize = 30;
-const chartData: number[] = [];
-function MemoryPlot({ ev, width, height }: PlotProps) {
-  if (ev?.detail?.tizen?.memoryUsage == undefined) return null;
-
-  if (chartData.length > chartDataSize) chartData.pop();
-
-  const memory = ev.detail.tizen.memoryUsage;
-  chartData.unshift(memory);
+function MemoryPlot({ ev, width, height }: ChartProps) {
+  if (ev.detail?.tizen?.memoryUsage === undefined) return null;
+  const chartData = resourceBuffer.data.memoryConsumption;
 
   // adjusting y scale
-  const maxNum = Math.max(...chartData);
+  const maxNum = chartData.length === 0 ? 100 : Math.max(...chartData);
   const yHigh = Math.ceil(maxNum / 100) * 100;
   return (
     <div>

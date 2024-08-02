@@ -46,6 +46,7 @@ describe("src/Components/ModalPicker", () => {
       render(
         <Provider store={getAppStore()}>
           <ModalPicker
+            navSectionName="menubar-view-switch"
             data={dataVariants.emptyArray}
             initialLabel={initialLabel}
           />
@@ -61,6 +62,7 @@ describe("src/Components/ModalPicker", () => {
       render(
         <Provider store={getAppStore()}>
           <ModalPicker
+            navSectionName="menubar-view-switch"
             data={dataVariants.stringArray}
             initialLabel={initialLabel}
           />
@@ -80,6 +82,7 @@ describe("src/Components/ModalPicker", () => {
       render(
         <Provider store={getAppStore()}>
           <ModalPicker
+            navSectionName="menubar-view-switch"
             data={dataVariants.objectArray}
             initialLabel={initialLabel}
           />
@@ -91,8 +94,7 @@ describe("src/Components/ModalPicker", () => {
 
       dataVariants.objectArray.forEach((object) => {
         const categoryBtn = screen.getByRole("button", {
-          name:
-            object.category + `${typeof object !== "string" ? arrowIcon : ""}`,
+          name: object.category + `${typeof object !== "string" ? arrowIcon : ""}`,
         });
         fireEvent.click(categoryBtn);
         expect(categoryBtn).toBeInTheDocument();
@@ -107,6 +109,7 @@ describe("src/Components/ModalPicker", () => {
       render(
         <Provider store={getAppStore()}>
           <ModalPicker
+            navSectionName="menubar-view-switch"
             data={dataVariants.mixedArray}
             initialLabel={initialLabel}
           />
@@ -123,9 +126,7 @@ describe("src/Components/ModalPicker", () => {
           expect(categoryBtn).toBeInTheDocument();
         } else {
           categoryBtn = screen.getByRole("button", {
-            name:
-              object.category +
-              `${typeof object !== "string" ? arrowIcon : ""}`,
+            name: object.category + `${typeof object !== "string" ? arrowIcon : ""}`,
           });
           fireEvent.click(categoryBtn);
           object.options.forEach((option) => {
@@ -142,6 +143,7 @@ describe("src/Components/ModalPicker", () => {
       render(
         <Provider store={getAppStore()}>
           <ModalPicker
+            navSectionName="menubar-view-switch"
             data={dataVariants.stringArray}
             initialLabel={initialLabel}
           />
@@ -162,6 +164,7 @@ describe("src/Components/ModalPicker", () => {
       render(
         <Provider store={getAppStore()}>
           <ModalPicker
+            navSectionName="menubar-view-switch"
             data={dataVariants.objectArray}
             initialLabel={initialLabel}
           />
@@ -172,8 +175,7 @@ describe("src/Components/ModalPicker", () => {
       fireEvent.click(mainBtn);
       const targetCategory = screen.getByRole("button", {
         name:
-          dataVariants.objectArray[1].category +
-          `${typeof dataVariants.objectArray[1] !== "string" ? arrowIcon : ""}`,
+          dataVariants.objectArray[1].category + `${typeof dataVariants.objectArray[1] !== "string" ? arrowIcon : ""}`,
       });
       fireEvent.click(targetCategory);
       const targetOption = screen.getByRole("button", {
@@ -192,6 +194,7 @@ describe("src/Components/ModalPicker", () => {
       const { container } = render(
         <Provider store={getAppStore()}>
           <ModalPicker
+            navSectionName="menubar-view-switch"
             data={dataVariants.stringArray}
             initialLabel={initialLabel}
           />
@@ -200,9 +203,7 @@ describe("src/Components/ModalPicker", () => {
 
       const mainBtn = screen.getByRole("button", { name: initialLabel });
       fireEvent.click(mainBtn);
-      const overlay = container.getElementsByClassName(
-        overlayStyles.overlay
-      )[0];
+      const overlay = container.getElementsByClassName(overlayStyles.overlay)[0];
 
       expect(overlay).toBeInTheDocument();
     });
@@ -211,6 +212,7 @@ describe("src/Components/ModalPicker", () => {
       const { container } = render(
         <Provider store={getAppStore()}>
           <ModalPicker
+            navSectionName="menubar-view-switch"
             data={dataVariants.stringArray}
             initialLabel={initialLabel}
           />
@@ -221,9 +223,7 @@ describe("src/Components/ModalPicker", () => {
       fireEvent.click(mainBtn);
       fireEvent.click(mainBtn);
 
-      const overlayElements = container.getElementsByClassName(
-        overlayStyles.overlay
-      );
+      const overlayElements = container.getElementsByClassName(overlayStyles.overlay);
 
       expect(overlayElements.length).toEqual(0);
     });
@@ -232,15 +232,14 @@ describe("src/Components/ModalPicker", () => {
       const { container } = render(
         <Provider store={getAppStore()}>
           <ModalPicker
+            navSectionName="menubar-view-switch"
             data={dataVariants.stringArray}
             initialLabel={initialLabel}
           />
         </Provider>
       );
 
-      const overlayElements = container.getElementsByClassName(
-        overlayStyles.overlay
-      );
+      const overlayElements = container.getElementsByClassName(overlayStyles.overlay);
 
       expect(overlayElements.length).toEqual(0);
     });
@@ -248,16 +247,14 @@ describe("src/Components/ModalPicker", () => {
     it("should not render <Overlay /> onClick when a `data` prop is an empty array", () => {
       const { container } = render(
         <Provider store={getAppStore()}>
-          <ModalPicker data={[]} initialLabel={initialLabel} />
+          <ModalPicker navSectionName="menubar-view-switch" data={[]} initialLabel={initialLabel} />
         </Provider>
       );
 
       const mainBtn = screen.getByRole("button", { name: initialLabel });
       fireEvent.click(mainBtn);
 
-      const overlayElements = container.getElementsByClassName(
-        overlayStyles.overlay
-      );
+      const overlayElements = container.getElementsByClassName(overlayStyles.overlay);
 
       expect(overlayElements.length).toEqual(0);
     });
@@ -269,6 +266,7 @@ describe("src/Components/ModalPicker", () => {
       render(
         <Provider store={getAppStore()}>
           <ModalPicker
+            navSectionName="menubar-view-switch"
             data={dataVariants.stringArray}
             initialLabel={initialLabel}
             onExpandCallback={callback}
@@ -287,6 +285,7 @@ describe("src/Components/ModalPicker", () => {
       render(
         <Provider store={getAppStore()}>
           <ModalPicker
+            navSectionName="menubar-view-switch"
             data={dataVariants.stringArray}
             initialLabel={initialLabel}
             onCollapseCallback={callback}
@@ -309,6 +308,7 @@ describe("src/Components/ModalPicker", () => {
       render(
         <Provider store={getAppStore()}>
           <ModalPicker
+            navSectionName="menubar-view-switch"
             data={dataVariants.stringArray}
             initialLabel={initialLabel}
             onSelectCallback={callback}
@@ -332,15 +332,14 @@ describe("src/Components/ModalPicker", () => {
       const { container } = render(
         <Provider store={getAppStore()}>
           <ModalPicker
+            navSectionName="menubar-view-switch"
             data={dataVariants.emptyArray}
             initialLabel={initialLabel}
           />
         </Provider>
       );
 
-      const span = container.getElementsByClassName(
-        styledButtonStyles.styledButton
-      )[0].firstChild;
+      const span = container.getElementsByClassName(styledButtonStyles.styledButton)[0].firstChild;
 
       expect(span).toBeInTheDocument();
       expect(span).toHaveClass(styledButtonStyles.iconWithName);
@@ -351,6 +350,7 @@ describe("src/Components/ModalPicker", () => {
       const { container } = render(
         <Provider store={getAppStore()}>
           <ModalPicker
+            navSectionName="menubar-view-switch"
             data={dataVariants.emptyArray}
             initialLabel={initialLabel}
             label={labelProp}
@@ -358,9 +358,7 @@ describe("src/Components/ModalPicker", () => {
         </Provider>
       );
 
-      const span = container.getElementsByClassName(
-        styledButtonStyles.styledButton
-      )[0].firstChild;
+      const span = container.getElementsByClassName(styledButtonStyles.styledButton)[0].firstChild;
 
       expect(span).toBeInTheDocument();
       expect(span).toHaveClass(styledButtonStyles.iconWithName);
@@ -371,6 +369,7 @@ describe("src/Components/ModalPicker", () => {
       const { container } = render(
         <Provider store={getAppStore()}>
           <ModalPicker
+            navSectionName="menubar-view-switch"
             data={dataVariants.emptyArray}
             initialLabel={initialLabel}
             label={labelProp}
@@ -378,9 +377,7 @@ describe("src/Components/ModalPicker", () => {
         </Provider>
       );
 
-      const spanText = container.getElementsByClassName(
-        styledButtonStyles.styledButton
-      )[0].firstChild;
+      const spanText = container.getElementsByClassName(styledButtonStyles.styledButton)[0].firstChild;
 
       expect(spanText).toBeInTheDocument();
       expect(spanText).toHaveTextContent(labelProp);
@@ -391,13 +388,11 @@ describe("src/Components/ModalPicker", () => {
     it("shoud have <span /> in the DOM when `initialLabel` prop is empty string", () => {
       const { container } = render(
         <Provider store={getAppStore()}>
-          <ModalPicker data={dataVariants.emptyArray} initialLabel={""} />
+          <ModalPicker navSectionName="menubar-view-switch" data={dataVariants.emptyArray} initialLabel={""} />
         </Provider>
       );
 
-      const span = container.getElementsByClassName(
-        styledButtonStyles.styledButton
-      )[0].children[1];
+      const span = container.getElementsByClassName(styledButtonStyles.styledButton)[0].children[1];
 
       expect(span).toBe(undefined);
     });
@@ -406,15 +401,14 @@ describe("src/Components/ModalPicker", () => {
       const { container } = render(
         <Provider store={getAppStore()}>
           <ModalPicker
+            navSectionName="menubar-view-switch"
             data={dataVariants.emptyArray}
             initialLabel={initialLabel}
           />
         </Provider>
       );
 
-      const span = container.getElementsByClassName(
-        styledButtonStyles.styledButton
-      )[0].children[1];
+      const span = container.getElementsByClassName(styledButtonStyles.styledButton)[0].children[1];
 
       expect(span).toBeInTheDocument();
       expect(span).toHaveClass(styledButtonStyles.smallGrayText);
@@ -424,15 +418,14 @@ describe("src/Components/ModalPicker", () => {
       const { container } = render(
         <Provider store={getAppStore()}>
           <ModalPicker
+            navSectionName="menubar-view-switch"
             data={dataVariants.emptyArray}
             initialLabel={initialLabel}
           />
         </Provider>
       );
 
-      const spanText = container.getElementsByClassName(
-        styledButtonStyles.styledButton
-      )[0].children[1];
+      const spanText = container.getElementsByClassName(styledButtonStyles.styledButton)[0].children[1];
 
       expect(spanText).toBeInTheDocument();
       expect(spanText).toHaveTextContent(initialLabel);
@@ -443,13 +436,11 @@ describe("src/Components/ModalPicker", () => {
     const initialData = ["Option"];
     const { container } = render(
       <Provider store={getAppStore()}>
-        <ModalPicker data={initialData} initialLabel={initialData[0]} />
+        <ModalPicker navSectionName="menubar-view-switch" data={initialData} initialLabel={initialData[0]} />
       </Provider>
     );
 
-    const mainBtn = container.getElementsByClassName(
-      styledButtonStyles.styledButton
-    )[0];
+    const mainBtn = container.getElementsByClassName(styledButtonStyles.styledButton)[0];
     fireEvent.click(mainBtn);
     const menuDiv = container.getElementsByClassName(menuStyles.menu);
 

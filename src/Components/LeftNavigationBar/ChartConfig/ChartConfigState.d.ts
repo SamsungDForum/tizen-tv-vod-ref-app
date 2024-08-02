@@ -4,14 +4,8 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-type Details = {
-  tizen?: {
-    cpuUsage: number;
-    memoryUsage: number;
-  };
-};
-export type PlotProps = {
-  ev: CustomEvent<Details>;
-  width: number;
-  height: number;
-};
+declare module "redux-states" {
+  export interface ChartConfigState {
+    isTracking: boolean;
+  }
+}

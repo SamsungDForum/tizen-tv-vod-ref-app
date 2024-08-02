@@ -18,6 +18,9 @@ import { dispatch } from "../../reduxStore/store";
 import { setIsLeftBarOpen } from "./LeftNavBarSlice";
 import { nav, navConfig } from "../../../libs/spatial-navigation";
 import QuickFavBtn from "../FavouriteClips/QuickFavBtn/QuickFavBtn";
+import ChartConfig from "./ChartConfig/ChartConfig";
+import { useStateEvent } from "../../../libs/native-event";
+import { resourceMonitor, eventTypeMonitor } from "../../../libs/resource-monitor";
 
 export const getExpandableSections = (getFrom) => {
   const sections = Array.from(getFrom.current.getElementsByTagName("section"));
@@ -70,7 +73,7 @@ const LeftNavigationBar = () => {
     let isMounted = true;
     let buttonFunctionArea = document.getElementById("sidebar-area");
     buttonFunctionArea.addEventListener("sn:focused", function () {
-      if(isMounted) {
+      if (isMounted) {
         dispatch(setIsLeftBarOpen(true));
       }
     });
@@ -83,7 +86,9 @@ const LeftNavigationBar = () => {
       });
     });
 
-    return () => { isMounted = false; };
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleMouseEnter = () => {
@@ -95,6 +100,7 @@ const LeftNavigationBar = () => {
   };
 
   function leftBarRenderSwitch() {
+    const [ev] = useStateEvent(resourceMonitor, eventTypeMonitor);
     switch (curNavigationTab) {
       case tabsEnum.allClips:
         return (
@@ -118,7 +124,17 @@ const LeftNavigationBar = () => {
           </div>
         );
       case tabsEnum.advanced:
-        return <>{allowFloating ? <ThemePicker /> : null} </>;
+        return (
+          <div>
+            {allowFloating && <ThemePicker />}
+            {ev.detail?.tizen?.memoryUsage !== undefined && (
+              <>
+                <p className={styles.optionTitle}>Chart Options:</p>
+                <ChartConfig />
+              </>
+            )}
+          </div>
+        );
       case tabsEnum.logsMessages:
         return <LogsTabPanel />;
     }

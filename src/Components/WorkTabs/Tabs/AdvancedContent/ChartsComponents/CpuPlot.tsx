@@ -5,18 +5,14 @@
  */
 
 import React from "react";
-import styles from ".././AdvancedOptions.module.scss";
+import styles from ".././AdvancedContent.module.scss";
 import LineChart from "../Charts/LineChart";
-import { type PlotProps } from "./PlotTypes";
-import { chartDataSize } from "./MemoryPlot";
+import { type ChartProps } from "./ChartTypes";
+import { resourceBuffer } from "../../../../../../libs/resource-buffer";
 
-const cpuChartData: number[] = [];
-function CpuPlot({ ev, width, height }: PlotProps) {
-  if (ev?.detail?.tizen?.cpuUsage == undefined) return null;
-
-  if (cpuChartData.length > chartDataSize) cpuChartData.pop();
-
-  cpuChartData.unshift(ev.detail.tizen.cpuUsage);
+function CpuPlot({ ev, width, height }: ChartProps) {
+  if (ev.detail?.tizen?.cpuUsage === undefined) return null;
+  const chartData = resourceBuffer.data.cpuConsumption;
 
   return (
     <div style={{ marginLeft: "50px" }}>
@@ -24,7 +20,7 @@ function CpuPlot({ ev, width, height }: PlotProps) {
         <h3>CPU usage over 60 seconds (%)</h3>
       </div>
       <div className={styles.plotAreaCpu}>
-        <LineChart chartData={[...cpuChartData]} width={width} height={height} yScaleSize={{ yLow: 0, yHigh: 100 }} />
+        <LineChart chartData={[...chartData]} width={width} height={height} yScaleSize={{ yLow: 0, yHigh: 100 }} />
       </div>
     </div>
   );

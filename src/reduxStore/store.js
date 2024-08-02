@@ -14,12 +14,13 @@ import settingReducer from "../Components/usePlayerFactory/utils/setting-slice";
 import VideoFullScreenReducer from "../Components/PlaybackPanel/VideoFullScreenSlice";
 import FavouriteClipsReducer from "../Components/WorkTabs/Tabs/Contents/AssetView/FavouriteClipsSlice";
 import ColorsModeReducer from "../Components/ColorsChanger/ColorsModeSlice";
-import CustomCommonReducer from '../Components/WorkTabs/Tabs/Contents/AssetView/CustomCommonSlice'
+import CustomCommonReducer from "../Components/WorkTabs/Tabs/Contents/AssetView/CustomCommonSlice";
 import SubtitleOverlayReducer from "../Components/usePlayerFactory/utils/SubtitleOverlay";
-import ChannelZappingReducer from '../Components/ChannelZapping/ChannelZappingSlice'
+import ChannelZappingReducer from "../Components/ChannelZapping/ChannelZappingSlice";
 import LeftNavBarReducer from "../Components/LeftNavigationBar/LeftNavBarSlice";
-import ConfirmationModalReducer from '../Components/ConfirmationModal/ConfirmationModalSlice'
+import ConfirmationModalReducer from "../Components/ConfirmationModal/ConfirmationModalSlice";
 import PreviewLoadingReducer from "../services/PreviewLoadingSlice";
+import ChartConfigReducer from "../Components/LeftNavigationBar/ChartConfig/ChartConfigSlice";
 
 function getAppStore() {
   return getAppStore.storeInstance
@@ -41,6 +42,7 @@ function getAppStore() {
           LeftNavBar: LeftNavBarReducer,
           ModalSlice: ConfirmationModalReducer,
           PreviewLoading: PreviewLoadingReducer,
+          ChartConfig: ChartConfigReducer,
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
       }));

@@ -21,6 +21,7 @@ import {
   type ConfirmationModalState,
   type PreviewLoadingState,
   type SubtitleOverlayState,
+  type ChartConfigState,
 } from "redux-states";
 
 declare module "react-redux" {
@@ -41,5 +42,6 @@ declare module "react-redux" {
     ModalSlice: ConfirmationModalState;
     PreviewLoading: PreviewLoadingState;
     SubtitleOverlay: SubtitleOverlayState;
+    ChartConfig: ChartConfigState;
   }
 }

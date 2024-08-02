@@ -4,60 +4,56 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import React, { useEffect, useState } from "react";
-import styles from "./AdvancedOptions.module.scss";
-import { resourceMonitor, eventTypeMonitor } from "../../../../../libs/resource-monitor";
-import { useStateEvent } from "../../../../../libs/native-event/use-event";
-import { BarChart } from "./Charts/BarChart";
-import Pie from "./Charts/PieGraph";
+import React, { useEffect } from "react";
+import styles from "./AdvancedContent.module.scss";
 import { MemoryInfo, VideoFrameInfo } from "./info";
-import { MemoryGraph, CpuUsageGraph } from "./graph";
-import { formatBytes } from "./format";
 import { ErrorOccurred } from "./ErrorOccurred";
+import { MemoryGraph } from "./ChartsComponents/MemoryGraph";
+import { CpuGraph } from "./ChartsComponents/CpuGraph";
+import { Details } from "./ChartsComponents/ChartTypes";
+import { unuseResourceMonitor, useResourceMonitor } from "../../../../../libs/resource-monitor/resourceMonitorHandlers";
+import { useStateEvent } from "../../../../../libs/native-event";
+import { eventTypeMonitor, resourceMonitor } from "../../../../../libs/resource-monitor";
+import { useTypedSelector } from "../../../../reduxStore/useTypedSelector";
 
-function unuseResourceMonitor() {
-  resourceMonitor.unuse();
-}
+export default function GraphsSection() {
+  const isChartTracking = useTypedSelector((state) => state.ChartConfig.isTracking);
+  const [ev]: [CustomEvent<Details> | any] = useStateEvent(resourceMonitor, eventTypeMonitor);
 
-function useResourceMonitor() {
-  resourceMonitor.use();
-  return unuseResourceMonitor;
-}
+  useEffect(() => {
+    useResourceMonitor();
+    if (!isChartTracking) return unuseResourceMonitor;
+  }, [isChartTracking]);
 
-export default function AdvancedOptions() {
-  const [ev] = useStateEvent(resourceMonitor, eventTypeMonitor);
   const isTizenDeviceData = ev.detail?.tizen != undefined;
-
-  useEffect(useResourceMonitor, []);
-
   return (
     <div className={styles.advOptionContainer}>
       <div className={styles.advOptionSectionContainer}>
-        <div style={styles.advInfo}>
+        <div>
           <div className={styles.advOptionLabelContainer}>Memory</div>
           <MemoryInfo data={ev} />
         </div>
         <div className={styles.barCharContainer}>
-          <MemoryGraph data={ev} width={400} height={300} />
+          <MemoryGraph ev={ev} width={400} height={300} />
         </div>
       </div>
 
       <div className={styles.advOptionSectionContainer}>
-        <div style={styles.advInfo}>
+        <div style={{ width: "300px" }}>
           <div className={styles.advOptionLabelContainer}>Video frames</div>
           <VideoFrameInfo data={ev} />
         </div>
       </div>
 
       <div className={styles.advOptionSectionContainer}>
-        <div style={styles.advInfo}>
+        <div>
           <div className={styles.advOptionLabelContainer}>CPU Usage</div>
           <div className={styles.pieCharContainer}>
             {isTizenDeviceData ? (
-              <CpuUsageGraph data={ev} width={210} height={210} innerRadius={0} outerRadius={100} />
+              <CpuGraph ev={ev} width={210} height={210} innerRadius={0} outerRadius={100} />
             ) : (
               <ErrorOccurred
-                size="20%"
+                size="25%"
                 explainMsg="This error occurred because the device is using an insufficient version of Tizen"
               />
             )}

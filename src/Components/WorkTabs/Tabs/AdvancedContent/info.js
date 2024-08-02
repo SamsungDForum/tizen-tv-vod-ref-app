@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import styles from "./AdvancedOptions.module.scss";
+import styles from "./AdvancedContent.module.scss";
 import { bytesToMB } from "./format";
 
 export function MemoryInfo(props) {
@@ -15,9 +15,9 @@ export function MemoryInfo(props) {
   const infoData = [];
 
   if (detail.memory != undefined) {
-    infoData.push({ name: "JS heap total:", value: bytesToMB(detail.memory.totalJSHeapSize).toString()+" MB" });
-    infoData.push({ name: "JS heap used:", value: bytesToMB(detail.memory.usedJSHeapSize).toString()+" MB" });
-    infoData.push({ name: "JS heap limit:", value: bytesToMB(detail.memory.jsHeapSizeLimit).toString()+" MB" });
+    infoData.push({ name: "JS heap total:", value: bytesToMB(detail.memory.totalJSHeapSize).toString() + " MB" });
+    infoData.push({ name: "JS heap used:", value: bytesToMB(detail.memory.usedJSHeapSize).toString() + " MB" });
+    infoData.push({ name: "JS heap limit:", value: bytesToMB(detail.memory.jsHeapSizeLimit).toString() + " MB" });
   }
 
   if (detail.tizen) {
@@ -43,9 +43,11 @@ export function VideoFrameInfo(props) {
   const quality = props.data.detail.videoQuality;
 
   return (
-    <>
-      <div className={styles.divInside}>Dropped:</div> <span>{`${quality.droppedVideoFrames.toLocaleString()}`}</span>
-      <div className={styles.divInside}>Total:</div> <span>{`${quality.totalVideoFrames.toLocaleString()}`} </span>
-    </>
+    <div className={styles.displayFrame}>
+      <div className={styles.divInsideCenter}>Dropped:</div>
+      <span>{`${quality.droppedVideoFrames.toLocaleString()}`}</span>
+      <div className={styles.divInsideCenter}>Total:</div>
+      <span>{`${quality.totalVideoFrames.toLocaleString()}`} </span>
+    </div>
   );
 }

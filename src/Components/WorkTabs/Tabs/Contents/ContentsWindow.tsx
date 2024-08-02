@@ -25,6 +25,7 @@ import { tabsEnum } from "../../NavigationTabSlice";
 import { setChannelList } from "../../../ChannelZapping/ChannelZappingSlice";
 import toast from "react-hot-toast";
 import { Media } from "../../../usePlayerFactory/utils/playAssetCurrentTypes";
+import { PlayerInfo } from "../../TabWorkspace";
 
 function onMount() {
   navKeys.initialize((evt) => navKeys.onKeyEvent(evt));
@@ -36,40 +37,29 @@ function onMount() {
 type FilteredContent = {
   title: string;
   list: Array<Media>;
-}
-
-type PlayerInfo = {
-  id: number;
-  trackId: number;
-  label: string;
-  type: string;
-  version: string;
-  args: {
-    src: string;
-  };
 };
 
 type Props = {
   isCustomContent: boolean;
   currentPlayer: PlayerInfo;
-  droppedContent: any;
-  setDroppedContent: any;
-}
+  droppedContent?: string | null;
+  setDroppedContent?: React.Dispatch<React.SetStateAction<null>>;
+};
 
 export default function ContentsWindow({ isCustomContent, currentPlayer, droppedContent, setDroppedContent }: Props) {
   const [customPlaylist, setCustomPlaylist] = useState<Array<FilteredContent>>([{ title: "", list: [] }]);
   const currentFilters = useSelectedFilters();
-  const curNavigationTab = useTypedSelector(state => state.navigationTab.value);
+  const curNavigationTab = useTypedSelector((state) => state.navigationTab.value);
   const [appliedFilters, setAppliedFilters] = useState(null);
-  const playbackSettings = useTypedSelector(state => state.setting);
-  const previewState = useTypedSelector(state => state.PreviewLoading.value.loadingState);
+  const playbackSettings = useTypedSelector((state) => state.setting);
+  const previewState = useTypedSelector((state) => state.PreviewLoading.value.loadingState);
   const {
     source: { current: currPlayer },
   } = playbackSettings;
 
-  const customAllContent = useTypedSelector(state => state.CustomCommon.myCustomCommon);
-  const favClips = useTypedSelector(state => state.FavouriteClips.myClips);
-  const isCustomCommon = useTypedSelector(state => state.CustomCommon.isCustomCommon);
+  const customAllContent = useTypedSelector((state) => state.CustomCommon.myCustomCommon);
+  const favClips = useTypedSelector((state) => state.FavouriteClips.myClips);
+  const isCustomCommon = useTypedSelector((state) => state.CustomCommon.isCustomCommon);
   const newClipsState = customAllContent ? JSON.stringify(favClips) : null;
   const [commonClipList, setCommonClipList] = useState(CommonVideoContents);
 
@@ -88,10 +78,10 @@ export default function ContentsWindow({ isCustomContent, currentPlayer, dropped
       return;
     }
     let content = null;
-    if (typeof tizen !== "undefined") {
+    if (typeof tizen != "undefined") {
       content = newClipsState;
     } else {
-      if (droppedContent !== null) {
+      if (droppedContent != null && setDroppedContent != null) {
         dispatch(loadFavouriteClips(droppedContent));
         setDroppedContent(null);
       }
@@ -157,7 +147,7 @@ export default function ContentsWindow({ isCustomContent, currentPlayer, dropped
     setAppliedFilters(results);
   }, [currentFilters]);
 
-  const currentRowID = useTypedSelector(state => state.ChannelZapping.currentRowID);
+  const currentRowID = useTypedSelector((state) => state.ChannelZapping.currentRowID);
 
   useEffect(() => {
     if (curNavigationTab === tabsEnum.allClips) {
@@ -196,10 +186,7 @@ export default function ContentsWindow({ isCustomContent, currentPlayer, dropped
           height: curNavigationTab === tabsEnum.allClips ? "48em" : typeof tizen !== "undefined" ? "48em" : "40em",
         }}
       >
-        <Content
-          isCustomContent={isCustomContent}
-          child={isCustomContent ? customPlaylist : commonPlayList}
-        />
+        <Content isCustomContent={isCustomContent} child={isCustomContent ? customPlaylist : commonPlayList} />
       </div>
     </>
   );

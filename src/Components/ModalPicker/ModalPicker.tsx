@@ -12,25 +12,20 @@ import Overlay from "./Overlay";
 import styles from "./styles/ModalPicker.module.scss";
 import type { ModalPickerData, onSelectCallbackArgument } from "./types";
 import { nav } from "../../../libs/spatial-navigation";
-import {
-  isExpectedData,
-  isUniqueOptionAvailable,
-  restrictNavigation,
-  freeNavigation,
-} from "./utilities";
+import { isExpectedData, isUniqueOptionAvailable, restrictNavigation, freeNavigation } from "./utilities";
 import { dispatch } from "../../reduxStore/store";
 import { setVideoFullScreenOn } from "../PlaybackPanel/VideoFullScreenSlice";
 import { tabs } from "../WorkTabs/NavigationTabSlice";
 import { useSelector } from "react-redux";
 
 type Props = {
+  data: Array<ModalPickerData | string>;
+  navSectionName?: string;
   parentLabel?: string;
   icon?: SVGProps<SVGSVGElement>;
-  data: Array<ModalPickerData | string>;
   className?: string;
-  initialLabel: string;
   label?: string;
-  navSectionName?: string;
+  initialLabel?: string;
   onSelectCallback?: (arg: onSelectCallbackArgument) => void;
   onExpandCallback?: () => void;
   onCollapseCallback?: () => void;
@@ -54,10 +49,10 @@ type FullscreenState = {
 function ModalPicker({
   icon,
   data,
-  initialLabel,
   label,
   className,
   navSectionName,
+  initialLabel = "",
   onSelectCallback,
   onExpandCallback,
   onCollapseCallback,
@@ -66,19 +61,11 @@ function ModalPicker({
   const [mainLabel, setMainLabel] = useState(initialLabel);
   const mainButtonRef = useRef<HTMLButtonElement>(null);
   const [navSection] = useState(
-    navSectionName !== undefined
-      ? { [`data-modal-picker-${navSectionName}`]: true }
-      : undefined
+    navSectionName !== undefined ? { [`data-modal-picker-${navSectionName}`]: true } : undefined
   );
-  const isLeftBarOpen = useSelector(
-    (state: BarState) => state.LeftNavBar.isOpen
-  );
-  const isOverlayVisible = useSelector(
-    (state: OverlayState) => state.OverlayVisible.value
-  );
-  const isVideoFullScreenOn = useSelector(
-    (state: FullscreenState) => state.VideoFullScreen.value
-  );
+  const isLeftBarOpen = useSelector((state: BarState) => state.LeftNavBar.isOpen);
+  const isOverlayVisible = useSelector((state: OverlayState) => state.OverlayVisible.value);
+  const isVideoFullScreenOn = useSelector((state: FullscreenState) => state.VideoFullScreen.value);
 
   useEffect(() => {
     setMainLabel(initialLabel);
@@ -114,10 +101,7 @@ function ModalPicker({
     }
   };
 
-  function onSelectHandler(
-    newLabel: string,
-    callbackArgument: onSelectCallbackArgument
-  ): void {
+  function onSelectHandler(newLabel: string, callbackArgument: onSelectCallbackArgument): void {
     switchIsExpanded();
 
     if (tabs.some((element) => element === newLabel)) {
@@ -167,9 +151,7 @@ function ModalPicker({
     <>
       <Overlay isActivated={isExpanded} color="transparent" />
       <section
-        className={`${isExpanded ? styles.expandedBackground : ""} ${
-          styles.modalPicker
-        }`}
+        className={`${isExpanded ? styles.expandedBackground : ""} ${styles.modalPicker}`}
         id={navSectionName ? `${navSectionName}-picker` : undefined}
       >
         <div className={styles.modalPickerHead}>
@@ -185,7 +167,7 @@ function ModalPicker({
             className={className}
           />
         </div>
-        {isExpanded ? (
+        {isExpanded && (
           <Menu
             parentLabel={label}
             data={data}
@@ -193,7 +175,7 @@ function ModalPicker({
             onKeyUp={handleBackspace}
             navSection={navSection}
           />
-        ) : null}
+        )}
       </section>
     </>
   );
