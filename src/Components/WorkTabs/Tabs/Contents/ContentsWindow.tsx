@@ -14,7 +14,7 @@ import { navKeys } from "../navigation";
 import { isContentValid } from "./ContentValidator";
 import { getFilteredList, useSelectedFilters, filterBy } from "./ContentFilters";
 import { getFilterHandlers } from "./ContentFilters/FiltersPanel";
-import LoadingStateIndicator from "../../../LoadingStateIndicator";
+import LoadingStateIndicator from "../../../Loaders/LoadingStateIndicator";
 import "./ContentsWindow.scss";
 import { FilterLabels } from "./ContentFilters/FiltersSlice";
 import { FilterEnums } from "./ContentFilters/FiltersSlice";

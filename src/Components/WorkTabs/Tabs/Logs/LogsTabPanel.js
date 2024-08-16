@@ -97,7 +97,7 @@ export default function LogsTabPanel() {
           }}
           buttonName={"Reset Logs"}
           label=""
-        ></StyledButton>
+        />
 
         <StyledButton
           className={`button leftBarElement call-to-action-btn save-btn`}
@@ -105,7 +105,7 @@ export default function LogsTabPanel() {
           onClick={() => saveLogs()}
           buttonName={`Save logs to file`}
           label=""
-        ></StyledButton>
+        />
       </div>
     </div>
   );

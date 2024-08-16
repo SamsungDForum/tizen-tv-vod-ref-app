@@ -4,11 +4,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-@import '../../colors2017.scss';
+@import "../../../colors2017.scss";
 
 $success-color: #15ad15;
 $failure-color: #ff0000;
-$thickness: 0.20rem;
+$thickness: 0.2rem;
 
 $loader-size: 2.375rem;
 
@@ -58,11 +58,11 @@ $crossmark-size: calc($loader-size * 3 / 5);
 }
 
 @keyframes spin {
-  0% { 
+  0% {
     transform: rotate(0deg);
   }
 
-  100% { 
+  100% {
     transform: rotate(360deg);
   }
 }
@@ -83,9 +83,10 @@ $crossmark-size: calc($loader-size * 3 / 5);
   top: calc(50% - $crossmark-size / 2);
   left: calc(50% - $thickness / 2);
 
-  &:before, &:after {
+  &:before,
+  &:after {
     position: absolute;
-    content: '';
+    content: "";
     height: $crossmark-size;
     width: $thickness;
     background-color: $failure-color;
@@ -101,27 +102,27 @@ $crossmark-size: calc($loader-size * 3 / 5);
 }
 
 @mixin transformation($s) {
-	-webkit-transform: scale($s, $s);
-	transform: scale($s, $s);
+  -webkit-transform: scale($s, $s);
+  transform: scale($s, $s);
 }
 
 @keyframes fall-in {
   0% {
-		@include transformation(1.75);
-		opacity: 0;
+    @include transformation(1.75);
+    opacity: 0;
   }
-  
+
   50% {
-		@include transformation(1);
-		opacity: 1;
+    @include transformation(1);
+    opacity: 1;
   }
-  
+
   60% {
-		@include transformation(1.1);
+    @include transformation(1.1);
   }
-  
+
   100% {
-		@include transformation(1);
+    @include transformation(1);
   }
 }
 

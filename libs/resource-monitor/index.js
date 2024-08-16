@@ -6,6 +6,7 @@
 
 import { ResourceMonitor, eventTypeMonitor } from "./resource-monitor";
 
-const resourceMonitor = new ResourceMonitor(2000);
+const RESOURCE_MONITOR_INTERVAL = 2000;
+const resourceMonitor = new ResourceMonitor(RESOURCE_MONITOR_INTERVAL);
 
-export { resourceMonitor, eventTypeMonitor };
+export { resourceMonitor, eventTypeMonitor, RESOURCE_MONITOR_INTERVAL };

@@ -4,8 +4,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import React from "react";
-import { TabsEnum } from "redux-states";
+import React, { useState } from "react";
 import { useTypedSelector } from "../../reduxStore/useTypedSelector";
 import PlottingSection from "./Tabs/AdvancedContent/PlottingSection";
 import GraphsSection from "./Tabs/AdvancedContent/GraphsSection";
@@ -15,21 +14,14 @@ import LogsWindow from "./Tabs/Logs/LogsWindow";
 import { PlayerInfo } from "./TabWorkspace";
 
 type Props = {
-  activeTab: TabsEnum;
   currentPlayer: PlayerInfo;
-  isLeftBarOpen: boolean;
-  droppedContent: string | null;
-  setDroppedContent: React.Dispatch<React.SetStateAction<null>>;
 };
 
-export default function RenderContent({
-  activeTab,
-  currentPlayer,
-  isLeftBarOpen,
-  droppedContent,
-  setDroppedContent,
-}: Props) {
+export default function RenderContent({ currentPlayer }: Props) {
+  const [droppedContent, setDroppedContent] = useState(null);
   const isLogOverlayedOn = useTypedSelector((state) => state.LogOverlayScreen.value);
+  const activeTab = useTypedSelector((state) => state.navigationTab.value);
+  const isLeftBarOpen = useTypedSelector((state) => state.LeftNavBar.isOpen);
 
   switch (activeTab) {
     case tabsEnum.allClips:

@@ -7,11 +7,10 @@
 import React from "react";
 import styles from ".././AdvancedContent.module.scss";
 import LineChart from "../Charts/LineChart";
-import { ChartProps } from "./ChartTypes";
+import type { PlotProps } from "./ChartTypes";
 import { resourceBuffer } from "../../../../../../libs/resource-buffer";
 
-function MemoryPlot({ ev, width, height }: ChartProps) {
-  if (ev.detail?.tizen?.memoryUsage === undefined) return null;
+function MemoryPlot({ width, height }: PlotProps) {
   const chartData = resourceBuffer.data.memoryConsumption;
 
   // adjusting y scale

@@ -4,6 +4,7 @@ import {
   unuseResourceMonitor,
   useResourceMonitor,
 } from "../resource-monitor/resourceMonitorHandlers";
+import { saveFilesWhenThresholdExceeded } from "./threshold-checker";
 
 type bufferDataType = {
   cpuConsumption: number[];
@@ -12,6 +13,8 @@ type bufferDataType = {
 
 export class ResourceBuffer {
   private _chartDataSize = 30;
+  private _errorCallback?: (error: Error) => void;
+
   buffer: bufferDataType = {
     cpuConsumption: [],
     memoryConsumption: [],
@@ -25,10 +28,13 @@ export class ResourceBuffer {
     };
   }
 
+  setErrorCallback(callback) {
+    this._errorCallback = callback;
+  }
+
   start() {
     useResourceMonitor();
     resourceMonitor.addEventListener(eventTypeMonitor, this.addData);
-    console.log(this.buffer);
   }
 
   stop() {
@@ -45,10 +51,18 @@ export class ResourceBuffer {
     return this.buffer;
   }
 
-  private addData(e: any): void | null {
+  private addData(this: ResourceBuffer, e: any): void | null {
     if (e.detail.tizen == undefined) return null;
 
     const { memoryUsage, cpuUsage }: TizenDetailsType = e.detail.tizen;
+
+    try {
+      saveFilesWhenThresholdExceeded(memoryUsage, cpuUsage);
+    } catch (error) {
+      if (error instanceof Error && this._errorCallback != null) {
+        this._errorCallback(error);
+      }
+    }
 
     const memoryArray = this.buffer.memoryConsumption;
     if (memoryArray.length > this._chartDataSize) memoryArray.pop();

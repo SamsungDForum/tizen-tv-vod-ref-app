@@ -15,11 +15,20 @@ export type Details = {
     usedJSHeapSize: number;
     jsHeapSizeLimit: number;
   };
+  videoQuality: {
+    droppedVideoFrames: number;
+    totalVideoFrames: number;
+  };
 };
-export type ChartProps = {
+export type GraphProps = {
   ev: CustomEvent<Details>;
   width: number;
   height: number;
   innerRadius?: number;
   outerRadius?: number;
+};
+
+export type PlotProps = {
+  width: number;
+  height: number;
 };

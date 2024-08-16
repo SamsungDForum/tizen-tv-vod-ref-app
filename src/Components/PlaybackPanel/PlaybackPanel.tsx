@@ -15,7 +15,7 @@ import { setChannelID } from "../ChannelZapping/ChannelZappingSlice";
 import { reqTizenVersion } from "../../helpers/reqTizenVersion";
 import { setMedia } from "../usePlayerFactory/utils/playAsset";
 import { setVideoFullScreenOn } from "./VideoFullScreenSlice";
-import LoadingSpinner from "./loadingSpinner/LoadingSpinner";
+import LoadingSpinner from "../Loaders/loadingSpinner/LoadingSpinner";
 import { type PlayerMethods } from "./VideoReactPlayer";
 import { ControlPanel } from "./controls/ControlPanel";
 import { dispatch } from "../../reduxStore/store";

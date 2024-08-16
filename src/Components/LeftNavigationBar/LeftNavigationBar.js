@@ -19,8 +19,8 @@ import { setIsLeftBarOpen } from "./LeftNavBarSlice";
 import { nav, navConfig } from "../../../libs/spatial-navigation";
 import QuickFavBtn from "../FavouriteClips/QuickFavBtn/QuickFavBtn";
 import ChartConfig from "./ChartConfig/ChartConfig";
-import { useStateEvent } from "../../../libs/native-event";
-import { resourceMonitor, eventTypeMonitor } from "../../../libs/resource-monitor";
+import { useTypedSelector } from "../../reduxStore/useTypedSelector";
+import { isTizenSupported } from "../../../libs/resource-buffer/isTizenSupported";
 
 export const getExpandableSections = (getFrom) => {
   const sections = Array.from(getFrom.current.getElementsByTagName("section"));
@@ -100,7 +100,6 @@ const LeftNavigationBar = () => {
   };
 
   function leftBarRenderSwitch() {
-    const [ev] = useStateEvent(resourceMonitor, eventTypeMonitor);
     switch (curNavigationTab) {
       case tabsEnum.allClips:
         return (
@@ -127,7 +126,7 @@ const LeftNavigationBar = () => {
         return (
           <div>
             {allowFloating && <ThemePicker />}
-            {ev.detail?.tizen?.memoryUsage !== undefined && (
+            {isTizenSupported && (
               <>
                 <p className={styles.optionTitle}>Chart Options:</p>
                 <ChartConfig />

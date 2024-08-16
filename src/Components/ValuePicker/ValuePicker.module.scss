@@ -1,0 +1,60 @@
+/* Copyright
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
+@import "../../colors2017.scss";
+
+.value-picker-container {
+  width: 100%;
+}
+
+.input-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 58px;
+}
+.input-show-left-bar {
+  padding: 0px 20px;
+}
+
+.input-hidden-left-bar {
+  padding: 0px;
+  justify-content: center;
+}
+
+.label {
+  width: 100%;
+  font-size: 0.8em;
+  margin: 5px 0px;
+}
+
+.text-value {
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  align-items: end;
+}
+
+.arrow-icon-button {
+  width: 38px;
+  height: 38px;
+  background-color: $appBackground;
+  outline: none;
+  box-shadow: none;
+  border: none;
+  border-radius: 5px;
+}
+
+.arrow-icon-button:focus,
+.arrow-icon-button:hover {
+  background-color: $focusBgColor;
+}
+
+.arrow-icon-button:focus svg,
+.arrow-icon-button:hover svg {
+  stroke: $appBackground;
+}

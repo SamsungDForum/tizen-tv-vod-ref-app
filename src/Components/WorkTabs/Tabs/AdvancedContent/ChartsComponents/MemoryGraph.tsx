@@ -7,7 +7,9 @@
 import React from "react";
 import { BarChart } from "../Charts/BarChart";
 import { bytesToMB } from "../format";
-import { type ChartProps } from "./ChartTypes";
+import type { GraphProps } from "./ChartTypes";
+import styles from "../AdvancedContent.module.scss";
+import { MemoryInfo } from "../info";
 
 type GraphData = {
   name: string;
@@ -16,7 +18,7 @@ type GraphData = {
   stroke: string;
 };
 
-export function MemoryGraph({ ev, width, height }: ChartProps) {
+export function MemoryGraph({ ev, width, height }: GraphProps) {
   if (ev.detail?.memory == undefined) return null;
 
   const graphData: GraphData[] = [];
@@ -56,5 +58,15 @@ export function MemoryGraph({ ev, width, height }: ChartProps) {
 
   if (graphData.length == 0) return null;
 
-  return <BarChart data={graphData} width={width} height={height} />;
+  return (
+    <div className={styles.advOptionSectionContainer}>
+      <div>
+        <div className={styles.advOptionLabelContainer}>Memory</div>
+        <MemoryInfo data={ev} />
+      </div>
+      <div className={styles.barCharContainer}>
+        <BarChart data={graphData} width={width} height={height} />{" "}
+      </div>
+    </div>
+  );
 }

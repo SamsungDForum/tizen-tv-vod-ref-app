@@ -7,9 +7,9 @@
 import React from "react";
 import styles from ".././AdvancedContent.module.scss";
 import Pie from "../Charts/PieGraph";
-import { ChartProps } from "./ChartTypes";
+import type { GraphProps } from "./ChartTypes";
 
-export function CpuGraph({ ev, height, width, innerRadius, outerRadius }: ChartProps) {
+export function CpuGraph({ ev, height, width, innerRadius, outerRadius }: GraphProps) {
   if (ev.detail?.tizen?.cpuUsage == undefined) return null;
 
   const tizenInfo = ev.detail.tizen;

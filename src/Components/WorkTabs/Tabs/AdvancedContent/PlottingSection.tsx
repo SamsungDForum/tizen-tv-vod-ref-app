@@ -4,23 +4,22 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import React, { useMemo } from "react";
+import React from "react";
 import styles from "./AdvancedContent.module.scss";
 import MemoryPlot from "./ChartsComponents/MemoryPlot";
 import CpuPlot from "./ChartsComponents/CpuPlot";
-import { type Details } from "./ChartsComponents/ChartTypes";
+import { isTizenSupported } from "../../../../../libs/resource-buffer/isTizenSupported";
 import { useStateEvent } from "../../../../../libs/native-event";
-import { resourceMonitor, eventTypeMonitor } from "../../../../../libs/resource-monitor";
+import { eventTypeMonitor, resourceMonitor } from "../../../../../libs/resource-monitor";
 
 export default function PlottingSection() {
-  const [ev]: [CustomEvent<Details> | any] = useStateEvent(resourceMonitor, eventTypeMonitor);
-
-  return useMemo(() => {
+  useStateEvent(resourceMonitor, eventTypeMonitor);
+  if (isTizenSupported) {
     return (
       <div className={styles.advOptionContainer}>
-        <MemoryPlot ev={ev} width={600} height={300} />
-        <CpuPlot ev={ev} width={600} height={300} />
+        <MemoryPlot width={600} height={300} />
+        <CpuPlot width={600} height={300} />
       </div>
     );
-  }, [ev]);
+  } else return null;
 }

@@ -7,11 +7,10 @@
 import React from "react";
 import styles from ".././AdvancedContent.module.scss";
 import LineChart from "../Charts/LineChart";
-import { type ChartProps } from "./ChartTypes";
+import type { PlotProps } from "./ChartTypes";
 import { resourceBuffer } from "../../../../../../libs/resource-buffer";
 
-function CpuPlot({ ev, width, height }: ChartProps) {
-  if (ev.detail?.tizen?.cpuUsage === undefined) return null;
+function CpuPlot({ width, height }: PlotProps) {
   const chartData = resourceBuffer.data.cpuConsumption;
 
   return (

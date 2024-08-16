@@ -6,6 +6,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { resourceBuffer } from "../../../../libs/resource-buffer";
+import { saveLogs } from "../../WorkTabs/Tabs/Logs/logger";
 
 const chartDataSize = 30;
 export const ChartConfig = createSlice({
@@ -26,7 +27,7 @@ export const ChartConfig = createSlice({
           resourceBuffer.reset();
           break;
         case "Save":
-          // SAVE CHART DATA TO USB
+          saveLogs();
           break;
       }
     },

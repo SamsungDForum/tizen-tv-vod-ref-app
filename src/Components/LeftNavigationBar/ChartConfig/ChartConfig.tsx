@@ -4,22 +4,35 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { setChartTrackState, setControlBehaviour } from "./ChartConfigSlice";
 import { FilterLogsSvgIcon } from "../../../helpers/SvgIcons";
 import { useTypedSelector } from "../../../reduxStore/useTypedSelector";
 import StyledButton from "../../ModalPicker/StyledButton";
+import ValuePicker from "../../ValuePicker/ValuePicker";
 import { dispatch } from "../../../reduxStore/store";
 
+function setThreshold(storageName: string, value: number) {
+  localStorage.setItem(storageName, value.toString());
+}
+
 function ChartConfig() {
+  const localmemoryThreshold = Number(localStorage.getItem("memoryThreshold") ?? 350);
+  const localcpuThreshold = Number(localStorage.getItem("cpuThreshold") ?? 100);
   const isChartTracking = useTypedSelector((state) => state.ChartConfig.isTracking);
   const isLeftBarOpen = useTypedSelector((state) => state.LeftNavBar.isOpen);
+
+  const [memoryThreshold, setmemoryThreshold] = useState(localmemoryThreshold);
+  const [cpuThreshold, setcpuThreshold] = useState(localcpuThreshold);
+
+  useEffect(() => setThreshold("memoryThreshold", memoryThreshold), [memoryThreshold]);
+  useEffect(() => setThreshold("cpuThreshold", cpuThreshold), [cpuThreshold]);
 
   return (
     <div className="nonExpandBorder">
       <StyledButton
         icon={<FilterLogsSvgIcon />}
-        buttonName={`${isChartTracking ? "Deactivate" : "Activate"}`}
+        buttonName={`${isChartTracking ? "Stop Drawing" : "Start Drawing"}`}
         label={isChartTracking ? "ON" : "OFF"}
         onClick={() => dispatch(setChartTrackState(!isChartTracking))}
         className="leftBarElement"
@@ -38,6 +51,25 @@ function ChartConfig() {
           onClick={() => dispatch(setControlBehaviour("Save"))}
           buttonName={`Save to USB`}
           label=""
+        />
+        <ValuePicker
+          name="Memory"
+          value={memoryThreshold}
+          jumpVal={10}
+          maxVal={1000}
+          setter={setmemoryThreshold}
+          isLeftBarOpen={isLeftBarOpen}
+          label="AUTOSAVE THRESHOLDS:"
+          unit="MB"
+        />
+        <ValuePicker
+          name="Cpu"
+          value={cpuThreshold}
+          jumpVal={5}
+          maxVal={100}
+          isLeftBarOpen={isLeftBarOpen}
+          setter={setcpuThreshold}
+          unit="%"
         />
       </div>
     </div>
