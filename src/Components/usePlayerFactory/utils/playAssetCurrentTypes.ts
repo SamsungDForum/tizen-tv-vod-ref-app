@@ -21,6 +21,7 @@ type Media = {
   manifest?: string;
   container: string | string[];
   excludedFrom?: string | string[];
+  licenseRequestHeaders?: { [key: string]: string };
 };
 
 type Audio = {
@@ -43,13 +44,15 @@ type KeySystem = {
   option: string | null;
 };
 
-const playAssetItemToString = function(item: Audio | Subtitle | Quality | KeySystem): string {
+const playAssetItemToString = function (
+  item: Audio | Subtitle | Quality | KeySystem
+): string {
   let str = `${item.category}`;
-  if(item.option) {
+  if (item.option) {
     str += ` ${item.option}`;
   }
   return str;
-}
+};
 
 export { playAssetItemToString };
 export type { Media, Audio, Subtitle, Quality, KeySystem };

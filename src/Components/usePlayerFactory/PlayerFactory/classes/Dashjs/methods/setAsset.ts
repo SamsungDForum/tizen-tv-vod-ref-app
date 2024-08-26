@@ -8,20 +8,50 @@ import { Media } from "../../../../utils/playAssetCurrentTypes";
 import { createDrmConfig } from "../utils/createDrmConfig";
 import Dashjs from "../";
 import { getPlaybackTime } from "../../../../utils/playAsset";
+import { getVideoElement } from "../../utils/getVideoElement";
 
-const setAsset = function(this: Dashjs, media: Media): void {
-  console.log(`${Dashjs.name}: setAsset()`, media);
-  this.player = this.player.then(player => new Promise(res => {
+function setAsset(this: Dashjs, media: Media): void {
+  console.log(Dashjs.name, setAsset.name, media);
+
+  this.player = this.player.then((player) => {
+    console.log(Dashjs.name, setAsset.name, media);
+
+    if (player.isReady()) {
+      player.reset();
+      console.debug(Dashjs.name, setAsset.name, "player reset");
+    }
+
+    player.updateSettings({
+      streaming: {
+        trackSwitchMode: {
+          video: "alwaysReplace",
+        },
+        buffer: {
+          flushBufferAtTrackSwitch: true,
+          fastSwitchEnabled: false,
+        },
+      },
+    });
+    console.debug(Dashjs.name, setAsset.name, "settings updated");
+
     const drmConfig = createDrmConfig(media);
     if (drmConfig != null) {
       player.setProtectionData(drmConfig);
+      console.debug(
+        Dashjs.name,
+        setAsset.name,
+        "protection data set",
+        drmConfig
+      );
     }
 
     const playbackTime = getPlaybackTime();
-    console.log('Continuous watching:', playbackTime);
+    player.attachView(getVideoElement());
     player.attachSource(media.url, playbackTime);
-    res(player);
-  }));
+    console.log(Dashjs.name, setAsset.name, "playback start @", playbackTime);
+
+    return player;
+  });
 }
 
 export default setAsset;

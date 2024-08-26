@@ -46,7 +46,7 @@ declare namespace dashjs {
     getVideoElement(): HTMLVideoElement;
     getVolume(): number;
     getXHRWithCredentialsForType(type: string): boolean;
-    initialize(view: HTMLMediaElement, source: string | null, autoPlay: boolean, startTime?: number | string): void;
+    initialize(view?: HTMLMediaElement, source?: string | null, autoPlay?: boolean, startTime?: number | string): void;
     isDynamic(): boolean;
     isMuted(): boolean;
     isPaused(): boolean;

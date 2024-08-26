@@ -6,12 +6,19 @@
 
 import Dashjs from "../";
 
-const destroy = function(this: Dashjs): Promise<any> {
-  this.player = this.player.then(player => new Promise(res => {
-    player.destroy();
-    res(player);
-  }));
+function closePlayer(this: Dashjs, player: dashjs.MediaPlayerClass) {
+  console.log(Dashjs.name, closePlayer.name);
 
+  player.destroy();
+  console.debug(Dashjs.name, closePlayer.name, "player destroyed");
+
+  return player;
+}
+
+function destroy(this: Dashjs): Promise<any> {
+  console.debug(Dashjs.name, "destroy");
+
+  this.player = this.player.then((player) => closePlayer.call(this, player));
   return this.player;
 }
 

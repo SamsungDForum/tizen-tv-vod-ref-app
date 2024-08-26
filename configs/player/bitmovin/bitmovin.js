@@ -60,24 +60,42 @@ function getPlayerConfig() {
   };
 }
 
-const sourceConfig = {
-  // drm name default config, just fill in LA_URL
-  playready: {
-    // Necessary switches to make playready work.
-    plaintextChallenge: true,
-    utf8message: true,
-    headers: { "Content-Type": "text/xml" },
-    // Stability switches.
-    maxLicenseRequestRetries: 2,
-    licenseRequestRetryDelay: 1000,
-  },
-  widevine: {
-    LA_URL: undefined,
-  },
-  clearkey: {
-    LA_URL: undefined,
-  },
-};
+// Different drm configs (playready) are required to run on TV / PC.
+// Determine TV environment by checking if webapis exits.
+const sourceConfig = window.webapis
+  ? {
+      // drm name default config, just fill in LA_URL
+      playready: {
+        // Necessary switches to make playready work on TV device.
+        plaintextChallenge: true,
+        utf8message: true,
+        // Stability switches.
+        maxLicenseRequestRetries: 2,
+        licenseRequestRetryDelay: 1000,
+        LA_URL: undefined,
+      },
+      widevine: {
+        LA_URL: undefined,
+      },
+      clearkey: {
+        LA_URL: undefined,
+      },
+    }
+  : {
+      // drm name default config, just fill in LA_URL
+      playready: {
+        // Stability switches.
+        maxLicenseRequestRetries: 2,
+        licenseRequestRetryDelay: 1000,
+        LA_URL: undefined,
+      },
+      widevine: {
+        LA_URL: undefined,
+      },
+      clearkey: {
+        LA_URL: undefined,
+      },
+    };
 
 const type = "bitmovin";
 
