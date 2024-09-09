@@ -54,20 +54,30 @@ function writeLogData(logData) {
   return (location) => {
     const logPath = `${location.path}${location.name}/refapp_${getCurrentTime()}.log`;
     console.log("Saving logs to:", logPath);
-    writeToFileAsync(logPath, logData).then(() => {
-      console.log("Saving logs completed");
-      toast.success("Saving logs completed");
-    });
+    writeToFileAsync(logPath, logData)
+      .then(() => {
+        console.log("Saving logs completed");
+        toast.success("Saving logs completed");
+      })
+      .catch((err) => {
+        console.log("Error saving logs");
+        toast.error(`Error saving logs: ${err}`);
+      });
   };
 }
 function writeResourceData(usageData) {
   return (location) => {
     const usagePath = `${location.path}${location.name}/dataUsage_${getCurrentTime()}_${getCurrentDate()}.log`;
     console.log("Saving resource data to:", usagePath);
-    writeToFileAsync(usagePath, usageData).then(() => {
-      console.log("Saving resource data completed");
-      toast.success("Saving resource data completed");
-    });
+    writeToFileAsync(usagePath, usageData)
+      .then(() => {
+        console.log("Saving resource data completed");
+        toast.success("Saving resource data completed");
+      })
+      .catch((err) => {
+        console.log("Error saving resource data");
+        toast.error(`Error saving resource data: ${err}`);
+      });
   };
 }
 
@@ -75,10 +85,15 @@ function writeFavouriteData(favouriteClips) {
   return (location) => {
     const favPath = `${location.path}${location.name}/VideoContent.json`;
     console.log("Saving favorite clips to:", favPath);
-    writeToFileAsync(favPath, JSON.stringify(favouriteClips, null, 2)).then(() => {
-      console.log("Saving favorite clips completed");
-      toast.success("Saving favorite clips completed");
-    });
+    writeToFileAsync(favPath, JSON.stringify(favouriteClips, null, 2))
+      .then(() => {
+        console.log("Saving favorite clips completed");
+        toast.success("Saving favorite clips completed");
+      })
+      .catch((err) => {
+        console.log("Error saving clips");
+        toast.error(`Error saving clips: ${err}`);
+      });
   };
 }
 

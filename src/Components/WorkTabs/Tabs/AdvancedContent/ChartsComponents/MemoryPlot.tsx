@@ -15,7 +15,8 @@ function MemoryPlot({ width, height }: PlotProps) {
 
   // adjusting y scale
   const maxNum = chartData.length === 0 ? 100 : Math.max(...chartData);
-  const yHigh = Math.ceil(maxNum / 100) * 100;
+  const roundMaxNum = Math.ceil(maxNum / 100) * 100;
+  const yHigh = roundMaxNum === 0 ? 100 : roundMaxNum;
   return (
     <div>
       <div className={styles.plotTitle}>
