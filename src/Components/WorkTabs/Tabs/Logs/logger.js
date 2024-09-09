@@ -13,12 +13,21 @@ import { resourceBuffer } from "../../../../../libs/resource-buffer";
 import { RESOURCE_MONITOR_INTERVAL } from "../../../../../libs/resource-monitor";
 
 function generateTableOfUsageData(memory, cpu) {
-  let data = "Seconds | Memory consumption (MB) | CPU consumption (%) \n";
-  data += "--------|-------------------------|--------------------\n";
+  let data = "  Seconds | Memory consumption (MB) | CPU consumption (%) \n";
+  data += "----------|-------------------------|--------------------\n";
   for (let i = 0; i < Math.min(memory.length, cpu.length); i++) {
     const interval = RESOURCE_MONITOR_INTERVAL / 1000;
     const seconds = i * interval;
+    const secLength = seconds.toString().split("").length;
     const memLength = memory[i].toString().split("").length;
+
+    const displaySec = {
+      1: "    " + seconds,
+      2: "   " + seconds,
+      3: "  " + seconds,
+      4: " " + seconds,
+      5: seconds,
+    };
 
     const displayMem = {
       1: "   " + memory[i],
@@ -26,17 +35,15 @@ function generateTableOfUsageData(memory, cpu) {
       3: " " + memory[i],
       4: memory[i],
     };
-    const row = `${seconds} ${seconds > 9 ? "" : " "}     |           ${displayMem[memLength]}          |           ${
-      cpu[i]
-    } \n`;
+    const row = `${displaySec[secLength]}sec  |           ${displayMem[memLength]}          |           ${cpu[i]} \n`;
     data += row;
   }
   return data;
 }
 
 export function saveLogs() {
-  const memory = resourceBuffer.data.memoryConsumption;
-  const cpu = resourceBuffer.data.cpuConsumption;
+  const memory = resourceBuffer.dataSaver.memoryConsumption;
+  const cpu = resourceBuffer.dataSaver.cpuConsumption;
 
   const logs = consoleLogs().map((log) => log.dataLine);
   const resourceConsumption = generateTableOfUsageData(memory, cpu);

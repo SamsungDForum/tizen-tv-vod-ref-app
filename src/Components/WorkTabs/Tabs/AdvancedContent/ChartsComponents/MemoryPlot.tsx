@@ -11,7 +11,7 @@ import type { PlotProps } from "./ChartTypes";
 import { resourceBuffer } from "../../../../../../libs/resource-buffer";
 
 function MemoryPlot({ width, height }: PlotProps) {
-  const chartData = resourceBuffer.data.memoryConsumption;
+  const chartData = resourceBuffer.dataPlotter.memoryConsumption;
 
   // adjusting y scale
   const maxNum = chartData.length === 0 ? 100 : Math.max(...chartData);

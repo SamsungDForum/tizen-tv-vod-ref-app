@@ -11,7 +11,7 @@ import type { PlotProps } from "./ChartTypes";
 import { resourceBuffer } from "../../../../../../libs/resource-buffer";
 
 function CpuPlot({ width, height }: PlotProps) {
-  const chartData = resourceBuffer.data.cpuConsumption;
+  const chartData = resourceBuffer.dataPlotter.cpuConsumption;
 
   return (
     <div style={{ marginLeft: "50px" }}>
