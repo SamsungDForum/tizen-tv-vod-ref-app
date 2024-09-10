@@ -1,10 +1,7 @@
 import type { TizenDetailsType } from "../../src/Components/WorkTabs/Tabs/AdvancedContent/ChartsComponents/ChartTypes";
 import { saveLogs } from "../../src/Components/WorkTabs/Tabs/Logs/logger";
 import { eventTypeMonitor, resourceMonitor } from "../resource-monitor";
-import {
-  unuseResourceMonitor,
-  useResourceMonitor,
-} from "../resource-monitor/resourceMonitorHandlers";
+import { unuseResourceMonitor, useResourceMonitor } from "../resource-monitor/resourceMonitorHandlers";
 import { BufferDataType } from "./types";
 
 export class ResourceBuffer {
@@ -27,12 +24,12 @@ export class ResourceBuffer {
 
   start() {
     useResourceMonitor();
-    resourceMonitor.addEventListener(eventTypeMonitor, this.save);
+    resourceMonitor.addEventListener(eventTypeMonitor, this.save.bind(this));
   }
 
   stop() {
     unuseResourceMonitor();
-    resourceMonitor.removeEventListener(eventTypeMonitor, this.save);
+    resourceMonitor.removeEventListener(eventTypeMonitor, this.save.bind(this));
   }
 
   reset() {
@@ -55,8 +52,7 @@ export class ResourceBuffer {
       try {
         this.saveFilesWhenThresholdExceeded(memoryUsage, cpuUsage);
       } catch (error) {
-        if (error instanceof Error && this.errorCallback != null)
-          this.errorCallback(error);
+        if (error instanceof Error && this.errorCallback != null) this.errorCallback(error);
       }
     }
 
