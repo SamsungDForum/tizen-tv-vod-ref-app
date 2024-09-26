@@ -4,11 +4,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-// @ts-nocheck
-import React, { useState, useEffect } from "react";
+import React, { useEffect, KeyboardEvent } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "./contentRow.scss";
+import SwiperCore from 'swiper';
 import { Keyboard } from "swiper/modules";
 import Asset from "./Asset";
 import { tabsEnum } from "../../../../NavigationTabSlice";
@@ -17,6 +15,8 @@ import { KeyName, getKey } from "../../../../../KeyEvents";
 import { dispatch } from "../../../../../../reduxStore/store";
 import { setCurrentRowID } from "../../../../../ChannelZapping/ChannelZappingSlice";
 import { Media } from "../../../../../usePlayerFactory/utils/playAssetCurrentTypes";
+import "swiper/css";
+import "./contentRow.scss";
 
 type Props = {
   child: {
@@ -32,12 +32,16 @@ type Props = {
 const ContentRow = ({ child, pxtransform, setPxtransform, contentRowID }: Props) => {
   const curNavigationTab = useTypedSelector(state => state.navigationTab.value);
 
-  const [currentSwiper, setCurrentSwiper] = useState(null);
-
-  const onKeyVerticalScroll = (e) => {
+  const onKeyVerticalScroll = (e: KeyboardEvent<HTMLDivElement>) => {
     const key = getKey(e);
-    const swiperCont = document.querySelector(".swiper-container");
-    const rowsCount = swiperCont.childNodes.length;
+    const swiperContainer = document.querySelector<HTMLDivElement>(".swiper-container");
+    let rowsCount: number;
+    if (swiperContainer != null) {
+      rowsCount = swiperContainer.childNodes.length;
+    } else {
+      rowsCount = 0;
+      console.warn(`querySelector('.swiper-container') returned null`)
+    }
 
     const swiperRowContainerHeight = 215 + 1; // swiperRowContainerHeight + 1 for prevent cropping border
     const lastRowOnBottom = window.tizen === undefined && curNavigationTab === tabsEnum.favoriteClips ? -648 : -432;
@@ -54,13 +58,16 @@ const ContentRow = ({ child, pxtransform, setPxtransform, contentRowID }: Props)
   };
 
   useEffect(() => {
-    let swiperCont = document.querySelector(".swiper-container");
-    swiperCont.style.transform = `translateY(${pxtransform}px)`;
+    let swiperContainer = document.querySelector<HTMLDivElement>(".swiper-container");
+    if (swiperContainer != null) {
+      swiperContainer.style.transform = `translateY(${pxtransform}px)`;
+    } else {
+      console.warn(`querySelector('.swiper-container') returned null`)
+    }
   }, [pxtransform]);
 
   const handleFocus = (ref) => {
     ref?.swiper?.keyboard?.enable();
-    setCurrentSwiper(ref);
     if (ref !== null) {
       ref.addEventListener("sn:focused", function () {
         ref?.firstChild.querySelector(".swiper-slide-active").focus();
@@ -78,8 +85,9 @@ const ContentRow = ({ child, pxtransform, setPxtransform, contentRowID }: Props)
 
   useEffect(() => {
     let swipers = document.querySelectorAll(".mySwiper");
-    swipers?.forEach((e) => {
-      e.swiper.slideTo(0, false, false);
+    swipers?.forEach(e => {
+      const element = e as unknown as { swiper: SwiperCore };
+      element.swiper.slideTo(0, undefined, false);
     });
   }, []);
 
@@ -92,7 +100,7 @@ const ContentRow = ({ child, pxtransform, setPxtransform, contentRowID }: Props)
   };
 
   return (
-    <div className="swiper-row-container" id={contentRowID} onKeyDown={(e) => handleEnterClick(e)}>
+    <div className="swiper-row-container" id={`${contentRowID}`} onKeyDown={(e) => handleEnterClick(e)}>
       <p className="swiper-row-title">{child.title}</p>
       <div
         className={"swiper-row"}
@@ -115,7 +123,7 @@ const ContentRow = ({ child, pxtransform, setPxtransform, contentRowID }: Props)
         >
           {child.list.map((key, index) => (
             <SwiperSlide key={index}>
-              <Asset asset={key} id={index} currentSwiper={currentSwiper} setPxtransform={setPxtransform} />
+              <Asset asset={key} id={index} setPxtransform={setPxtransform} />
             </SwiperSlide>
           ))}
         </Swiper>

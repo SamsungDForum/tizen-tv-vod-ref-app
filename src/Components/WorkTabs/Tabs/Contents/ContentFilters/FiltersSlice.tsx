@@ -6,7 +6,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { dispatch } from "../../../../../reduxStore/store";
-import { useSelector } from "react-redux";
+import { useTypedSelector } from "../../../../../reduxStore/useTypedSelector";
 import { storeSession, sessionRestore } from "../../../../../../libs/re-store";
 
 export const FilterEnums = {
@@ -27,7 +27,7 @@ export const FilterEnums = {
   },
   Container: { ALL: "ALL", MP4: "MP4", WEBM: "WEBM", Containerless: "Containerless" },
   Manifest: { ALL: "ALL", DASH: "DASH", HLS: "HLS", MSS: "MSS" },
-};
+} as const;
 
 export const FilterLabels = {
   SRC: {
@@ -47,14 +47,14 @@ export const FilterLabels = {
   },
   Container: { ALL: "All", MP4: "Mp4", WEBM: "Webm", Containerless: "Containerless" },
   Manifest: { ALL: "All", DASH: "DASH", HLS: "HLS", MSS: "MSS" },
-};
+} as const;
 
 export const filterBy = {
   source: "SRC",
   drm: "DRM",
   container: "Container",
   manifest: "Manifest",
-};
+} as const;
 
 export const filtersDefault = {
   [filterBy.source]: FilterEnums.SRC.ALL,
@@ -79,7 +79,7 @@ export function store(filters) {
 }
 
 export function restore() {
-  return useSelector((state) => state.ContentFilters.value);
+  return useTypedSelector(state => state.ContentFilters.value);
 }
 
 export const { setFilters } = ContentFilters.actions;

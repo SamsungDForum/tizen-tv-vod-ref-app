@@ -4,8 +4,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+/**
+ * @returns {boolean}
+ */
 function isTizenPlatform() {
-  return typeof tizen !== "undefined";
+  return typeof window?.tizen !== "undefined";
 }
 
 function getTizenVersion() {

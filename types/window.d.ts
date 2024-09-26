@@ -9,4 +9,5 @@ interface Window {
   dashjs: dashjs.index;
   Hls: hlsjs.index;
   shaka: shaka.index;
+  tizen?: object;
 }

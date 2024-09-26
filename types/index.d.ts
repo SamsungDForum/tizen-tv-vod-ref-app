@@ -29,6 +29,7 @@ declare module "*.svg" {
   const value: any;
   export default value;
 }
+
 declare module "VideoContent.json" {
   const value: Array<import('../src/Components/usePlayerFactory/utils/playAssetCurrentTypes').Media>;
   export default value;

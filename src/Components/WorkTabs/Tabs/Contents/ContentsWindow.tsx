@@ -4,7 +4,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-// @ts-nocheck
 import React, { useEffect, useState } from "react";
 import { useTypedSelector } from "../../../../reduxStore/useTypedSelector";
 import CommonVideoContents from "../../../../data/VideoContent.json";
@@ -26,6 +25,7 @@ import { setChannelList } from "../../../ChannelZapping/ChannelZappingSlice";
 import toast from "react-hot-toast";
 import { Media } from "../../../usePlayerFactory/utils/playAssetCurrentTypes";
 import { PlayerInfo } from "../../TabWorkspace";
+import { isTizenPlatform } from "../../../../../libs/tizenFilesystem";
 
 function onMount() {
   navKeys.initialize((evt) => navKeys.onKeyEvent(evt));
@@ -49,19 +49,19 @@ type Props = {
 export default function ContentsWindow({ isCustomContent, currentPlayer, droppedContent, setDroppedContent }: Props) {
   const [customPlaylist, setCustomPlaylist] = useState<Array<FilteredContent>>([{ title: "", list: [] }]);
   const currentFilters = useSelectedFilters();
-  const curNavigationTab = useTypedSelector((state) => state.navigationTab.value);
-  const [appliedFilters, setAppliedFilters] = useState(null);
-  const playbackSettings = useTypedSelector((state) => state.setting);
-  const previewState = useTypedSelector((state) => state.PreviewLoading.value.loadingState);
+  const curNavigationTab = useTypedSelector(state => state.navigationTab.value);
+  const [appliedFilters, setAppliedFilters] = useState<Array<{ matchedLabel: string }> | null>(null);
+  const playbackSettings = useTypedSelector(state => state.setting);
+  const previewState = useTypedSelector(state => state.PreviewLoading.value.loadingState);
   const {
     source: { current: currPlayer },
   } = playbackSettings;
 
-  const customAllContent = useTypedSelector((state) => state.CustomCommon.myCustomCommon);
-  const favClips = useTypedSelector((state) => state.FavouriteClips.myClips);
-  const isCustomCommon = useTypedSelector((state) => state.CustomCommon.isCustomCommon);
+  const customAllContent = useTypedSelector(state => state.CustomCommon.myCustomCommon);
+  const favClips = useTypedSelector(state => state.FavouriteClips.myClips);
+  const isCustomCommon = useTypedSelector(state => state.CustomCommon.isCustomCommon);
   const newClipsState = customAllContent ? JSON.stringify(favClips) : null;
-  const [commonClipList, setCommonClipList] = useState(CommonVideoContents);
+  const [commonClipList, setCommonClipList] = useState<Array<Media>>(CommonVideoContents);
 
   useEffect(() => {
     if (customAllContent.length !== 0 && isCustomCommon) {
@@ -73,20 +73,20 @@ export default function ContentsWindow({ isCustomContent, currentPlayer, dropped
 
   useEffect(onMount, []);
 
-  useEffect(async () => {
+  useEffect(() => {
     if (!isCustomContent) {
       return;
     }
-    let content = null;
-    if (typeof tizen != "undefined") {
+    let content: string | null = null;
+    if (isTizenPlatform()) {
       content = newClipsState;
     } else {
       if (droppedContent != null && setDroppedContent != null) {
         dispatch(loadFavouriteClips(droppedContent));
         setDroppedContent(null);
       }
-      content = droppedContent === null ? newClipsState : droppedContent;
-      if (content === null) {
+      content = droppedContent == null ? newClipsState : droppedContent;
+      if (content == null) {
         return;
       }
 
@@ -106,8 +106,10 @@ export default function ContentsWindow({ isCustomContent, currentPlayer, dropped
       }
     }
 
-    let customFilteredData = getFilteredContents(JSON.parse(content));
-    setCustomPlaylist(customFilteredData);
+    if (content != null) {
+      let customFilteredData = getFilteredContents(JSON.parse(content));
+      setCustomPlaylist(customFilteredData);
+    }
   }, [droppedContent, currentFilters, newClipsState]);
 
   useEffect(() => {
@@ -134,7 +136,7 @@ export default function ContentsWindow({ isCustomContent, currentPlayer, dropped
   }
 
   useEffect(() => {
-    const results = Object.keys(currentFilters).map((filterType) => {
+    const results = Object.keys(currentFilters).map(filterType => {
       const matchedValue = currentFilters[filterType];
       const matchedLabel =
         FilterLabels[filterType][
@@ -166,7 +168,7 @@ export default function ContentsWindow({ isCustomContent, currentPlayer, dropped
           <div className="active-filters-box">{curNavigationTab}</div>
           {currPlayer ? <div className="active-filters-box">{currPlayer.label}</div> : null}
           {appliedFilters
-            .filter((item) => item.matchedLabel !== "All")
+            .filter(item => item.matchedLabel !== "All")
             .map((item, index) => (
               <div className="active-filters-box" key={index}>
                 {item.matchedLabel}
@@ -176,14 +178,14 @@ export default function ContentsWindow({ isCustomContent, currentPlayer, dropped
         </div>
       )}
 
-      {isCustomContent === true && typeof tizen === "undefined" ? (
+      {isCustomContent === true && !isTizenPlatform() ? (
         <DragAndDrop onSuccessHandler={setDroppedContent} onErrorHandler={toast.error} />
       ) : null}
 
       <div
         className="content-area"
         style={{
-          height: curNavigationTab === tabsEnum.allClips ? "48em" : typeof tizen !== "undefined" ? "48em" : "40em",
+          height: curNavigationTab === tabsEnum.allClips ? "48em" : isTizenPlatform() ? "48em" : "40em",
         }}
       >
         <Content isCustomContent={isCustomContent} child={isCustomContent ? customPlaylist : commonPlayList} />
