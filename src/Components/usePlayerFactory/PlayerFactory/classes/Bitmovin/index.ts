@@ -6,21 +6,38 @@
 
 import type { IPlayer } from "../../../interfaces/IPlayer";
 import type { PlayerConfig } from "../../../types/PlayerConfig";
-import { changeCurrentAudio, changeCurrentSubtitles, changeCurrentVideoQuality, createPlayer, destroy, load, setAsset } from "./methods";
+import {
+  changeCurrentAudio,
+  changeCurrentSubtitles,
+  changeCurrentVideoQuality,
+  createPlayer,
+  destroy,
+  load,
+  setAsset,
+} from "./methods";
 import { Audio, KeySystem, Media, Quality, Subtitle } from "../../../utils/playAssetCurrentTypes";
 import { Loadable } from "../../../interfaces/Loadable";
 import EventManager from "../../../EventManager";
 import type { Destructible } from "../../../interfaces/Destructible";
 import { EventEnum, publish } from "../../../utils/event";
+import { onVideoSeek, onVideoSeeked, onPlayerSeek } from "./methods/seek";
+
+type PlayerSeekEvent = bitmovin.Events.SeekEvent;
 
 class Bitmovin implements IPlayer, Loadable, Destructible {
   public player: Promise<bitmovin.BitmovinInstance>;
-  
+  public playerInstance: bitmovin.BitmovinInstance | null = null;
+
   constructor(readonly config: PlayerConfig) {
+    this.createPlayer = createPlayer.bind(this);
+    this.onVideoSeekCb = onVideoSeek.bind(this);
+    this.onVideoSeekedCb = onVideoSeeked.bind(this);
+    this.onPlayerSeekCb = onPlayerSeek.bind(this);
+
     this.player = this.load()
-      .then(() => this.createPlayer())
-      .then(player => { 
-        EventManager.registerEvents(player, 'bitmovin');
+      .then(this.createPlayer)
+      .then((player) => {
+        EventManager.registerEvents(player, "bitmovin");
 
         // For integration tests
         publish(EventEnum.BitmovinPlayer, player);
@@ -28,26 +45,27 @@ class Bitmovin implements IPlayer, Loadable, Destructible {
       });
   }
 
-  load: () => Promise<any> 
-    = load;
+  load: () => Promise<any> = load;
 
-  createPlayer: () => Promise<bitmovin.BitmovinInstance>
-    = createPlayer;
+  createPlayer: (this: Bitmovin) => Promise<bitmovin.BitmovinInstance>;
 
-  setAsset: (media: Media, keySystem: KeySystem) => void
-    = setAsset;
+  setAsset: (media: Media, keySystem: KeySystem) => void = setAsset;
 
-  changeCurrentAudio: (audio: Audio) => void 
-    = changeCurrentAudio;
+  changeCurrentAudio: (audio: Audio) => void = changeCurrentAudio;
 
-  changeCurrentVideoQuality: (quality: Quality) => void 
-    = changeCurrentVideoQuality;
+  changeCurrentVideoQuality: (quality: Quality) => void = changeCurrentVideoQuality;
 
-  changeCurrentSubtitles: (subtitles: Subtitle) => void 
-    = changeCurrentSubtitles;
+  changeCurrentSubtitles: (subtitles: Subtitle) => void = changeCurrentSubtitles;
 
-  destroy: () => Promise<any>
-    = destroy;
+  destroy: () => Promise<any> = destroy;
+
+  currentSeekPos: number = -1;
+  pendingSeekPos: number = -1;
+  seekId: number = -1;
+
+  onVideoSeekCb: (this: Bitmovin, _ev: Event) => void;
+  onVideoSeekedCb: (this: Bitmovin, _ev: Event) => void;
+  onPlayerSeekCb: (this: Bitmovin, ev: PlayerSeekEvent) => void;
 }
 
 export default Bitmovin;

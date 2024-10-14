@@ -8,15 +8,20 @@ import { getBitmovinConfig } from "../utils/getBitmovinConfig";
 import { getVideoElement } from "../../utils/getVideoElement";
 import Bitmovin from "../";
 
-const createPlayer = function(this: Bitmovin): Promise<bitmovin.BitmovinInstance> {
-  return new Promise(res => {
-    const config = getBitmovinConfig();
-    const videoElement = getVideoElement(); 
-    const player = new window.bitmovin!.player.Player(videoElement.parentElement!, config);
-    player.setVideoElement(videoElement);
-    console.log(`${Bitmovin.name} has been created`);
-    res(player);
-  });
-}
+const createPlayer = function (this: Bitmovin): Promise<bitmovin.BitmovinInstance> {
+  const config = getBitmovinConfig();
+  const videoElement = getVideoElement();
+
+  this.playerInstance = new window.bitmovin!.player.Player(videoElement.parentElement!, config);
+  this.playerInstance.setVideoElement(videoElement);
+  this.playerInstance.on("seek", this.onPlayerSeekCb);
+
+  videoElement.addEventListener("seeking", this.onVideoSeekCb);
+  videoElement.addEventListener("seeked", this.onVideoSeekedCb);
+
+  console.log(`${Bitmovin.name} has been created`);
+
+  return Promise.resolve(this.playerInstance);
+};
 
 export default createPlayer;
