@@ -10,6 +10,7 @@ const createPlayer = function (this: Dashjs): Promise<dashjs.MediaPlayerClass> {
   console.log(Dashjs.name, "playerCreate");
 
   const player = window.dashjs!.MediaPlayer().create();
+  player.on("error", this.onErrorCb);
   player.initialize();
   return Promise.resolve(player);
 };

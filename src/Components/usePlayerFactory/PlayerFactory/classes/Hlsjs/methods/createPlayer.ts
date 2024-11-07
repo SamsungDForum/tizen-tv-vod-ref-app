@@ -6,15 +6,20 @@
 
 import { getVideoElement } from "../../utils/getVideoElement";
 import Hlsjs from "..";
+import { hlsPromisify } from "../utils/hls-promisify";
 
-const createPlayer = function(this: Hlsjs): Promise<hlsjs.HlsjsInstance> {
-  return new Promise(res => {
-    const videoElement = getVideoElement();
-    const player = new window.Hls({ startPosition: 0 });
-    player.attachMedia(videoElement);
-    console.log(`${Hlsjs.name} has been created`);
-    res(player);
-  });
+function hlsAttachMedia(this: hlsjs.HlsjsInstance) {
+  this.attachMedia(getVideoElement());
 }
+
+const createPlayer = function (this: Hlsjs): Promise<hlsjs.HlsjsInstance> {
+  const player = new window.Hls({ debug: true });
+  return hlsPromisify(player, [window.Hls.Events.MEDIA_ATTACHED], [window.Hls.Events.ERROR], hlsAttachMedia)
+    .catch((err) => console.error(Hlsjs.name, "media attach failed", err))
+    .then(() => {
+      console.log(Hlsjs.name, "created");
+      return player;
+    });
+};
 
 export default createPlayer;

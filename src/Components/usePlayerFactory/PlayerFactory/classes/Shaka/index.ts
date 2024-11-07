@@ -16,38 +16,37 @@ import {
   setAsset,
   networkRequest,
 } from "./methods";
-import {
-  Audio,
-  KeySystem,
-  Media,
-  Quality,
-  Subtitle,
-} from "../../../utils/playAssetCurrentTypes";
+import { Audio, KeySystem, Media, Quality, Subtitle } from "../../../utils/playAssetCurrentTypes";
 import { Loadable } from "../../../interfaces/Loadable";
 import EventManager from "../../../EventManager";
 import { Destructible } from "../../../interfaces/Destructible";
 import { EventEnum, publish } from "../../../utils/event";
+
+function error(ev: any) {
+  console.error(Shaka.name, error.name, ev, ev?.detail);
+}
 
 class Shaka implements IPlayer, Loadable, Destructible {
   public player: Promise<shaka.ShakaInstance>;
   public licenseRequestHeaders: {} | null | undefined = null;
 
   constructor(readonly config: PlayerConfig) {
-    console.debug(Shaka.name, config),
-      (this.player = this.load()
-        .then(() => this.createPlayer())
-        .then((player) => {
-          EventManager.registerEvents(player, "shaka");
+    console.debug(Shaka.name, config);
 
-          console.debug(Shaka.name, "registering request filter");
-          player
-            .getNetworkingEngine()
-            .registerRequestFilter(this.networkRequest);
+    this.onErrorCb = error.bind(this);
 
-          // For integration tests
-          publish(EventEnum.ShakaPlayer, player);
-          return player;
-        }));
+    this.player = this.load()
+      .then(() => this.createPlayer())
+      .then((player) => {
+        EventManager.registerEvents(player, "shaka");
+
+        console.debug(Shaka.name, "registering request filter");
+        player.getNetworkingEngine().registerRequestFilter(this.networkRequest);
+
+        // For integration tests
+        publish(EventEnum.ShakaPlayer, player);
+        return player;
+      });
   }
 
   networkRequest: (type, request, context) => void = networkRequest.bind(this);
@@ -60,13 +59,13 @@ class Shaka implements IPlayer, Loadable, Destructible {
 
   changeCurrentAudio: (audio: Audio) => void = changeCurrentAudio;
 
-  changeCurrentVideoQuality: (quality: Quality) => void =
-    changeCurrentVideoQuality;
+  changeCurrentVideoQuality: (quality: Quality) => void = changeCurrentVideoQuality;
 
-  changeCurrentSubtitles: (subtitiles: Subtitle) => void =
-    changeCurrentSubtitles;
+  changeCurrentSubtitles: (subtitiles: Subtitle) => void = changeCurrentSubtitles;
 
   destroy: () => Promise<any> = destroy;
+
+  onErrorCb: (this: Shaka, ev: any) => void;
 }
 
 export default Shaka;

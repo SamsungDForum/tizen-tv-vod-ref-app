@@ -15,22 +15,22 @@ import {
   load,
   setAsset,
 } from "./methods";
-import {
-  Audio,
-  KeySystem,
-  Media,
-  Quality,
-  Subtitle,
-} from "../../../utils/playAssetCurrentTypes";
+import { Audio, KeySystem, Media, Quality, Subtitle } from "../../../utils/playAssetCurrentTypes";
 import { Loadable } from "../../../interfaces/Loadable";
 import EventManager from "../../../EventManager";
 import { Destructible } from "../../../interfaces/Destructible";
 import { EventEnum, publish } from "../../../utils/event";
 
+function error(ev: any) {
+  console.error(Dashjs.name, error.name, ev);
+}
+
 class Dashjs implements IPlayer, Loadable, Destructible {
   public player: Promise<dashjs.MediaPlayerClass>;
 
   constructor(readonly config: PlayerConfig) {
+    this.onErrorCb = error.bind(this);
+
     this.player = this.load()
       .then(() => this.createPlayer())
       .then((player) => {
@@ -50,13 +50,13 @@ class Dashjs implements IPlayer, Loadable, Destructible {
 
   changeCurrentAudio: (audio: Audio) => void = changeCurrentAudio;
 
-  changeCurrentVideoQuality: (quality: Quality) => void =
-    changeCurrentVideoQuality;
+  changeCurrentVideoQuality: (quality: Quality) => void = changeCurrentVideoQuality;
 
-  changeCurrentSubtitles: (subtitles: Subtitle) => void =
-    changeCurrentSubtitles;
+  changeCurrentSubtitles: (subtitles: Subtitle) => void = changeCurrentSubtitles;
 
   destroy: () => Promise<any> = destroy;
+
+  onErrorCb: (this: Dashjs, ev: any) => void;
 }
 
 export default Dashjs;

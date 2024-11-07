@@ -6,6 +6,7 @@
 
 declare namespace hlsjs {
   export interface index {
+    [x: string]: any;
     new(config?: { [index: string]: any }): HlsjsInstance;
   }
 }

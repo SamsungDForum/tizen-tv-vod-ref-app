@@ -24,6 +24,10 @@ import { onVideoSeek, onVideoSeeked, onPlayerSeek } from "./methods/seek";
 
 type PlayerSeekEvent = bitmovin.Events.SeekEvent;
 
+function error(ev: any) {
+  console.error(Bitmovin.name, error.name, ev);
+}
+
 class Bitmovin implements IPlayer, Loadable, Destructible {
   public player: Promise<bitmovin.BitmovinInstance>;
   public playerInstance: bitmovin.BitmovinInstance | null = null;
@@ -33,6 +37,7 @@ class Bitmovin implements IPlayer, Loadable, Destructible {
     this.onVideoSeekCb = onVideoSeek.bind(this);
     this.onVideoSeekedCb = onVideoSeeked.bind(this);
     this.onPlayerSeekCb = onPlayerSeek.bind(this);
+    this.onErrorCb = error.bind(this);
 
     this.player = this.load()
       .then(this.createPlayer)
@@ -66,6 +71,7 @@ class Bitmovin implements IPlayer, Loadable, Destructible {
   onVideoSeekCb: (this: Bitmovin, _ev: Event) => void;
   onVideoSeekedCb: (this: Bitmovin, _ev: Event) => void;
   onPlayerSeekCb: (this: Bitmovin, ev: PlayerSeekEvent) => void;
+  onErrorCb: (this: Bitmovin, ev: any) => void;
 }
 
 export default Bitmovin;

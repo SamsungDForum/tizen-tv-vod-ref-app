@@ -7,17 +7,32 @@
 import { Media } from "../../../../utils/playAssetCurrentTypes";
 import Hlsjs from "..";
 import { getPlaybackTime } from "../../../../utils/playAsset";
+import { hlsPromisify } from "../utils/hls-promisify";
 
-const setAsset = function(this: Hlsjs, media: Media): void {
-  console.log(`${Hlsjs.name}: setAsset()`, media);
-  this.player = this.player.then(player => new Promise(res => {
+function hlsLoadSource(this: hlsjs.HlsjsInstance, url: string) {
+  const playbackTime = getPlaybackTime();
+  if (playbackTime > 0) {
+    console.log(Hlsjs.name, hlsLoadSource.name, "continue watching:", playbackTime);
+    this.config.startPosition = playbackTime;
+  }
 
-    const playbackTime = getPlaybackTime();
-    player.config.startPosition = playbackTime;
-    console.log('Continuous watching:', playbackTime);
-    player.loadSource(media.url);
-    res(player);
-  }));
+  this.loadSource(url);
 }
+
+const setAsset = function (this: Hlsjs, media: Media): void {
+  console.log(Hlsjs.name, "setAsset()", media);
+
+  this.player = this.player.then((player) => {
+    return hlsPromisify(
+      player,
+      [window.Hls.Events.MANIFEST_PARSED],
+      [window.Hls.Events.ERROR],
+      hlsLoadSource,
+      media.url
+    )
+      .catch((err) => console.error(Hlsjs.name, err))
+      .then(() => player);
+  });
+};
 
 export default setAsset;

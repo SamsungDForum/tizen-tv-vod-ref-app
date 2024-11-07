@@ -6,22 +6,33 @@
 
 import Shaka from "../";
 
-async function closePlayer(this: Shaka, player: shaka.ShakaInstance) {
+function closePlayer(this: Shaka, player: shaka.ShakaInstance) {
   console.debug(Shaka.name, closePlayer.name, "unregister request filter");
 
   player.getNetworkingEngine().unregisterRequestFilter(this.networkRequest);
   this.licenseRequestHeaders = null;
 
-  await player.destroy();
-  console.debug(Shaka.name, closePlayer.name, "player destroyed");
-
-  return player;
+  return player.destroy();
 }
 
 function destroy(this: Shaka): Promise<any> {
   console.debug(Shaka.name, "destroy");
+  const shakaInstance = this;
 
-  this.player = this.player.then((player) => closePlayer.call(this, player));
+  this.player = this.player.then((player) => {
+    const playerInstance = player;
+
+    return Promise.resolve()
+      .then(() => closePlayer.call(shakaInstance, playerInstance))
+      .catch((err) => {
+        console.error(Shaka.name, destroy.name, err);
+      })
+      .then(() => {
+        console.debug(Shaka.name, destroy.name, "player destroyed");
+        return playerInstance;
+      });
+  });
+
   return this.player;
 }
 

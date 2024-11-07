@@ -9,38 +9,41 @@ import { getShakaConfigBuilder } from "../utils/getShakaConfigBuilder";
 import Shaka from "../";
 import { getPlaybackTime } from "../../../../utils/playAsset";
 
-function setAsset(
-  this: Shaka,
-  media: Media,
-  keySystem?: KeySystem
-): void {
+function setAsset(this: Shaka, media: Media, keySystem?: KeySystem): void {
   console.log(`${Shaka.name}: setAsset()`, media);
-  this.player = this.player.then(
-    (player) =>
-      new Promise((res) => {
-        player.unload(false).then(() => {
-          const abrEnabled = player.getConfiguration().abr.enabled;
-          player.resetConfiguration();
 
-          this.licenseRequestHeaders = media.licenseRequestHeaders;
+  const mediaAsset: Media = Object.create(media);
+  const keySystemAsset: KeySystem | undefined = keySystem && Object.create(keySystem);
+  this.licenseRequestHeaders = mediaAsset.licenseRequestHeaders;
 
-          const builder = getShakaConfigBuilder()
-            .setDrm(media)
-            .setAssetDrmPreferences(media)
-            .setDrmPreference(keySystem)
-            .setAbr(abrEnabled);
+  this.player = this.player.then((player) => {
+    const playerInstance = player;
 
-          if (!player.configure(builder.config)) {
-            throw `malformed configuration ${builder.config}`;
-          }
+    return Promise.resolve()
+      .then(playerInstance.unload(false))
+      .then(() => {
+        const abrEnabled = playerInstance.getConfiguration().abr.enabled;
+        playerInstance.resetConfiguration();
 
-          const playbackTime = getPlaybackTime();
-          console.log("Continuous watching:", playbackTime);
-          player.load(media.url, playbackTime, media.contentType);
-        });
-        res(player);
+        const builder = getShakaConfigBuilder()
+          .setDrm(mediaAsset)
+          .setAssetDrmPreferences(mediaAsset)
+          .setDrmPreference(keySystemAsset)
+          .setAbr(abrEnabled);
+
+        if (!playerInstance.configure(builder.config)) {
+          throw new Error(`malformed configuration ${builder.config}`);
+        }
+
+        const playbackTime = getPlaybackTime();
+        console.log("Continue watching:", playbackTime);
+        return playerInstance.load(mediaAsset.url, playbackTime, mediaAsset.contentType);
       })
-  );
-};
+      .catch((err) => {
+        console.error(Shaka.name, setAsset.name, err);
+      })
+      .then(() => playerInstance);
+  });
+}
 
 export default setAsset;

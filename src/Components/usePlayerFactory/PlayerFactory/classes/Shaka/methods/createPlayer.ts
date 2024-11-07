@@ -7,8 +7,8 @@
 import { getVideoElement } from "../../utils/getVideoElement";
 import Shaka from "../";
 
-const createPlayer = function(this: Shaka): Promise<shaka.ShakaInstance> {
-  return new Promise(res => {
+const createPlayer = function (this: Shaka): Promise<shaka.ShakaInstance> {
+  return new Promise((res) => {
     const videoElement = getVideoElement();
     const player = new window.shaka.Player(videoElement);
 
@@ -16,9 +16,10 @@ const createPlayer = function(this: Shaka): Promise<shaka.ShakaInstance> {
       window.shaka.polyfill.installAll();
     }
 
+    player.addEventListener("error", this.onErrorCb);
     console.log(`${Shaka.name} has been created`);
     res(player);
   });
-}
+};
 
 export default createPlayer;

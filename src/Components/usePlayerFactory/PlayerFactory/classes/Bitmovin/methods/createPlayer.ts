@@ -13,6 +13,7 @@ const createPlayer = function (this: Bitmovin): Promise<bitmovin.BitmovinInstanc
   const videoElement = getVideoElement();
 
   this.playerInstance = new window.bitmovin!.player.Player(videoElement.parentElement!, config);
+  this.playerInstance.on("error", this.onErrorCb);
   this.playerInstance.setVideoElement(videoElement);
   this.playerInstance.on("seek", this.onPlayerSeekCb);
 
