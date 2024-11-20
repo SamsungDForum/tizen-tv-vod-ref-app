@@ -32,7 +32,7 @@ function ChartConfig() {
     <div className="nonExpandBorder">
       <StyledButton
         icon={<FilterLogsSvgIcon />}
-        buttonName={`${isChartTracking ? "Stop Drawing" : "Start Drawing"}`}
+        buttonName={`${isChartTracking ? "STOP PLOTTER" : "START PLOTTER"}`}
         label={isChartTracking ? "ON" : "OFF"}
         onClick={() => dispatch(setChartTrackState(!isChartTracking))}
         className="leftBarElement"
