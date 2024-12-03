@@ -8,6 +8,7 @@ import { Media } from "../../../../utils/playAssetCurrentTypes";
 import Hlsjs from "..";
 import { getPlaybackTime } from "../../../../utils/playAsset";
 import { hlsPromisify } from "../utils/hls-promisify";
+import { getVideoElement } from "../../utils/getVideoElement";
 
 function hlsLoadSource(this: hlsjs.HlsjsInstance, url: string) {
   const playbackTime = getPlaybackTime();
@@ -30,6 +31,7 @@ const setAsset = function (this: Hlsjs, media: Media): void {
       hlsLoadSource,
       media.url
     )
+      .then(() => getVideoElement().play())
       .catch((err) => console.error(Hlsjs.name, err))
       .then(() => player);
   });

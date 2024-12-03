@@ -53,7 +53,7 @@ const VideoReactPlayer = ({ playbackSettings, playerRef, className }: Props) => 
   }, [playbackSettings.source]);
 
   return (
-    <Player videoId="elVideo" autoPlay ref={playerRef} className={className}>
+    <Player videoId="elVideo" ref={playerRef} className={className}>
       <Subtitle subtitleText={subtitleText} />
       <BigPlayButton className={classNames(className, { hide: true })} />
       <ControlBar

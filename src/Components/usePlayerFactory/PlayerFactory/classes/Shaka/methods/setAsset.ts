@@ -8,6 +8,7 @@ import { KeySystem, Media } from "../../../../utils/playAssetCurrentTypes";
 import { getShakaConfigBuilder } from "../utils/getShakaConfigBuilder";
 import Shaka from "../";
 import { getPlaybackTime } from "../../../../utils/playAsset";
+import { getVideoElement } from "../../utils/getVideoElement";
 
 function setAsset(this: Shaka, media: Media, keySystem?: KeySystem): void {
   console.log(`${Shaka.name}: setAsset()`, media);
@@ -39,6 +40,7 @@ function setAsset(this: Shaka, media: Media, keySystem?: KeySystem): void {
         console.log("Continue watching:", playbackTime);
         return playerInstance.load(mediaAsset.url, playbackTime, mediaAsset.contentType);
       })
+      .then(() => getVideoElement().play())
       .catch((err) => {
         console.error(Shaka.name, setAsset.name, err);
       })

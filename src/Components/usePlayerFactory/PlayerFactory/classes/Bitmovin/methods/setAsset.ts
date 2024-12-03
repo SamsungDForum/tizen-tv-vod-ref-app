@@ -34,6 +34,8 @@ const setAsset = function (this: Bitmovin, media: Media, keySystem?: KeySystem):
           const seekRes = playerInstance.seek(playbackTime);
           console.log("Continue watching:", playbackTime, seekRes);
         }
+
+        return playerInstance.play();
       })
       .catch((err) => {
         console.error(Bitmovin.name, "setAsset()", err);
