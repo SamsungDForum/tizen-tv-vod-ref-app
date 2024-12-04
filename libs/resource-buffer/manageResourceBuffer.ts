@@ -1,19 +1,24 @@
 import { TizenDetailsType } from "../../src/Components/WorkTabs/Tabs/AdvancedContent/ChartsComponents/ChartTypes";
 import { saveLogs } from "../../src/Components/WorkTabs/Tabs/Logs/logger";
 import { eventTypeMonitor, resourceMonitor } from "../resource-monitor";
-import { unuseResourceMonitor, useResourceMonitor } from "../resource-monitor/resourceMonitorHandlers";
 import { ResourceBuffer } from "./resourceBuffer";
 
+interface OnBufferDataEvent extends EventListener {
+  detail: { tizen: { memoryUsage: number; cpuUsage: number } };
+}
 export class ManageResourceBuffer<TResourceBuffer extends ResourceBuffer> {
   private errorCallback?: (error: Error) => void;
   private lastResourceExceed = 0; // determines how many measurements must be taken to allow the dataUsage file to be saved
   private isPlotChartsOn = false;
   bufferSaver: TResourceBuffer;
   bufferPlotter: TResourceBuffer;
+  private onBufferDataBound: (e) => void;
 
   constructor(saver: TResourceBuffer, plotter: TResourceBuffer) {
     this.bufferSaver = saver;
     this.bufferPlotter = plotter;
+
+    this.onBufferDataBound = this.onBufferData.bind(this);
   }
 
   setErrorCallback(callback: (error: Error) => void) {
@@ -21,14 +26,12 @@ export class ManageResourceBuffer<TResourceBuffer extends ResourceBuffer> {
   }
 
   start() {
-    useResourceMonitor();
-    resourceMonitor.addEventListener(eventTypeMonitor, this.onBufferData.bind(this));
+    resourceMonitor.addEventListener(eventTypeMonitor, this.onBufferDataBound);
     this.isPlotChartsOn = true;
   }
 
   stop() {
-    unuseResourceMonitor();
-    resourceMonitor.removeEventListener(eventTypeMonitor, this.onBufferData.bind(this));
+    resourceMonitor.removeEventListener(eventTypeMonitor, this.onBufferDataBound);
     this.isPlotChartsOn = false;
   }
   reset() {
@@ -36,8 +39,8 @@ export class ManageResourceBuffer<TResourceBuffer extends ResourceBuffer> {
     this.bufferPlotter.clear();
   }
 
-  onBufferData(e) {
-    if (e.detail.tizen == undefined || !this.isPlotChartsOn) return null;
+  onBufferData(e: OnBufferDataEvent) {
+    if (e.detail.tizen == undefined || !this.isPlotChartsOn) return;
     const { memoryUsage, cpuUsage }: TizenDetailsType = e.detail.tizen;
 
     if (this.bufferSaver.length > 10) {
