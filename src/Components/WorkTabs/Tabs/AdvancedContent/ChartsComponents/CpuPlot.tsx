@@ -8,10 +8,10 @@ import React from "react";
 import styles from ".././AdvancedContent.module.scss";
 import LineChart from "../Charts/LineChart";
 import type { PlotProps } from "./ChartTypes";
-import { resourceBuffer } from "../../../../../../libs/resource-buffer";
+import { bufferPlotter } from "../../../../../../libs/resource-buffer";
 
 function CpuPlot({ width, height }: PlotProps) {
-  const chartData = resourceBuffer.dataPlotter.cpuConsumption;
+  const chartData = bufferPlotter.cpu;
 
   return (
     <div style={{ marginLeft: "50px" }}>

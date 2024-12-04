@@ -14,6 +14,7 @@ import { eventTypeMonitor, resourceMonitor } from "../../../../../libs/resource-
 
 export default function PlottingSection() {
   useStateEvent(resourceMonitor, eventTypeMonitor);
+
   if (isTizenSupported) {
     return (
       <div className={styles.advOptionContainer}>

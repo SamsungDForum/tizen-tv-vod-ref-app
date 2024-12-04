@@ -8,18 +8,19 @@ import React, { useEffect } from "react";
 import styles from "./AdvancedContent.module.scss";
 import { VideoFrameInfo } from "./info";
 import { MemoryGraph } from "./ChartsComponents/MemoryGraph";
-import { unuseResourceMonitor, useResourceMonitor } from "../../../../../libs/resource-monitor/resourceMonitorHandlers";
-import { useTypedSelector } from "../../../../reduxStore/useTypedSelector";
 import { Details } from "./ChartsComponents/ChartTypes";
 import { useStateEvent } from "../../../../../libs/native-event";
 import { resourceMonitor, eventTypeMonitor } from "../../../../../libs/resource-monitor";
 import { CpuGraph } from "./ChartsComponents/CpuGraph";
 import { ErrorOccurred } from "./ErrorOccurred";
 import { isTizenSupported } from "../../../../../libs/resource-buffer/isTizenSupported";
+import { useTypedSelector } from "../../../../reduxStore/useTypedSelector";
+import { useResourceMonitor, unuseResourceMonitor } from "../../../../../libs/resource-monitor/resourceMonitorHandlers";
 
 export default function GraphsSection() {
-  const isChartTracking = useTypedSelector((state) => state.ChartConfig.isTracking);
   const [ev]: [CustomEvent<Details> | any] = useStateEvent(resourceMonitor, eventTypeMonitor);
+
+  const isChartTracking = useTypedSelector((state) => state.ChartConfig.isTracking);
 
   useEffect(() => {
     useResourceMonitor();

@@ -9,7 +9,7 @@
 import { useTypedSelector } from "../../../../reduxStore/useTypedSelector";
 import * as Files from "../../../Storages/Files";
 import { consoleLogs } from "./log-source";
-import { resourceBuffer } from "../../../../../libs/resource-buffer";
+import { bufferSaver } from "../../../../../libs/resource-buffer";
 import { RESOURCE_MONITOR_INTERVAL } from "../../../../../libs/resource-monitor";
 
 function generateTableOfUsageData(memory, cpu) {
@@ -42,8 +42,8 @@ function generateTableOfUsageData(memory, cpu) {
 }
 
 export function saveLogs() {
-  const memory = resourceBuffer.dataSaver.memoryConsumption;
-  const cpu = resourceBuffer.dataSaver.cpuConsumption;
+  const memory = bufferSaver.memory;
+  const cpu = bufferSaver.cpu;
 
   const logs = consoleLogs().map((log) => log.dataLine);
   const resourceConsumption = generateTableOfUsageData(memory, cpu);
