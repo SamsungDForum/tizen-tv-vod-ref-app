@@ -22,7 +22,7 @@ module.exports = (env) => {
   const config = {
     mode: env.production ? "production" : env.development ? "development" : "none",
 
-    devServer: require("./webpack.devserver").devServer,
+    devServer: env.https ? require("./webpack.httpsserver").devServer : require("./webpack.devserver").devServer,
     devtool: false,
     context: path.join(projectRoot, "src"),
 

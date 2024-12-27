@@ -52,6 +52,12 @@
         </td>
       </tr>
       <tr>
+        <td><code>npm run serve:https</code></td>
+        <td>
+          Starts local https server. Application will be served in <a href=https://webpack.js.org/configuration/mode/ >developer mode</a>. To fully work extra repository needs to be placed next to this one in folder tree - so that project will find ssl certificates for https. Extra connected repository is: https://github.sec.samsung.net/Multichannel-Video-Services/ssl-cert</a>
+        </td>
+      </tr>
+      <tr>
         <td><code>npm run bundle:clean</code></td>
         <td>
           Clears bundle and package output directories.<br>
