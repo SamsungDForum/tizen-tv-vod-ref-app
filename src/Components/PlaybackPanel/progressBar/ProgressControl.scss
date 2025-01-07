@@ -1,0 +1,80 @@
+/* Copyright
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
+ @import "../../../colors2017.scss";
+
+.controllersContainer  {
+  display: none;
+  width: 100%;
+  position: absolute;
+  bottom: 5rem;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.controllersContainer .show {
+  display: flex;
+  transition: 1.0s, opacity 1.0s;
+}
+
+.progressWithTime {
+  width: 98%;
+  height: 100%;
+  display: flex;
+}
+.timeLeft {
+  color: $videoClipTitle;
+  width: 100%;
+  height: 100%;
+  margin-top: -3px;
+}
+
+ .controls {
+    width: 100%;
+    height: min-content;
+    position: relative;
+    left: 2rem;
+    border: none;
+    outline: none;
+    &:focus {
+      box-shadow: 0px 0px 15px 3px #9e9b9b;
+      border: none;
+      outline: none;
+    }
+  }
+  
+  .controls .progress {
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+    
+  }
+  
+  .controls progress {
+    display: block;
+    width: 100%;
+    height: 4px;
+    z-index: 2 !important;
+    border: none;
+    border-radius: 2px;
+    transition: visibility 0.1s, opacity 0.1s;
+
+    &::-moz-progress-bar {
+        background-color: $videoClipTitle ;
+      }
+
+    &::-webkit-progress-value {
+        background-color: $videoClipTitle ;
+      }
+}
+
+  .controls progress span {
+    width: 0%;
+    height: 100%;
+    display: inline-block;
+  }
+              

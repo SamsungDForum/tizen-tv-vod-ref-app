@@ -5,14 +5,13 @@
  */
 
 import React, { useEffect } from "react";
-import { Player, ControlBar, BigPlayButton, RemainingTimeDisplay, ProgressControl } from "video-react";
-import classNames from "classnames";
-import { nav, navConfig } from "../../../libs/spatial-navigation";
+import { Player, BigPlayButton } from "video-react";
 import usePlayerFactory from "../usePlayerFactory";
 import { sourceUnmount } from "../usePlayerFactory/utils/setting";
 import { useTypedSelector } from "../../reduxStore/useTypedSelector";
 import { SettingState } from "redux-states";
-import { SpatialCfg } from "../../../libs/spatial-navigation/spatialCfgTypes";
+import ProgresWithTime from "./progressBar/ProgressWithTime";
+import { ControlBar } from "video-react";
 
 export type PlayerMethods = Player["props"];
 type Props = {
@@ -21,27 +20,8 @@ type Props = {
   className?: string;
 };
 const VideoReactPlayer = ({ playbackSettings, playerRef, className }: Props) => {
-  const isOverlayVisible = useTypedSelector((state) => state.OverlayVisible.value);
   const subtitleText = useTypedSelector((state) => state.SubtitleOverlay.value);
-  const isVideoFullScreenOn = useTypedSelector((state) => state.VideoFullScreen.value);
   const { destroyPlayer } = usePlayerFactory(playbackSettings.source.current);
-
-  useEffect(() => {
-    const navSectionMessages = "progress-control-bar";
-    let cfg: SpatialCfg = { ...navConfig };
-    cfg.selector = ".video-react-progress-holder";
-    cfg.leaveFor = {
-      up: "@settings-controls-panel",
-      down: "@settings-controls-panel",
-    };
-    nav.remove(navSectionMessages);
-    nav.add(navSectionMessages, cfg);
-
-    return () => {
-      nav.remove(navSectionMessages);
-    };
-  }, [isVideoFullScreenOn]);
-
   useEffect(() => {
     if (playbackSettings.source == null) {
       return;
@@ -51,25 +31,14 @@ const VideoReactPlayer = ({ playbackSettings, playerRef, className }: Props) => 
       destroyPlayer().then(() => sourceUnmount());
     }
   }, [playbackSettings.source]);
-
   return (
     <Player videoId="elVideo" ref={playerRef} className={className}>
       <Subtitle subtitleText={subtitleText} />
-      <BigPlayButton className={classNames(className, { hide: true })} />
-      <ControlBar
-        className={
-          isVideoFullScreenOn
-            ? classNames(className, {
-                "video-player-control-bar": true,
-              }) + (isOverlayVisible ? "" : " fade-out-animation")
-            : "hide"
-        }
-        autoHide={false}
-        disableDefaultControls={true}
-      >
-        <ProgressControl className={classNames(className, { "video-player-progress-control": true })} />
-        <RemainingTimeDisplay className={classNames(className, { "video-player-remaining-time-display": true })} />
-      </ControlBar>
+      <ProgresWithTime />
+
+      {/* It's necessary to remove default Controls from video-react */}
+      <ControlBar disableCompletely={true} />
+      <BigPlayButton className="hide" />
     </Player>
   );
 };
