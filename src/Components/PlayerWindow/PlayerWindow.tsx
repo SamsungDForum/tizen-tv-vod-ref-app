@@ -4,8 +4,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect, useRef } from "react";
 import PlaybackPanel from "../PlaybackPanel/PlaybackPanel";
 import "../../../assets/resource/config.xml";
 import styles from "./PlayerWindow.module.scss";
@@ -17,14 +16,43 @@ import { reqTizenVersion } from "../../helpers/reqTizenVersion";
 import { setVideoFullScreenOn } from "../PlaybackPanel/VideoFullScreenSlice";
 import { setMedia } from "../usePlayerFactory/utils/playAsset";
 import { dispatch } from "../../reduxStore/store";
+import { useTypedSelector } from "../../reduxStore/useTypedSelector";
+import { getNullableVideoElement } from "../usePlayerFactory/PlayerFactory/classes/utils/getVideoElement";
 
 export default function PlayerWindow(props) {
-  const playerRef = React.useRef(null);
-  const isVideoFullScreenOn = useSelector((state) => state.VideoFullScreen.value);
-  const allowFloating = reqTizenVersion(4);
+  const playerWindow = useRef<HTMLDivElement>(null);
   const [isFloatingFocusable, setIsFloatingFocusable] = useState(false);
   const [videoBg, setVideoBg] = useState(false);
-  const media = useSelector((state) => state.playAsset.value.media);
+
+  const isVideoFullScreenOn = useTypedSelector((state) => state.VideoFullScreen.value);
+  const media = useTypedSelector((state) => state.playAsset.value.media);
+
+  const allowFloating = reqTizenVersion(4);
+  const video = getNullableVideoElement();
+
+  function handleStopBtn() {
+    video?.pause();
+    dispatch(setVideoFullScreenOn(false));
+    setMedia(undefined);
+  }
+
+  function handleKeyDown(e) {
+    const key = getKey(e);
+    if (!video) return null;
+    switch (key) {
+      case KeyName.PLAYPAUSE:
+        const isPaused = video.paused;
+        return isPaused ? video.play() : video.pause();
+      case KeyName.PAUSE:
+        return video.pause();
+      case KeyName.REW:
+        return (video.currentTime = video.currentTime - 10);
+      case KeyName.FFW:
+        return (video.currentTime = video.currentTime + 10);
+      case KeyName.STOP:
+        return handleStopBtn();
+    }
+  }
 
   useEffect(() => {
     if (media !== undefined) {
@@ -38,33 +66,7 @@ export default function PlayerWindow(props) {
     setVideoBg(true);
   }, []);
 
-  function handleStopBtn() {
-    playerRef.current.pause();
-    playerRef.current.seek(0);
-    dispatch(setVideoFullScreenOn(false));
-    setMedia(undefined);
-  }
-
-  const playerWindow = React.useRef(null);
-  React.useEffect(() => {
-    const handleKeyDown = (e) => {
-      const key = getKey(e);
-
-      switch (key) {
-        case KeyName.PLAYPAUSE:
-          const isPaused = playerRef.current.getState().player.paused;
-          return isPaused ? playerRef.current.play() : playerRef.current.pause();
-        case KeyName.PAUSE:
-          return playerRef.current.pause();
-        case KeyName.REW:
-          return playerRef.current.replay(10);
-        case KeyName.FFW:
-          return playerRef.current.forward(10);
-        case KeyName.STOP:
-          return handleStopBtn();
-      }
-    };
-
+  useEffect(() => {
     if (!allowFloating) {
       window.addEventListener("keydown", handleKeyDown);
       return () => {
@@ -76,7 +78,7 @@ export default function PlayerWindow(props) {
         playerWindow?.current?.removeEventListener("keydown", handleKeyDown);
       };
     }
-  }, []);
+  }, [video]);
 
   return (
     <div
@@ -93,7 +95,7 @@ export default function PlayerWindow(props) {
           "set-min-width-to-100-percent": isVideoFullScreenOn,
         })}
       >
-        <PlaybackPanel playbackSettings={props.playbackSettings} playerRef={playerRef} />
+        <PlaybackPanel playbackSettings={props.playbackSettings} />
         {isFloatingFocusable && allowFloating && media !== undefined ? <FullscreenVideo /> : null}
       </div>
     </div>

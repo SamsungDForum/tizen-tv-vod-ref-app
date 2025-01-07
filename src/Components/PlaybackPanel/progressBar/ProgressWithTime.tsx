@@ -11,20 +11,18 @@ import classNames from "classnames";
 import ProgressControl from "./ProgressControl";
 import { RemainingTimeDisplay } from "./RemainingTimeDisplay";
 import { useTypedSelector } from "../../../reduxStore/useTypedSelector";
+import { getNullableVideoElement } from "../../usePlayerFactory/PlayerFactory/classes/utils/getVideoElement";
 
 function ProgresWithTime() {
   const isOverlayVisible = useTypedSelector((state) => state.OverlayVisible.value);
+  const isVideoFullScreenOn = useTypedSelector((state) => state.VideoFullScreen.value);
 
-  const video = document.querySelector("video");
+  const video = getNullableVideoElement();
   if (!video) return null;
 
-  function isVideoPlaying() {
-    return video && !video.ended && video.currentTime > 0;
-  }
-
   return (
-    <div className={classNames("controllersContainer", { show: isVideoPlaying() && isOverlayVisible })}>
-      <div className="progressWithTime">
+    <div className={classNames("controllersContainer", { show: isOverlayVisible && isVideoFullScreenOn })}>
+      <div className={"progressWithTime"}>
         <ProgressControl video={video} tabIndex={0} />
         <RemainingTimeDisplay video={video} />
       </div>

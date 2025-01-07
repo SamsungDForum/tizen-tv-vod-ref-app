@@ -8,4 +8,11 @@ const getVideoElement = (): HTMLVideoElement => {
   return document.getElementById("elVideo") as HTMLVideoElement;
 };
 
-export { getVideoElement };
+// This is the same as above but with nullable value
+// It will be removed in the future
+const getNullableVideoElement = (): HTMLVideoElement | null => {
+  const video = document.getElementById("elVideo") as HTMLVideoElement | null;
+  return video;
+};
+
+export { getVideoElement, getNullableVideoElement };

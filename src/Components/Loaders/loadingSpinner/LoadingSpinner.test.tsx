@@ -8,16 +8,17 @@ import "@testing-library/jest-dom";
 import { render } from "@testing-library/react";
 import React from "react";
 import { Provider } from "react-redux";
-import { vi } from "vitest";
 import { getAppStore } from "../../../reduxStore/store";
 import LoadingSpinner from "./LoadingSpinner";
 import styles from "./LoadingSpinner.module.scss";
+import { getNullableVideoElement } from "../../usePlayerFactory/PlayerFactory/classes/utils/getVideoElement";
 
 describe("src/Components/PlaybackPanel/loadingSpinner/LoadingSpinner.test.tsx", () => {
+  const video = getNullableVideoElement();
   it("should show spinner styling", () => {
     const { container } = render(
       <Provider store={getAppStore()}>
-        <LoadingSpinner showLoading={true} setShowLoading={vi.fn()} terminateTimeout={500} />
+        <LoadingSpinner video={video} />
       </Provider>
     );
 
@@ -28,7 +29,7 @@ describe("src/Components/PlaybackPanel/loadingSpinner/LoadingSpinner.test.tsx", 
   it("should hide spinner styling", () => {
     const { container } = render(
       <Provider store={getAppStore()}>
-        <LoadingSpinner showLoading={false} setShowLoading={vi.fn()} terminateTimeout={500} />
+        <LoadingSpinner video={video} />
       </Provider>
     );
 

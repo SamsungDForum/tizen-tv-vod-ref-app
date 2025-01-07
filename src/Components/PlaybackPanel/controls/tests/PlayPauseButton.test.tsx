@@ -12,9 +12,10 @@ import { vi } from "vitest";
 import { getAppStore } from "../../../../reduxStore/store";
 import { playbackHandlers } from "../../PlaybackPanel";
 import PlayPauseButton from "../PlayPauseButton";
+import { getVideoElement } from "../../../usePlayerFactory/PlayerFactory/classes/utils/getVideoElement";
 
 describe("src/Components/PlaybackPanel/controls/tests/PlayPauseButton.test.tsx", () => {
-  const pbProps = { playerRef: { current: null }, subtitleText: "", setSubtitleText: vi.fn() };
+  const pbProps = { video: getVideoElement(), subtitleText: "", setSubtitleText: vi.fn() };
   const onPlayPauseClick = vi.fn(() => playbackHandlers(pbProps).onPlayPauseClick);
 
   beforeEach(() => {

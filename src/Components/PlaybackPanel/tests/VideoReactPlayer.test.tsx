@@ -16,7 +16,6 @@ import { PlayerType } from "../../usePlayerFactory/types/PlayerType";
 
 describe("src/Components/PlaybackPanel/tests/VideoReactPlayer.test.tsx", () => {
   const mockStore = configureStore([]);
-  const mockPlayerRef = { current: null };
   const playbackSettings = {
     source: {
       current: {
@@ -57,7 +56,7 @@ describe("src/Components/PlaybackPanel/tests/VideoReactPlayer.test.tsx", () => {
       const mockedStore = mockStore(storeVariants.fullScreen);
       const { container } = render(
         <Provider store={mockedStore}>
-          <VideoReactPlayer playerRef={mockPlayerRef} playbackSettings={playbackSettings} />
+          <VideoReactPlayer playbackSettings={playbackSettings} />
         </Provider>
       );
 
@@ -69,7 +68,7 @@ describe("src/Components/PlaybackPanel/tests/VideoReactPlayer.test.tsx", () => {
       const mockedStore = mockStore(storeVariants.standardScreen);
       const { container } = render(
         <Provider store={mockedStore}>
-          <VideoReactPlayer playerRef={mockPlayerRef} playbackSettings={playbackSettings} />
+          <VideoReactPlayer playbackSettings={playbackSettings} />
         </Provider>
       );
 

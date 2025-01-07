@@ -72,6 +72,7 @@
     "@reduxjs/toolkit": "^1.8.1",
     "@types/react": "^17.0.2",
     "@ungap/event-target": "^0.2.4",
+    "classnames": "^2.5.1",
     "console-feed": "^3.5.0",
     "d3": "^7.8.5",
     "json-loader": "^0.5.7",
@@ -89,7 +90,6 @@
     "react-virtualized": "^9.22.5",
     "redux": "^4.2.0",
     "scroll-behavior-polyfill": "^2.0.13",
-    "swiper": "^11.0.5",
-    "video-react": "^0.15.0"
+    "swiper": "^11.0.5"
   }
 }

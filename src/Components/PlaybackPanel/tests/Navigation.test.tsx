@@ -48,9 +48,6 @@ describe("src/Components/PlaybackPanel/tests/Navigation.test.tsx", () => {
     keySystem: { current: "", list: [] },
   };
   const mockOverlayTimeoutID = { current: -1 };
-  const mockPlayerRef = {
-    current: null,
-  };
 
   describe("Testing navigation onKeyEvent function", () => {
     dispatch(dispatch(showConfirmation(true)));
@@ -73,7 +70,7 @@ describe("src/Components/PlaybackPanel/tests/Navigation.test.tsx", () => {
       dispatch(setVideoFullScreenOn(true));
       render(
         <Provider store={getAppStore()}>
-          <PlaybackPanel playbackSettings={playbackSettings} playerRef={mockPlayerRef} />
+          <PlaybackPanel playbackSettings={playbackSettings} />
         </Provider>
       );
 
@@ -103,7 +100,7 @@ describe("src/Components/PlaybackPanel/tests/Navigation.test.tsx", () => {
       dispatch(setOverlayIsVisible(true));
       render(
         <Provider store={getAppStore()}>
-          <PlaybackPanel playbackSettings={playbackSettings} playerRef={mockPlayerRef} />
+          <PlaybackPanel playbackSettings={playbackSettings} />
         </Provider>
       );
       const keyEvent = {
@@ -124,7 +121,7 @@ describe("src/Components/PlaybackPanel/tests/Navigation.test.tsx", () => {
       dispatch(setVideoFullScreenOn(true));
       render(
         <Provider store={getAppStore()}>
-          <PlaybackPanel playbackSettings={playbackSettings} playerRef={mockPlayerRef} />
+          <PlaybackPanel playbackSettings={playbackSettings} />
         </Provider>
       );
 
@@ -146,7 +143,7 @@ describe("src/Components/PlaybackPanel/tests/Navigation.test.tsx", () => {
       dispatch(setVideoFullScreenOn(true));
       render(
         <Provider store={getAppStore()}>
-          <PlaybackPanel playbackSettings={playbackSettings} playerRef={mockPlayerRef} />
+          <PlaybackPanel playbackSettings={playbackSettings} />
         </Provider>
       );
 
@@ -203,7 +200,7 @@ describe("src/Components/PlaybackPanel/tests/Navigation.test.tsx", () => {
       dispatch(setVideoFullScreenOn(false));
       render(
         <Provider store={getAppStore()}>
-          <PlaybackPanel playbackSettings={playbackSettings} playerRef={mockPlayerRef} />
+          <PlaybackPanel playbackSettings={playbackSettings} />
         </Provider>
       );
 
@@ -221,7 +218,7 @@ describe("src/Components/PlaybackPanel/tests/Navigation.test.tsx", () => {
       dispatch(setVideoFullScreenOn(true));
       render(
         <Provider store={getAppStore()}>
-          <PlaybackPanel playbackSettings={playbackSettings} playerRef={mockPlayerRef} />
+          <PlaybackPanel playbackSettings={playbackSettings} />
         </Provider>
       );
       const mockHtmlElement = document.createElement("div");

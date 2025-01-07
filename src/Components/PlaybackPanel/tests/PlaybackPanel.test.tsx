@@ -35,9 +35,7 @@ describe("src/Components/PlaybackPanel/tests/PlaybackPanel.test.tsx", () => {
     videoQuality: { current: "", list: [] },
     keySystem: { current: "", list: [] },
   };
-  const mockPlayerRef = {
-    current: null,
-  };
+
   const storeVariants = {
     fullScreen: {
       VideoFullScreen: { value: true },
@@ -70,7 +68,7 @@ describe("src/Components/PlaybackPanel/tests/PlaybackPanel.test.tsx", () => {
       const mockedStore = mockStore(storeVariants.standardScreen);
       const { container } = render(
         <Provider store={mockedStore}>
-          <PlaybackPanel playbackSettings={playbackSettings} playerRef={mockPlayerRef} />
+          <PlaybackPanel playbackSettings={playbackSettings} />
         </Provider>
       );
 
@@ -88,7 +86,7 @@ describe("src/Components/PlaybackPanel/tests/PlaybackPanel.test.tsx", () => {
       const mockedStore = mockStore(storeVariants.fullScreen);
       const { container } = render(
         <Provider store={mockedStore}>
-          <PlaybackPanel playbackSettings={playbackSettings} playerRef={mockPlayerRef} />
+          <PlaybackPanel playbackSettings={playbackSettings} />
         </Provider>
       );
 

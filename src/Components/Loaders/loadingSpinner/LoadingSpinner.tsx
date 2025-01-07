@@ -4,28 +4,32 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./LoadingSpinner.module.scss";
 
 type Props = {
-  showLoading: boolean;
-  setShowLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  terminateTimeout: number;
+  video: HTMLVideoElement | null;
 };
-const LoadingSpinner = ({ showLoading, setShowLoading, terminateTimeout }: Props) => {
+const LoadingSpinner = ({ video }: Props) => {
+  const [showLoading, setShowLoading] = useState(false);
+
+  const setLoadingState = () => setShowLoading(true);
+  const handleBind = () => {
+    if (video?.readyState) setShowLoading(false);
+  };
+
   useEffect(() => {
-    if (showLoading) {
-      const spinnerTimeout = setTimeout(() => {
-        setShowLoading(false);
-      }, terminateTimeout);
+    video?.addEventListener("timeupdate", handleBind);
+    video?.addEventListener("waiting", setLoadingState);
+    if (video?.src === "") setShowLoading(false);
 
-      return () => {
-        clearTimeout(spinnerTimeout);
-      };
-    }
-  }, [showLoading]);
+    return () => {
+      video?.removeEventListener("timeupdate", handleBind);
+      video?.removeEventListener("waiting", setLoadingState);
+    };
+  }, [video]);
 
-  return <div className={`${styles.loadingSpinner} ${showLoading ? styles.loadingShow : styles.loadingHide}`}></div>;
+  return <div className={`${styles.loadingSpinner} ${showLoading ? styles.loadingShow : styles.loadingHide}`} />;
 };
 
 export default LoadingSpinner;

@@ -20,7 +20,6 @@ import { useSetting, store, valueOf } from "./Components/usePlayerFactory/utils/
 import { MessageBox } from "./Components/MessageBox/MessageBox";
 import { registerTizenTVKeys } from "./Components/KeyEvents";
 import application from "./version.json";
-import "./helpers/customSliderPatch";
 import { LogSource, startCapture, stopCapture } from "./Components/WorkTabs/Tabs/Logs/log-source";
 import ColorsChanger from "./Components/ColorsChanger/ColorsChanger";
 import { addPreviewService, removePreviewService } from "./services/utils";

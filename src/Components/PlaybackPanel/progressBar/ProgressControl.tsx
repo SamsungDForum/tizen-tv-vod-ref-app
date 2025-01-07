@@ -6,53 +6,66 @@
 
 import "./ProgressControl.scss";
 
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { nav, navConfig } from "../../../../libs/spatial-navigation";
 import { SpatialCfg } from "../../../../libs/spatial-navigation/spatialCfgTypes";
 import { useTypedSelector } from "../../../reduxStore/useTypedSelector";
+import { getKey, KeyName } from "../../KeyEvents";
+import { onRewind } from "../PlaybackPanel";
 
 interface ProgressControlType {
   tabIndex: number;
   video: HTMLVideoElement;
 }
 function ProgressControl({ tabIndex, video }: ProgressControlType) {
+  const progressRef = useRef<HTMLProgressElement>(null);
   const isVideoFullScreenOn = useTypedSelector((state) => state.VideoFullScreen.value);
 
-  const skipVideo = useCallback(
-    function (e) {
-      const progress = document.querySelector("progress");
+  function rewindVideo(e) {
+    const progress = progressRef.current;
 
-      if (!progress || !video) return null;
-      const rect = progress.getBoundingClientRect();
-      const pos = (e.pageX - rect.left) / progress.offsetWidth;
-      video.currentTime = pos * video.duration;
-    },
-    [video]
-  );
+    if (!progress || !video) return null;
+    const rect = progress.getBoundingClientRect();
+    const pos = (e.pageX - rect.left) / progress.offsetWidth;
+    video.currentTime = pos * video.duration;
+  }
 
   function setVideoDuration() {
     const progress = document.querySelector("progress");
-    if (!progress || !video || Number.isNaN(video.duration)) return null;
+    if (!progress?.max || !video || Number.isNaN(video.duration)) return null;
     progress.max = video.duration;
   }
 
   function updateProgress() {
-    const progress = document.querySelector("progress");
-    if (!progress || !video) return null;
+    const progress = progressRef.current;
+    if (!progress) return null;
     progress.value = video.currentTime;
   }
 
+  function handleKeyDown(e) {
+    const key = getKey(e);
+
+    switch (key) {
+      case KeyName.ARROW_LEFT:
+        return onRewind(video);
+      case KeyName.ARROW_RIGHT:
+        return onRewind(video, true);
+      case KeyName.ENTER:
+        return video.paused ? video.play() : video.pause();
+    }
+  }
+
   useEffect(() => {
-    const progress = document.querySelector("progress");
+    const progress = progressRef.current;
 
     video.addEventListener("loadedmetadata", setVideoDuration);
     video.addEventListener("timeupdate", updateProgress);
-    progress?.addEventListener("click", skipVideo);
+    progress?.addEventListener("click", rewindVideo);
 
     return () => {
-      video.removeEventListener("timeupdate", updateProgress);
       video.removeEventListener("loadedmetadata", setVideoDuration);
-      progress?.removeEventListener("click", skipVideo);
+      video.removeEventListener("timeupdate", updateProgress);
+      progress?.removeEventListener("click", rewindVideo);
     };
   }, [video]);
 
@@ -73,9 +86,16 @@ function ProgressControl({ tabIndex, video }: ProgressControlType) {
   }, [isVideoFullScreenOn]);
 
   return (
-    <div tabIndex={tabIndex} className="controls progress-holder">
+    <div tabIndex={tabIndex} onKeyDown={handleKeyDown} className="controls progress-holder">
       <div className="progress">
-        <progress id="progress" className="progress-control-bar" value="0">
+        <progress
+          ref={progressRef}
+          id="progress"
+          className="progress-control-bar"
+          value={video.currentTime}
+          aria-valuemax={video.duration}
+          aria-valuenow={video.currentTime}
+        >
           <span id="progress-bar" />
         </progress>
       </div>

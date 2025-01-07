@@ -4,20 +4,18 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import "video-react/dist/video-react.css";
 import React, { useEffect } from "react";
 import { nav, navConfig } from "../../../libs/spatial-navigation";
 import { useTypedSelector } from "../../reduxStore/useTypedSelector";
 import { type SpatialCfg } from "../../../libs/spatial-navigation/spatialCfgTypes";
-import VideoReactPlayer, { type PlayerMethods } from "./VideoReactPlayer";
+import VideoReactPlayer from "./VideoReactPlayer";
 import LogsWindow from "../WorkTabs/Tabs/Logs/LogsWindow";
 import { SettingState } from "redux-states";
 
 type Props = {
   playbackSettings: SettingState;
-  playerRef: React.MutableRefObject<PlayerMethods | null>;
 };
-const VideoContainer = ({ playbackSettings, playerRef }: Props) => {
+const VideoContainer = ({ playbackSettings }: Props) => {
   const isOverlayVisible = useTypedSelector((state) => state.OverlayVisible.value);
   const isLogOverlayedOn = useTypedSelector((state) => state.LogOverlayScreen.value);
   const isVideoFullScreenOn = useTypedSelector((state) => state.VideoFullScreen.value);
@@ -48,7 +46,7 @@ const VideoContainer = ({ playbackSettings, playerRef }: Props) => {
   }, [isVideoFullScreenOn]);
   return (
     <div className="video-container">
-      <VideoReactPlayer playerRef={playerRef} playbackSettings={playbackSettings} />
+      <VideoReactPlayer playbackSettings={playbackSettings} />
 
       {isVideoFullScreenOn && (
         <div

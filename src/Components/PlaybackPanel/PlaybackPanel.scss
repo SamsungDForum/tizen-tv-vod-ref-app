@@ -6,6 +6,10 @@
 
 @import "../../colors2017.scss";
 
+video {
+  width: 100%;
+} 
+
 .bitmovinplayer-poster {
   display: none !important;
 }
@@ -21,35 +25,11 @@
   z-index: 3 !important;
 }
 
-.video-player-control-bar {
-  width: 100% !important;
-  bottom: 83px !important;
-  background-color: rgba(43, 51, 63, 0) !important;
-}
-
-.video-player-remaining-time-display {
-  right: 2.5% !important;
-  width: 6% !important;
-  font-size: 2em !important;
-  padding-left: 4% !important;
-  height: 1em !important;
-}
-
 .video-player-progress-control {
   left: 2em !important;
   z-index: 2 !important;
 }
 
-.video-react-time-control {
-  min-width: 7em !important;
-  max-width: 7em !important;
-  line-height: 1em !important;
-  padding-top: 0.4em !important;
-  padding-left: 4.2em !important;
-  overflow: hidden;
-  height: 2em !important;
-  z-index: 2 !important;
-}
 .video-player-button,
 .video-player-button {
   border: 2px solid transparent !important;

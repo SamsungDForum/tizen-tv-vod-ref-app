@@ -61,14 +61,13 @@ describe("src/Components/PlaybackPanel/VideoContainer.test.tsx", () => {
   };
   const defaultProps = {
     playbackSettings: playbackSettings,
-    playerRef: { current: null },
   };
   describe("rendering videoContainer component", () => {
     it("should display fullScreen video with no overlay", () => {
       const mockedStore = mockStore(storeVariants.fullScreen);
       const { container } = render(
         <Provider store={mockedStore}>
-          <VideoContainer playerRef={defaultProps.playerRef} playbackSettings={defaultProps.playbackSettings} />
+          <VideoContainer playbackSettings={defaultProps.playbackSettings} />
         </Provider>
       );
 
@@ -86,7 +85,7 @@ describe("src/Components/PlaybackPanel/VideoContainer.test.tsx", () => {
       const mockedStore = mockStore(storeVariants.fullScreenWithOVerlay);
       const { container } = render(
         <Provider store={mockedStore}>
-          <VideoContainer playbackSettings={defaultProps.playbackSettings} playerRef={defaultProps.playerRef} />
+          <VideoContainer playbackSettings={defaultProps.playbackSettings} />
         </Provider>
       );
 
@@ -104,7 +103,7 @@ describe("src/Components/PlaybackPanel/VideoContainer.test.tsx", () => {
       const mockedStore = mockStore(storeVariants.standardScreen);
       const { container } = render(
         <Provider store={mockedStore}>
-          <VideoContainer playbackSettings={defaultProps.playbackSettings} playerRef={defaultProps.playerRef} />
+          <VideoContainer playbackSettings={defaultProps.playbackSettings} />
         </Provider>
       );
 

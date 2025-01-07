@@ -13,9 +13,10 @@ import { vi } from "vitest";
 import { playbackHandlers } from "../../PlaybackPanel";
 import { setVideoFullScreenOn } from "../../VideoFullScreenSlice";
 import { RestartSvgIcon } from "../../../../helpers/SvgIcons";
+import { getVideoElement } from "../../../usePlayerFactory/PlayerFactory/classes/utils/getVideoElement";
 
 describe("src/Components/PlaybackPanel/controls/tests/ControlPanelButton.test.tsx", () => {
-  const pbProps = { playerRef: { current: null }, subtitleText: "", setSubtitleText: vi.fn() };
+  const pbProps = { video: getVideoElement(), subtitleText: "", setSubtitleText: vi.fn() };
   it("should fire button and call onSubtitleTextUpdate", () => {
     const onSubtitleTextUpdate = vi.fn(() => playbackHandlers(pbProps).onSubtitleTextUpdate);
     render(

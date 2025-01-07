@@ -12,12 +12,8 @@ type Props = {
   onClick: (text?: string) => void;
 };
 function ControlPanelButton({ className, icon, onClick }: Props) {
-  function onButtonClick() {
-    onClick();
-  }
-
   return (
-    <button className={className} onClick={() => onButtonClick()} tabIndex={-1}>
+    <button className={className} onClick={() => onClick()} tabIndex={-1}>
       {icon}
     </button>
   );

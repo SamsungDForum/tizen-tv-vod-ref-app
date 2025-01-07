@@ -6,20 +6,29 @@
 
 import "./ProgressControl.scss";
 
-import React, { useMemo } from "react";
+import React, { useEffect, useState } from "react";
 
 export function RemainingTimeDisplay({ video }: { video: HTMLVideoElement }) {
-  const showTimeLeft = useMemo(() => {
-    const timeLeft = video.duration - video.currentTime;
-    return convertToMinutes(timeLeft);
-  }, [video.duration, video.currentTime]);
+  const [timeLeft, setTimeLeft] = useState(convertToMinutes(video.duration - video.currentTime));
 
-  if (isNaN(video.duration) || isNaN(video.currentTime)) return null;
-  return <p className="timeLeft video-player-remaining-time-display">{showTimeLeft}</p>;
+  useEffect(() => {
+    const updateTimeLeft = () => {
+      const currentTimeLeft = video.duration - video.currentTime;
+      setTimeLeft(convertToMinutes(currentTimeLeft));
+    };
+
+    video.addEventListener("timeupdate", updateTimeLeft);
+
+    return () => {
+      video.removeEventListener("timeupdate", updateTimeLeft);
+    };
+  }, [video]);
+
+  return <p className="timeLeft">{timeLeft}</p>;
 }
 
-// Helper function
 function convertToMinutes(timeInSeconds: number) {
+  if (isNaN(timeInSeconds)) return null;
   const minutes = Math.floor(timeInSeconds / 60);
   const seconds = Math.floor(timeInSeconds % 60);
   const formattedSeconds = (seconds < 10 ? "0" : "") + seconds;

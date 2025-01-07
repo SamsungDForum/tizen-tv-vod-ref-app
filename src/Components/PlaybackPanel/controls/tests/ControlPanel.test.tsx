@@ -11,20 +11,11 @@ import { dispatch, getAppStore } from "../../../../reduxStore/store";
 import React from "react";
 import { ControlPanel } from "../ControlPanel";
 import { playbackHandlers } from "../../PlaybackPanel";
-import { vi } from "vitest";
 import { setVideoFullScreenOn } from "../../VideoFullScreenSlice";
 
 describe("src/Components/PlaybackPanel/controls/tests/ControlPanel.test.tsx", () => {
   const pbHandlers = playbackHandlers({
-    playerRef: {
-      current: {
-        seek: vi.fn(),
-        play: vi.fn(),
-        replay: vi.fn(),
-        forward: vi.fn(),
-        getState: vi.fn().mockReturnValue({ player: { paused: true } }),
-      },
-    },
+    video: new HTMLVideoElement(),
     setSubtitleText: () => {},
     subtitleText: "subtitleText",
   });

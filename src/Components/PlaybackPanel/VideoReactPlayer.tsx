@@ -5,23 +5,20 @@
  */
 
 import React, { useEffect } from "react";
-import { Player, BigPlayButton } from "video-react";
 import usePlayerFactory from "../usePlayerFactory";
 import { sourceUnmount } from "../usePlayerFactory/utils/setting";
 import { useTypedSelector } from "../../reduxStore/useTypedSelector";
 import { SettingState } from "redux-states";
 import ProgresWithTime from "./progressBar/ProgressWithTime";
-import { ControlBar } from "video-react";
 
-export type PlayerMethods = Player["props"];
 type Props = {
   playbackSettings: SettingState;
-  playerRef: React.MutableRefObject<PlayerMethods | null>;
   className?: string;
 };
-const VideoReactPlayer = ({ playbackSettings, playerRef, className }: Props) => {
+const VideoReactPlayer = ({ playbackSettings, className }: Props) => {
   const subtitleText = useTypedSelector((state) => state.SubtitleOverlay.value);
   const { destroyPlayer } = usePlayerFactory(playbackSettings.source.current);
+
   useEffect(() => {
     if (playbackSettings.source == null) {
       return;
@@ -32,14 +29,12 @@ const VideoReactPlayer = ({ playbackSettings, playerRef, className }: Props) => 
     }
   }, [playbackSettings.source]);
   return (
-    <Player videoId="elVideo" ref={playerRef} className={className}>
-      <Subtitle subtitleText={subtitleText} />
+    <>
+      <video id="elVideo" className={className}>
+        <Subtitle subtitleText={subtitleText} />
+      </video>
       <ProgresWithTime />
-
-      {/* It's necessary to remove default Controls from video-react */}
-      <ControlBar disableCompletely={true} />
-      <BigPlayButton className="hide" />
-    </Player>
+    </>
   );
 };
 
