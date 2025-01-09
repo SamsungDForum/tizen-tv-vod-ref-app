@@ -13,6 +13,7 @@ export const ChartConfig = createSlice({
   name: "ChartConfig",
   initialState: {
     isTracking: false,
+    plotterTimeFrame: 1 // in minutes
   },
   reducers: {
     setChartTrackState: (state, action) => {
@@ -31,9 +32,12 @@ export const ChartConfig = createSlice({
           break;
       }
     },
+    setPlotterTimeFrame: (state, action) => {
+      state.plotterTimeFrame = action.payload
+    }
   },
 });
 
-export const { setChartTrackState, setControlBehaviour } = ChartConfig.actions;
+export const { setChartTrackState, setControlBehaviour, setPlotterTimeFrame } = ChartConfig.actions;
 
 export default ChartConfig.reducer;

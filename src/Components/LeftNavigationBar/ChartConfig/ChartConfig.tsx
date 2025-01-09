@@ -5,12 +5,14 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { setChartTrackState, setControlBehaviour } from "./ChartConfigSlice";
-import { FilterLogsSvgIcon } from "../../../helpers/SvgIcons";
+import { setChartTrackState, setControlBehaviour, setPlotterTimeFrame } from "./ChartConfigSlice";
+import { FilterLogsSvgIcon, TimeIcon } from "../../../helpers/SvgIcons";
 import { useTypedSelector } from "../../../reduxStore/useTypedSelector";
 import StyledButton from "../../ModalPicker/StyledButton";
 import ValuePicker from "../../ValuePicker/ValuePicker";
+import styles from "../leftNavigationBar.module.scss";
 import { dispatch } from "../../../reduxStore/store";
+import ModalPicker from "../../ModalPicker";
 
 function setThreshold(storageName: string, value: number) {
   localStorage.setItem(storageName, value.toString());
@@ -70,6 +72,18 @@ function ChartConfig() {
           isLeftBarOpen={isLeftBarOpen}
           setter={setcpuThreshold}
           unit="%"
+        />
+        <p className={styles.optionTitle}>Time Frame:</p>
+        <ModalPicker
+          icon={<TimeIcon />}
+          data={["1 minute", "5 minutes", "30 minutes"]}
+          onSelectCallback={(data) => {
+            const timeFrame = data.category.match(/\d+/g);
+            dispatch(setPlotterTimeFrame(timeFrame));
+          }}
+          initialLabel={"1 minute"}
+          navSectionName="menubar-view-switch"
+          label="Time Frame"
         />
       </div>
     </div>

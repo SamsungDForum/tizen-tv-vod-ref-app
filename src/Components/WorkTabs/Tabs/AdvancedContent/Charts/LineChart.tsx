@@ -7,6 +7,7 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { type ScaleLinear } from "d3";
 import * as d3 from "d3";
+import { useTypedSelector } from "../../../../../reduxStore/useTypedSelector";
 
 type Props = {
   chartData: number[];
@@ -20,16 +21,21 @@ type Props = {
 type ScaleType = ScaleLinear<number, number, never>;
 
 function LineChart({ chartData, width, height, yScaleSize }: Props) {
+  const timeFrame = useTypedSelector((state) => state.ChartConfig.plotterTimeFrame);
   const { yLow, yHigh } = yScaleSize;
   const svgRef = useRef(null);
   const svgObj = useRef<any>(null);
 
   // Create scales
   const getScales: [ScaleType, ScaleType] = useMemo(() => {
-    const xScale = d3.scaleLinear().domain([-60, 0]).range([0, width]);
+    const xScale = d3
+      .scaleLinear()
+      .domain([-60 * timeFrame, 0])
+      .range([0, width]);
+
     const yScale = d3.scaleLinear().domain([yLow, yHigh]).range([height, 0]);
     return [xScale, yScale];
-  }, [width, height, yLow, yHigh]);
+  }, [width, height, yLow, yHigh, timeFrame]);
 
   // Initialize graph
   useEffect(() => {
@@ -45,11 +51,27 @@ function LineChart({ chartData, width, height, yScaleSize }: Props) {
   useEffect(() => {
     const [xScale, yScale] = getScales;
 
+    // Set limit of ticks to 30
+    const tickValues = d3.range(-60 * timeFrame, 1, Math.ceil((60 * timeFrame) / 30));
+
     // Set the axes
     const xAxis = d3
       .axisBottom(xScale)
-      .ticks(30)
-      .tickFormat((d) => `${d}s`);
+      .tickValues(tickValues)
+      .tickFormat((d) => {
+        const seconds = Math.abs(Number(d) % 60);
+        let minutes = Math.abs(Math.floor(Number(d) / 60));
+
+        // Adjust minutes if there are remaining seconds
+        if (seconds > 0) minutes--;
+
+        const unit = minutes >= 1 ? "m" : "s";
+        const displaySeconds = seconds < 10 && minutes > 0 ? `0${seconds}` : seconds;
+        const displayMinutes = minutes > 0 ? `${minutes}${seconds > 0 ? ":" : ""}` : "";
+        const smallTimeFrame = `${displayMinutes}${seconds == 0 && displayMinutes != "" ? "" : displaySeconds}${unit}`;
+
+        return timeFrame[0] === 30 ? `${minutes}m` : smallTimeFrame;
+      });
     const yAxis = d3.axisLeft(yScale).ticks(8).tickSizeInner(-width).tickSizeOuter(0);
 
     svgObj.current.selectAll("g").remove();
@@ -58,12 +80,14 @@ function LineChart({ chartData, width, height, yScaleSize }: Props) {
       g.selectAll(".tick").selectChildren("text").attr("transform", "translate(-16, 1)").style("rotate", "-45deg")
     );
 
+    svgObj.current.select(".x-axis").transition().duration(500).call(xAxis);
+
     svgObj.current
       .append("g")
       .call(yAxis)
       .call((g) => g.selectAll(".tick line").attr("class", "axis_y_tick").attr("stroke", "#6e6e6e"));
     svgObj.current.selectAll("g").style("color", "#b3b3b3").style("font-size", "9px").style("font-weight", "200");
-  }, [yHigh, yLow]);
+  }, [yHigh, yLow, timeFrame]);
 
   // Update graph
   useEffect(() => {

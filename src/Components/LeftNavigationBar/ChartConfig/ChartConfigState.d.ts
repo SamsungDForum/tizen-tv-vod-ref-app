@@ -7,5 +7,6 @@
 declare module "redux-states" {
   export interface ChartConfigState {
     isTracking: boolean;
+    plotterTimeFrame: number;
   }
 }

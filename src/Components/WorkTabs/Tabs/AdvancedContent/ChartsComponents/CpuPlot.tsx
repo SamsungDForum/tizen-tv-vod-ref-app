@@ -9,14 +9,17 @@ import styles from ".././AdvancedContent.module.scss";
 import LineChart from "../Charts/LineChart";
 import type { PlotProps } from "./ChartTypes";
 import { bufferPlotter } from "../../../../../../libs/resource-buffer";
+import { useTypedSelector } from "../../../../../reduxStore/useTypedSelector";
 
 function CpuPlot({ width, height }: PlotProps) {
-  const chartData = bufferPlotter.cpu;
+  const timeFrame = useTypedSelector((state) => state.ChartConfig.plotterTimeFrame);
+  const cpuData = bufferPlotter.cpu;
+  const chartData = cpuData.slice(0, 30 * timeFrame + 1);
 
   return (
     <div style={{ marginLeft: "50px" }}>
       <div className={styles.plotTitle}>
-        <h3>CPU usage over 60 seconds (%)</h3>
+        <h3>CPU usage (%)</h3>
       </div>
       <div className={styles.plotAreaCpu}>
         <LineChart chartData={[...chartData]} width={width} height={height} yScaleSize={{ yLow: 0, yHigh: 100 }} />

@@ -128,7 +128,7 @@ const LeftNavigationBar = () => {
             {allowFloating && <ThemePicker />}
             {isTizenSupported && (
               <>
-                <p className={styles.optionTitle}>RESOURCE CONSUMPTION:</p>
+                <p className={styles.optionTitle}>Resource Consumption:</p>
                 <ChartConfig />
               </>
             )}

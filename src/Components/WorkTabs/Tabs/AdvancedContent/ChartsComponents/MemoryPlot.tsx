@@ -9,9 +9,12 @@ import styles from ".././AdvancedContent.module.scss";
 import LineChart from "../Charts/LineChart";
 import type { PlotProps } from "./ChartTypes";
 import { bufferPlotter } from "../../../../../../libs/resource-buffer";
+import { useTypedSelector } from "../../../../../reduxStore/useTypedSelector";
 
 function MemoryPlot({ width, height }: PlotProps) {
-  const chartData = bufferPlotter.memory;
+  const timeFrame = useTypedSelector((state) => state.ChartConfig.plotterTimeFrame);
+  const memoryData = bufferPlotter.memory;
+  const chartData = memoryData.slice(0, 30 * timeFrame + 1);
 
   // adjusting y scale
   const maxNum = chartData.length === 0 ? 100 : Math.max(...chartData);
@@ -20,7 +23,7 @@ function MemoryPlot({ width, height }: PlotProps) {
   return (
     <div>
       <div className={styles.plotTitle}>
-        <h3>Memory usage over 60 seconds (MB)</h3>
+        <h3>Memory usage (MB)</h3>
       </div>
       <div className={styles.plotAreaMemory}>
         <LineChart chartData={[...chartData]} width={width} height={height} yScaleSize={{ yLow: 0, yHigh: yHigh }} />
