@@ -13,10 +13,7 @@ import { setOverlayIsVisible } from "./OverlayVisibleSlice";
 import { dispatch } from "../../reduxStore/store";
 import { showConfirmation } from "../ConfirmationModal/ConfirmationModalSlice";
 
-export function onKeyEvent(
-  evt,
-  state: [boolean, { current: number }, boolean]
-) {
+export function onKeyEvent(evt, state: [boolean, { current: number }, boolean]) {
   const [isOverlayVisible, overlayTimeoutID, isVideoFullScreenOn] = state;
   const key = getKey(evt);
 
@@ -26,11 +23,7 @@ export function onKeyEvent(
       dispatch(dispatch(showConfirmation(false)));
       break;
     case KeyName.ENTER:
-      if (
-        !isOverlayVisible &&
-        isVideoFullScreenOn &&
-        !evt.target?.id.includes("log-entry")
-      ) {
+      if (!isOverlayVisible && isVideoFullScreenOn && !evt.target?.id.includes("log-entry")) {
         focusSettingsControlsPanel();
       } else {
         handleEnterButton(evt);
@@ -43,10 +36,7 @@ export function onKeyEvent(
   }
 }
 
-export function onKeyUpEvent(
-  evt: { target: HTMLElement },
-  state: [boolean, { current: number }, boolean]
-) {
+export function onKeyUpEvent(evt: { target: HTMLElement }, state: [boolean, { current: number }, boolean]) {
   const [isOverlayVisible, overlayTimeoutID, isVideoFullScreenOn] = state;
   const key = getKey(evt);
   switch (key) {
@@ -60,10 +50,7 @@ export function onKeyUpEvent(
         }
         return;
       } else {
-        if (
-          !isVideoFullScreenOn &&
-          domRef.getPlayerSelectButton()?.id === evt.target.id
-        ) {
+        if (!isVideoFullScreenOn && domRef.getPlayerSelectButton()?.id === evt.target.id) {
           domRef.getViewPickerButton()?.focus();
         } else {
           dispatch(setVideoFullScreenOn(false));
@@ -84,16 +71,10 @@ function onNavigationEvent(
   const [isVideoFullScreenOn] = state;
 
   if (evt.type === "sn:willunfocus") {
-    if (
-      isVideoFullScreenOn &&
-      isEventTargetAncestor(domRef.getAssetView(), evt.srcElement)
-    ) {
+    if (isVideoFullScreenOn && isEventTargetAncestor(domRef.getAssetView(), evt.srcElement)) {
       focusSettingsControlsPanel();
     }
-    if (
-      !isVideoFullScreenOn &&
-      isEventTargetAncestor(domRef.getPlayerWindow(), evt.srcElement)
-    ) {
+    if (!isVideoFullScreenOn && isEventTargetAncestor(domRef.getPlayerWindow(), evt.srcElement)) {
       if (domRef.getPlayerSelectButton()?.id !== evt.target.id) {
         focusVideoTilesSection();
       }
@@ -101,26 +82,21 @@ function onNavigationEvent(
   }
 }
 
-export function startHidingVideoOverlay(overlayTimeoutID: {
-  current?: number | NodeJS.Timeout;
-}) {
+export function startHidingVideoOverlay(overlayTimeoutID: { current?: number | NodeJS.Timeout }) {
   resetOverlayHiding(overlayTimeoutID);
   scheduleOverlayHiding(overlayTimeoutID);
 }
 
 function hideOverlayIfNoModalOpened() {
   // Hide overlay controls if there is no collision with 'modal elements' on the screen
-  const isNoFocuseOnLogs =
-    domRef.getVideoLogs()?.querySelector("div:focus") === null;
+  const isNoFocuseOnLogs = domRef.getVideoLogs()?.querySelector("div:focus") === null;
   const isNoPickerOpen = !containsOpenedPickers();
   if (isNoFocuseOnLogs && isNoPickerOpen) {
     dispatch(setOverlayIsVisible(false));
   }
 }
 
-function resetOverlayHiding(overlayTimeoutID: {
-  current?: number | NodeJS.Timeout;
-}) {
+function resetOverlayHiding(overlayTimeoutID: { current?: number | NodeJS.Timeout }) {
   // Set the overlay to be visible immediately
   dispatch(setOverlayIsVisible(true));
   // Cancel current timeout
@@ -128,9 +104,7 @@ function resetOverlayHiding(overlayTimeoutID: {
   overlayTimeoutID.current = -1;
 }
 
-function scheduleOverlayHiding(overlayTimeoutID: {
-  current?: number | NodeJS.Timeout;
-}) {
+function scheduleOverlayHiding(overlayTimeoutID: { current?: number | NodeJS.Timeout }) {
   overlayTimeoutID.current = setTimeout(() => {
     hideOverlayIfNoModalOpened();
   }, 10000);
@@ -148,8 +122,7 @@ export function handleEnterButton(evt: Event) {
 }
 
 export function tryToHideBackOverlay() {
-  if (!navKeys.playerWindowContainsModals())
-    dispatch(setOverlayIsVisible(false));
+  if (!navKeys.playerWindowContainsModals()) dispatch(setOverlayIsVisible(false));
 }
 
 function focusSettingsControlsPanel() {

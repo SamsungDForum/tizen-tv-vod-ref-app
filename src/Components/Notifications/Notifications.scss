@@ -1,0 +1,33 @@
+/* Copyright
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
+ @import "../../colors2017.scss";
+
+.notification-container {
+    position: absolute;
+    z-index: 100;
+    bottom: 15rem;
+    left: 0px;
+    width: 40rem;
+    height: 10rem;
+    background-color: var(--appBackground);
+    border-radius: 0 1rem 1rem 0;
+    padding: 1rem;
+    box-shadow: 1px 4px 10px 1px var(--notiColor);
+}
+
+.notification-title {
+    display: flex;
+    color: rgb(191 219 254);
+    font-size: 24px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.notification-desc {
+    font-size: 20px;
+    color: var(--text);
+}

@@ -4,7 +4,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import "./style.scss";
 import entries from "object.entries";
@@ -35,6 +35,9 @@ import { useSelector } from "react-redux";
 import channel from "./Components/ChannelZapping/channel";
 import focusBehavior from "./helpers/focusBehavior";
 import { Toaster } from "react-hot-toast";
+import {FullScreenNotification} from "./Components/Notifications/FullScreenNotification"
+import { reqTizenVersion } from "./helpers/reqTizenVersion";
+import { networkStatus } from "./helpers/networkStatus";
 
 function onMount(setId) {
   // Initialise navigation in accordance to uninitialisation point.
@@ -71,7 +74,6 @@ function App() {
   const playbackSettings = useSetting();
   const [id, setId] = useState(null);
   const previewData = PreviewServiceHook();
-
   React.useEffect(() => onMount(setId), []);
 
   channel();
@@ -88,12 +90,14 @@ function App() {
     dispatch(setVideoFullScreenOn(true));
   }, [id]);
 
+  const isNetworkConnected = networkStatus()  
   return (
     <div id="app-div" className="app-div">
       <TabWorkspace currentPlayer={playbackSettings.source.current} />
       <PlayerWindow playbackSettings={playbackSettings} />
       <MenuBar/>
-      <MessageBox
+      <FullScreenNotification displayNotification={!isNetworkConnected} title="Network error" desc="It seems that your device is not connected to the internet. Please ensure the cable is properly plugged in." />
+      <MessageBox 
         boxCustomClassName="version-message-box"
         messageText={`PVOD Ref App v${application.version}`}
         messageCustomClassName={"version-info"}

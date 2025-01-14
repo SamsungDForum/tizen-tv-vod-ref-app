@@ -4,9 +4,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import React, { useEffect, KeyboardEvent } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore from 'swiper';
+import React, { useEffect, KeyboardEvent, useRef } from "react";
+import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
+import SwiperCore from "swiper";
 import { Keyboard } from "swiper/modules";
 import Asset from "./Asset";
 import { tabsEnum } from "../../../../NavigationTabSlice";
@@ -17,6 +17,7 @@ import { setCurrentRowID } from "../../../../../ChannelZapping/ChannelZappingSli
 import { Media } from "../../../../../usePlayerFactory/utils/playAssetCurrentTypes";
 import "swiper/css";
 import "./contentRow.scss";
+import { networkStatus } from "../../../../../../helpers/networkStatus";
 
 type Props = {
   child: {
@@ -30,9 +31,13 @@ type Props = {
 };
 
 const ContentRow = ({ child, pxtransform, setPxtransform, contentRowID }: Props) => {
-  const curNavigationTab = useTypedSelector(state => state.navigationTab.value);
+  const swiperRef = useRef<SwiperRef>(null);
+  const isNetworkConnected = networkStatus();
+
+  const curNavigationTab = useTypedSelector((state) => state.navigationTab.value);
 
   const onKeyVerticalScroll = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (!isNetworkConnected) return null;
     const key = getKey(e);
     const swiperContainer = document.querySelector<HTMLDivElement>(".swiper-container");
     let rowsCount: number;
@@ -40,7 +45,7 @@ const ContentRow = ({ child, pxtransform, setPxtransform, contentRowID }: Props)
       rowsCount = swiperContainer.childNodes.length;
     } else {
       rowsCount = 0;
-      console.warn(`querySelector('.swiper-container') returned null`)
+      console.warn(`querySelector('.swiper-container') returned null`);
     }
 
     const swiperRowContainerHeight = 215 + 1; // swiperRowContainerHeight + 1 for prevent cropping border
@@ -62,7 +67,7 @@ const ContentRow = ({ child, pxtransform, setPxtransform, contentRowID }: Props)
     if (swiperContainer != null) {
       swiperContainer.style.transform = `translateY(${pxtransform}px)`;
     } else {
-      console.warn(`querySelector('.swiper-container') returned null`)
+      console.warn(`querySelector('.swiper-container') returned null`);
     }
   }, [pxtransform]);
 
@@ -85,7 +90,7 @@ const ContentRow = ({ child, pxtransform, setPxtransform, contentRowID }: Props)
 
   useEffect(() => {
     let swipers = document.querySelectorAll(".mySwiper");
-    swipers?.forEach(e => {
+    swipers?.forEach((e) => {
       const element = e as unknown as { swiper: SwiperCore };
       element.swiper.slideTo(0, undefined, false);
     });
@@ -98,6 +103,10 @@ const ContentRow = ({ child, pxtransform, setPxtransform, contentRowID }: Props)
       dispatch(setCurrentRowID(parseInt(e.target.closest(".swiper-row-container").id)));
     }
   };
+  useEffect(() => {
+    if (!isNetworkConnected) swiperRef.current?.swiper.disable();
+    else swiperRef.current?.swiper.enable();
+  }, [isNetworkConnected]);
 
   return (
     <div className="swiper-row-container" id={`${contentRowID}`} onKeyDown={(e) => handleEnterClick(e)}>
@@ -112,6 +121,7 @@ const ContentRow = ({ child, pxtransform, setPxtransform, contentRowID }: Props)
         }}
       >
         <Swiper
+          ref={swiperRef}
           slidesPerView="auto"
           spaceBetween={30}
           centeredSlides={true}

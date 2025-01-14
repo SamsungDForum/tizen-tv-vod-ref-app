@@ -71,6 +71,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
     "@types/react": "^17.0.2",
+    "@types/tizen-tv-webapis": "^2.0.6",
     "@ungap/event-target": "^0.2.4",
     "classnames": "^2.5.1",
     "console-feed": "^3.5.0",

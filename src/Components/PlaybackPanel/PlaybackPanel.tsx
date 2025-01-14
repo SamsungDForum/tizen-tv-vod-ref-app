@@ -10,12 +10,12 @@ import { SettingState } from "redux-states";
 import toast, { Toaster } from "react-hot-toast";
 
 import { toggleSettingPanel } from "../usePlayerFactory/utils/setting";
+import LoadingSpinner from "../Loaders/loadingSpinner/LoadingSpinner";
 import { useTypedSelector } from "../../reduxStore/useTypedSelector";
 import { setChannelID } from "../ChannelZapping/ChannelZappingSlice";
 import { reqTizenVersion } from "../../helpers/reqTizenVersion";
 import { setMedia } from "../usePlayerFactory/utils/playAsset";
 import { setVideoFullScreenOn } from "./VideoFullScreenSlice";
-import LoadingSpinner from "../Loaders/loadingSpinner/LoadingSpinner";
 import { ControlPanel } from "./controls/ControlPanel";
 import { dispatch } from "../../reduxStore/store";
 import VideoContainer from "./VideoContainer";

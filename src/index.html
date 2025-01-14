@@ -13,5 +13,24 @@
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <div id="root"></div>
+ <script type="text/javascript">
+  
+    // If the device is a TV, load the script
+    if (typeof webapis != 'undefined') {
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = "$WEBAPIS/webapis/webapis.js";
+  
+      script.onload = function() {
+        console.log('webapis.js loaded successfully');
+      };
+      script.onerror = function() {
+        console.error('Failed to load webapis.js');
+      };
+  
+      document.body.appendChild(script);
+    }
+  
+ </script>
 </body>
 </html>
