@@ -10,7 +10,7 @@ import ControlPanelButton from "../ControlPanelButton";
 import { dispatch, getAppStore, getState } from "../../../../reduxStore/store";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { vi } from "vitest";
-import { playbackHandlers } from "../../PlaybackPanel";
+import { playbackHandlers } from "../../controls/playbackHandlers";
 import { setVideoFullScreenOn } from "../../VideoFullScreenSlice";
 import { RestartSvgIcon } from "../../../../helpers/SvgIcons";
 import { getVideoElement } from "../../../usePlayerFactory/PlayerFactory/classes/utils/getVideoElement";

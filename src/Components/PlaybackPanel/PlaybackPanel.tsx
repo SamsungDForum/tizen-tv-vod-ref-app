@@ -14,8 +14,6 @@ import LoadingSpinner from "../Loaders/loadingSpinner/LoadingSpinner";
 import { useTypedSelector } from "../../reduxStore/useTypedSelector";
 import { setChannelID } from "../ChannelZapping/ChannelZappingSlice";
 import { reqTizenVersion } from "../../helpers/reqTizenVersion";
-import { setMedia } from "../usePlayerFactory/utils/playAsset";
-import { setVideoFullScreenOn } from "./VideoFullScreenSlice";
 import { ControlPanel } from "./controls/ControlPanel";
 import { dispatch } from "../../reduxStore/store";
 import VideoContainer from "./VideoContainer";
@@ -23,42 +21,7 @@ import Overlay from "../ModalPicker/Overlay";
 import ChannelInfo from "./ChannelInfo";
 import { navKeys } from "./navigation";
 import { getNullableVideoElement } from "../usePlayerFactory/PlayerFactory/classes/utils/getVideoElement";
-
-type PlaybackHandlerProps = {
-  setSubtitleText: React.Dispatch<React.SetStateAction<string>>;
-  subtitleText: string;
-  video: HTMLVideoElement;
-};
-
-export const onRewind = (video: HTMLVideoElement, isForward = false) => {
-  if (isForward) video.currentTime = Math.floor(video.currentTime) + 10;
-  else video.currentTime = Math.floor(video.currentTime) - 10;
-};
-export function playbackHandlers({ setSubtitleText, subtitleText, video }: PlaybackHandlerProps) {
-  return {
-    onSubtitleTextUpdate: (text: string) => setSubtitleText(text),
-    onPlayPauseClick: () => (video.paused ? video.play() : video.pause()),
-    onSetSubtitlesClick: () => setSubtitleText(renderSubtitleText(subtitleText)),
-    onRewindClick: () => onRewind(video),
-    onFastForwardClick: () => onRewind(video, true),
-    onRestartClick: () => {
-      video.currentTime = 0;
-      video.play();
-    },
-    onHandleAbort: () => {
-      video.pause();
-      video.currentTime = 0;
-      dispatch(setVideoFullScreenOn(false));
-      setMedia(undefined);
-    },
-  };
-}
-
-function renderSubtitleText(subtitleText: string) {
-  const subtitleOption = useTypedSelector((state) => state.setting.subtitle);
-
-  return subtitleOption.current !== "off" ? subtitleText : "";
-}
+import { playbackHandlers } from "./controls/playbackHandlers";
 
 type Props = {
   playbackSettings: SettingState;

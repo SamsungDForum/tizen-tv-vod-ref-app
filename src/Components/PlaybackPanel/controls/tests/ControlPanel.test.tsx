@@ -10,7 +10,7 @@ import { Provider } from "react-redux";
 import { dispatch, getAppStore } from "../../../../reduxStore/store";
 import React from "react";
 import { ControlPanel } from "../ControlPanel";
-import { playbackHandlers } from "../../PlaybackPanel";
+import { playbackHandlers } from "../../controls/playbackHandlers";
 import { setVideoFullScreenOn } from "../../VideoFullScreenSlice";
 
 describe("src/Components/PlaybackPanel/controls/tests/ControlPanel.test.tsx", () => {

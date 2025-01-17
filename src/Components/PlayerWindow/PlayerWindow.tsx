@@ -18,6 +18,7 @@ import { setMedia } from "../usePlayerFactory/utils/playAsset";
 import { dispatch } from "../../reduxStore/store";
 import { useTypedSelector } from "../../reduxStore/useTypedSelector";
 import { getNullableVideoElement } from "../usePlayerFactory/PlayerFactory/classes/utils/getVideoElement";
+import { videoController } from "../PlaybackPanel/controls/playbackHandlers";
 
 export default function PlayerWindow(props) {
   const playerWindow = useRef<HTMLDivElement>(null);
@@ -41,14 +42,13 @@ export default function PlayerWindow(props) {
     if (!video) return null;
     switch (key) {
       case KeyName.PLAYPAUSE:
-        const isPaused = video.paused;
-        return isPaused ? video.play() : video.pause();
+        return videoController.playPause(video);
       case KeyName.PAUSE:
-        return video.pause();
+        return videoController.pause(video);
       case KeyName.REW:
-        return (video.currentTime = video.currentTime - 10);
+        return videoController.rewind(video);
       case KeyName.FFW:
-        return (video.currentTime = video.currentTime + 10);
+        return videoController.forward(video);
       case KeyName.STOP:
         return handleStopBtn();
     }

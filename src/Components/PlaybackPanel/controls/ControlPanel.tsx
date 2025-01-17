@@ -9,7 +9,7 @@ import React, { useEffect } from "react";
 import "./control-panel.scss";
 import PlayPauseButton from "./PlayPauseButton";
 import FullscreenButton from "./FullscreenButton";
-import { playbackHandlers } from "../PlaybackPanel";
+import { playbackHandlers } from "../controls/playbackHandlers";
 import ControlPanelButton from "./ControlPanelButton";
 import { nav, navConfig } from "../../../../libs/spatial-navigation";
 import { useTypedSelector } from "../../../reduxStore/useTypedSelector";

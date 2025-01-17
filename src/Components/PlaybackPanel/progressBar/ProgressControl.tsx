@@ -11,7 +11,7 @@ import { nav, navConfig } from "../../../../libs/spatial-navigation";
 import { SpatialCfg } from "../../../../libs/spatial-navigation/spatialCfgTypes";
 import { useTypedSelector } from "../../../reduxStore/useTypedSelector";
 import { getKey, KeyName } from "../../KeyEvents";
-import { onRewind } from "../PlaybackPanel";
+import { videoController } from "../controls/playbackHandlers";
 
 interface ProgressControlType {
   tabIndex: number;
@@ -21,7 +21,7 @@ function ProgressControl({ tabIndex, video }: ProgressControlType) {
   const progressRef = useRef<HTMLProgressElement>(null);
   const isVideoFullScreenOn = useTypedSelector((state) => state.VideoFullScreen.value);
 
-  function rewindVideo(e) {
+  function rewindVideoOnMouseClick(e) {
     const progress = progressRef.current;
 
     if (!progress || !video) return null;
@@ -47,11 +47,11 @@ function ProgressControl({ tabIndex, video }: ProgressControlType) {
 
     switch (key) {
       case KeyName.ARROW_LEFT:
-        return onRewind(video);
+        return videoController.rewind(video);
       case KeyName.ARROW_RIGHT:
-        return onRewind(video, true);
+        return videoController.forward(video);
       case KeyName.ENTER:
-        return video.paused ? video.play() : video.pause();
+        return videoController.playPause(video);
     }
   }
 
@@ -60,12 +60,12 @@ function ProgressControl({ tabIndex, video }: ProgressControlType) {
 
     video.addEventListener("loadedmetadata", setVideoDuration);
     video.addEventListener("timeupdate", updateProgress);
-    progress?.addEventListener("click", rewindVideo);
+    progress?.addEventListener("click", rewindVideoOnMouseClick);
 
     return () => {
       video.removeEventListener("loadedmetadata", setVideoDuration);
       video.removeEventListener("timeupdate", updateProgress);
-      progress?.removeEventListener("click", rewindVideo);
+      progress?.removeEventListener("click", rewindVideoOnMouseClick);
     };
   }, [video]);
 

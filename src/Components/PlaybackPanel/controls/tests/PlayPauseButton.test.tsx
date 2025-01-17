@@ -10,7 +10,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { vi } from "vitest";
 import { getAppStore } from "../../../../reduxStore/store";
-import { playbackHandlers } from "../../PlaybackPanel";
+import { playbackHandlers } from "../../controls/playbackHandlers";
 import PlayPauseButton from "../PlayPauseButton";
 import { getVideoElement } from "../../../usePlayerFactory/PlayerFactory/classes/utils/getVideoElement";
 
