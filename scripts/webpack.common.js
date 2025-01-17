@@ -14,8 +14,6 @@ const tag = [path.parse(__filename).name];
 
 const projectRoot = path.join(__dirname, "..");
 
-
-
 module.exports = (env) => {
   console.log(tag, env);
 
@@ -122,13 +120,16 @@ module.exports = (env) => {
           ],
         },
         {
-          test: /assets/,          
+          test: /assets/,
           type: "asset/resource",
         },
       ],
     },
     resolve: {
       extensions: [".tsx", ".ts", ".js"],
+      alias: {
+        "react-hot-toast": path.resolve(projectRoot, "node_modules", "react-hot-toast", "dist", "index.js"),
+      },
     },
     plugins: [
       new webpack.SourceMapDevToolPlugin({
@@ -139,7 +140,7 @@ module.exports = (env) => {
         template: path.join(projectRoot, "src", "index.html"),
       }),
       new CopyPlugin({
-        patterns: [         
+        patterns: [
           {
             from: path.resolve(projectRoot, "src", "services", "staticPreview"),
             to: "staticPreview/",

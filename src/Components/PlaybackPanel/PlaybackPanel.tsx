@@ -7,7 +7,7 @@
 import "./PlaybackPanel.scss";
 import React, { useEffect, useRef, useState } from "react";
 import { SettingState } from "redux-states";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 import { toggleSettingPanel } from "../usePlayerFactory/utils/setting";
 import LoadingSpinner from "../Loaders/loadingSpinner/LoadingSpinner";
@@ -96,7 +96,6 @@ const PlaybackPanel = ({ playbackSettings }: Props) => {
           video.addEventListener("loadedmetadata", handlePlaybackStateChange);
 
           console.log("log", playbackSettings.source.current?.label);
-          // There is a problem with appearing this toast, but I temporary fix it by using <Toaster /> in this component
           toast.success(`The ${playbackSettings.source.current?.label} player selected`);
         }
       }
@@ -185,7 +184,6 @@ const PlaybackPanel = ({ playbackSettings }: Props) => {
           />
         )}
       </div>
-      <Toaster /> {/*This toaster is temporary, to fix issue with not displaying toast */}
     </>
   );
 };
