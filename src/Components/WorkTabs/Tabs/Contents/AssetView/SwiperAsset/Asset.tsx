@@ -5,24 +5,33 @@
  */
 
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { useSelector } from "react-redux";
 import { FavouriteSvgIcon } from "../../../../../../helpers/SvgIcons";
 import { dispatch } from "../../../../../../reduxStore/store";
 import { setMedia } from "../../../../../usePlayerFactory/utils/playAsset";
 import { setFavouriteClips, removeFavouriteClip } from "../FavouriteClipsSlice";
 import { getKey, KeyName } from "../../../../../KeyEvents";
-import { setting, settingDefault, setSetting } from "../../../../../usePlayerFactory/utils/setting-slice";
+import { setting, settingDefault } from "../../../../../usePlayerFactory/utils/setting-slice";
 import { keySystem } from "../../../../../usePlayerFactory/utils/setting";
-import { nav } from "../../../../../../../libs/spatial-navigation";
 import { setVideoFullScreenOn } from "../../../../../PlaybackPanel/VideoFullScreenSlice";
-import styles from "./asset.scss";
+import "./asset.scss";
 import { tabsEnum } from "../../../../NavigationTabSlice";
+import { useTypedSelector } from "../../../../../../reduxStore/useTypedSelector";
+import type { SwiperRef } from "swiper/react";
+import type { Media } from "../../../../../usePlayerFactory/utils/playAssetCurrentTypes";
 
-const Asset = ({ asset, id, setPxtransform }) => {
-  const favClips = useSelector((state) => state.FavouriteClips.myClips);
-  const currClip = useSelector((state) => state.playAsset.value.media?.id);
-  const curNavigationTab = useSelector((state) => state.navigationTab.value);
-  const isQuickEdit = useSelector((state) => state.FavouriteClips.quickEdit);
+type SwiperElement = SwiperRef & Element;
+
+interface Props {
+  asset: Media;
+  id: number;
+  setPxtransform: (px: number) => void;
+}
+
+const Asset = ({ asset, id, setPxtransform }: Props) => {
+  const favClips = useTypedSelector((state) => state.FavouriteClips.myClips);
+  const currClip = useTypedSelector((state) => state.playAsset.value.media?.id);
+  const curNavigationTab = useTypedSelector((state) => state.navigationTab.value);
+  const isQuickEdit = useTypedSelector((state) => state.FavouriteClips.quickEdit);
 
   const selectCb = useCallback(
     (evt) => {
@@ -44,19 +53,18 @@ const Asset = ({ asset, id, setPxtransform }) => {
   const [isFavTab, setIsFavTab] = useState(false);
 
   useEffect(() => {
-    const swipers = document.querySelectorAll(".mySwiper");
+    const swipers = document.querySelectorAll<SwiperElement>(".mySwiper");
     swipers.forEach((swiper) => {
-      swiper.swiper.slideTo(0, false, false);
+      swiper.swiper.slideTo(0, undefined, false);
     });
     setIsFavTab(curNavigationTab === tabsEnum.favoriteClips ? true : false);
     setPxtransform(0);
   }, [curNavigationTab]);
 
-
   const isFavoriteSingleBtn = (event) => {
     const key = getKey(event);
-    return event?.key?.toLowerCase() === "f" || key === KeyName.RED
-  }
+    return event?.key?.toLowerCase() === "f" || key === KeyName.RED;
+  };
 
   const handleFavourite = (event) => {
     const currentSwiper = event.target.closest(".mySwiper");
@@ -73,7 +81,7 @@ const Asset = ({ asset, id, setPxtransform }) => {
       } else {
         dispatch(removeFavouriteClip(asset));
         setTimeout(() => {
-          let swiperCount = document.querySelector(".swiper-container")?.childNodes?.length;
+          let swiperCount = document.querySelector(".swiper-container")?.childNodes?.length || 0;
 
           if (isFavTab) {
             const prevChildUndefined = currentChildNodes[currentChildID - 1] === undefined;
@@ -81,7 +89,7 @@ const Asset = ({ asset, id, setPxtransform }) => {
 
             if (prevChildUndefined && nextChildUndefined) {
               setPxtransform(0);
-              swipers[0].querySelector(".swiper-slide-active .poster-image").focus();
+              swipers[0].querySelector<HTMLDivElement>(".swiper-slide-active .poster-image")?.focus();
             }
 
             if (prevChildUndefined && !nextChildUndefined) {
@@ -105,7 +113,7 @@ const Asset = ({ asset, id, setPxtransform }) => {
 
   const [isPressed, setIsPressed] = useState(false);
   const isHeldRef = useRef(false);
-  const holdTimeoutRef = useRef(null);
+  const holdTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleKeyDown = (event) => {
     if (!isPressed && event.key.toLowerCase() !== "f") {
@@ -122,7 +130,9 @@ const Asset = ({ asset, id, setPxtransform }) => {
       handleFavourite(event);
     } else {
       if (isPressed) {
-        clearTimeout(holdTimeoutRef.current);
+        if (holdTimeoutRef.current) {
+          clearTimeout(holdTimeoutRef.current);
+        }
         if (!isHeldRef.current) {
           selectCb(event);
         }
@@ -134,17 +144,19 @@ const Asset = ({ asset, id, setPxtransform }) => {
 
   useEffect(() => {
     return () => {
-      clearTimeout(holdTimeoutRef.current);
+      if (holdTimeoutRef.current) {
+        clearTimeout(holdTimeoutRef.current);
+      }
     };
   }, []);
 
   return (
     <div
-      id={id}
+      id={`${id}`}
       className={`poster-image asset-view-asset ${asset.id === currClip ? "asset-view-asset-clicked" : " "} ${
         isQuickEdit ? "darkerBg" : ""
       }`}
-      style={asset.poster && { backgroundImage: `url(${asset.poster})` }}
+      style={asset.poster && { backgroundImage: `url(${asset.poster})` } || undefined}
       tabIndex={-1}
       onClick={selectCb}
       onKeyDown={handleKeyDown}
@@ -154,7 +166,7 @@ const Asset = ({ asset, id, setPxtransform }) => {
       <p className="video-asset-name">{asset.name}</p>
 
       {favClips.length !== 0 &&
-        favClips.map(function (item, index) {
+        favClips.map(function (item) {
           if (item.id === asset.id) {
             return (
               <div key={item.id} className="favourite-tag">

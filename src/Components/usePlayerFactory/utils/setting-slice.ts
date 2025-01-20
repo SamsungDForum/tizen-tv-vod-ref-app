@@ -17,7 +17,7 @@ const valueDefault = {
   subtitle: "off",
   videoQuality: "auto",
   keySystem: "no drm",
-};
+} as const;
 
 const setting = {
   source: "source",
@@ -26,7 +26,7 @@ const setting = {
   subtitle: "subtitle",
   videoQuality: "videoQuality",
   keySystem: "keySystem",
-};
+} as const;
 
 const settingDefault = {
   [setting.source]: { current: valueDefault.source },
@@ -35,7 +35,7 @@ const settingDefault = {
   [setting.subtitle]: { current: valueDefault.subtitle, list: [valueDefault.subtitle] },
   [setting.videoQuality]: { current: valueDefault.videoQuality, list: [valueDefault.videoQuality] },
   [setting.keySystem]: { current: valueDefault.keySystem, list: [] },
-};
+} as const;
 
 const settingSlice = createSlice({
   name: "setting",
