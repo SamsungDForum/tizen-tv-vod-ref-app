@@ -6,9 +6,13 @@
 
 import React, { useEffect, useRef } from "react";
 import { ArrowKeyStepper, List, AutoSizer } from "react-virtualized";
+import { nav } from "../../../../../libs/spatial-navigation";
+import { useSelector } from "react-redux";
 
 function LogsTable({ data, logs, logFilters, isAutoscroll }) {
   const listRef = useRef(null);
+  const containerRef = useRef(null);
+  const isVideoFullScreenOn = useSelector((state) => state.VideoFullScreen.value);
 
   function scrollToTheBottom() {
     if (isAutoscroll) {
@@ -27,6 +31,27 @@ function LogsTable({ data, logs, logFilters, isAutoscroll }) {
         scrollToTheBottom();
       }
     });
+  }, []);
+
+  useEffect(() => {
+    // it is used when the focused log item is removed from the screen due to scrolling
+    const handleFocusout = (e) => {
+      setTimeout(() => {
+        // if focus out from the logs table and body is focused then move focus to left navigation bar or settings panel
+        if (document.activeElement === document.body) {
+          if (isVideoFullScreenOn) {
+            nav.focus("settings-controls-panel");
+          } else {
+            nav.focus("left-navigation-bar");
+          }
+        }
+      });
+    };
+
+    containerRef.current?.addEventListener("focusout", handleFocusout);
+    return () => {
+      containerRef.current?.removeEventListener("focusout", handleFocusout);
+    };
   }, []);
 
   const calculatedItemHeight = ({ index }) => {
@@ -57,25 +82,27 @@ function LogsTable({ data, logs, logFilters, isAutoscroll }) {
   }
 
   return (
-    <AutoSizer>
-      {({ width, height }) => (
-        <ArrowKeyStepper mode="cells" rowCount={data.length} columnCount={1}>
-          {({ onSectionRendered, scrollToRow }) => (
-            <List
-              width={width}
-              height={900}
-              rowHeight={calculatedItemHeight}
-              rowRenderer={renderRow}
-              rowCount={data.length}
-              scrollToIndex={data.length}
-              onSectionRendered={onSectionRendered}
-              overscanRowCount={3}
-              ref={listRef}
-            />
-          )}
-        </ArrowKeyStepper>
-      )}
-    </AutoSizer>
+    <div ref={containerRef}>
+      <AutoSizer>
+        {({ width, height }) => (
+          <ArrowKeyStepper mode="cells" rowCount={data.length} columnCount={1}>
+            {({ onSectionRendered, scrollToRow }) => (
+              <List
+                width={width}
+                height={900}
+                rowHeight={calculatedItemHeight}
+                rowRenderer={renderRow}
+                rowCount={data.length}
+                scrollToIndex={data.length}
+                onSectionRendered={onSectionRendered}
+                overscanRowCount={3}
+                ref={listRef}
+              />
+            )}
+          </ArrowKeyStepper>
+        )}
+      </AutoSizer>
+    </div>
   );
 }
 
