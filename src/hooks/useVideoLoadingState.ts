@@ -4,13 +4,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import React, { useEffect, useState } from "react";
-import styles from "./LoadingSpinner.module.scss";
+import { useEffect, useState } from "react";
 
-type Props = {
-  video: HTMLVideoElement | null;
-};
-const LoadingSpinner = ({ video }: Props) => {
+export function useVideoLoadingState(video: HTMLVideoElement) {
   const [showLoading, setShowLoading] = useState(false);
 
   const setLoadingState = () => setShowLoading(true);
@@ -28,8 +24,5 @@ const LoadingSpinner = ({ video }: Props) => {
       video?.removeEventListener("waiting", setLoadingState);
     };
   }, [video]);
-
-  return <div className={`${styles.loadingSpinner} ${showLoading ? styles.loadingShow : styles.loadingHide}`} />;
-};
-
-export default LoadingSpinner;
+  return showLoading;
+}

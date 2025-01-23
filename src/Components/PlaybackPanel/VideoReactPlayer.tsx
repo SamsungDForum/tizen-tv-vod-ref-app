@@ -9,7 +9,7 @@ import usePlayerFactory from "../usePlayerFactory";
 import { sourceUnmount } from "../usePlayerFactory/utils/setting";
 import { useTypedSelector } from "../../reduxStore/useTypedSelector";
 import { SettingState } from "redux-states";
-import ProgresWithTime from "./progressBar/ProgressWithTime";
+import ProgressBarWithTime from "./progressBar/ProgressBarWithTime";
 
 type Props = {
   playbackSettings: SettingState;
@@ -28,12 +28,13 @@ const VideoReactPlayer = ({ playbackSettings, className }: Props) => {
       destroyPlayer().then(() => sourceUnmount());
     }
   }, [playbackSettings.source]);
+
   return (
     <>
       <video id="elVideo" className={className}>
         <Subtitle subtitleText={subtitleText} />
       </video>
-      <ProgresWithTime />
+      <ProgressBarWithTime />
     </>
   );
 };
@@ -46,5 +47,9 @@ function Subtitle({ subtitleText }: { subtitleText: string }) {
   const cssClass = `video-subtitles-text-container ${
     isVideoFullScreenOn ? "video-subtitles-fullscreen" : "video-subtitles-floating"
   }`;
-  return <div className={cssClass}>{subtitleText}</div>;
+  return (
+    <div data-testid={"subtitle"} className={cssClass}>
+      {subtitleText}
+    </div>
+  );
 }

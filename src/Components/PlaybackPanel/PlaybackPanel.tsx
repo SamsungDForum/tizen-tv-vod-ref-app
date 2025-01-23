@@ -4,21 +4,21 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import "./PlaybackPanel.scss";
 import React, { useEffect, useRef, useState } from "react";
-import { SettingState } from "redux-states";
 import toast from "react-hot-toast";
+import { SettingState } from "redux-states";
+import "./PlaybackPanel.scss";
 
-import { toggleSettingPanel } from "../usePlayerFactory/utils/setting";
-import LoadingSpinner from "../Loaders/loadingSpinner/LoadingSpinner";
+import { reqTizenVersion } from "../../helpers/reqTizenVersion";
+import { dispatch } from "../../reduxStore/store";
 import { useTypedSelector } from "../../reduxStore/useTypedSelector";
 import { setChannelID } from "../ChannelZapping/ChannelZappingSlice";
-import { reqTizenVersion } from "../../helpers/reqTizenVersion";
-import { ControlPanel } from "./controls/ControlPanel";
-import { dispatch } from "../../reduxStore/store";
-import VideoContainer from "./VideoContainer";
+import VideoSpinner from "../Loaders/videoSpinner/VideoSpinner";
 import Overlay from "../ModalPicker/Overlay";
+import { toggleSettingPanel } from "../usePlayerFactory/utils/setting";
 import ChannelInfo from "./ChannelInfo";
+import VideoContainer from "./VideoContainer";
+import { ControlPanel } from "./controls/ControlPanel";
 import { navKeys } from "./navigation";
 import { getNullableVideoElement } from "../usePlayerFactory/PlayerFactory/classes/utils/getVideoElement";
 import { playbackHandlers } from "./controls/playbackHandlers";
@@ -110,7 +110,7 @@ const PlaybackPanel = ({ playbackSettings }: Props) => {
           media && Object.entries(media).length > 0 ? "background-black" : ""
         } ${media === undefined && "hide"}`}
       >
-        <LoadingSpinner video={video} />
+        <VideoSpinner video={video} />
         <div
           className={`${
             allowFloating && !isVideoFullScreenOn && media?.id !== undefined ? "id-while-floating" : "hide"

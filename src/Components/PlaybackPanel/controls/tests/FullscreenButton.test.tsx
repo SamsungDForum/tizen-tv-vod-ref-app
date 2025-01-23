@@ -11,16 +11,17 @@ import { vi } from "vitest";
 import React from "react";
 
 import FullscreenButton, { switchOffVideoFullScreen } from "../FullscreenButton";
-import { dispatch, getAppStore, getState } from "../../../../reduxStore/store";
-import { setVideoFullScreenOn } from "../../VideoFullScreenSlice";
+import { getState } from "../../../../reduxStore/store";
+import configureStore from "redux-mock-store";
 
 describe("src/Components/PlaybackPanel/controls/tests/FullscreenButton.test.tsx", () => {
+  const mockStore = configureStore([]);
   it("should fire button and call function passed in props", () => {
-    dispatch(setVideoFullScreenOn(true));
+    const mockedStore = mockStore({ VideoFullScreen: { value: true } });
     const switchOffVideoFullscreen = vi.fn(() => switchOffVideoFullScreen);
 
     render(
-      <Provider store={getAppStore()}>
+      <Provider store={mockedStore}>
         <FullscreenButton />
       </Provider>
     );

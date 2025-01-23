@@ -7,24 +7,25 @@
 import "@testing-library/jest-dom";
 import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { dispatch, getAppStore } from "../../../../reduxStore/store";
+import { getAppStore } from "../../../../reduxStore/store";
 import React from "react";
 import { ControlPanel } from "../ControlPanel";
+import configureStore from "redux-mock-store";
 import { playbackHandlers } from "../../controls/playbackHandlers";
-import { setVideoFullScreenOn } from "../../VideoFullScreenSlice";
 
 describe("src/Components/PlaybackPanel/controls/tests/ControlPanel.test.tsx", () => {
+  const mockStore = configureStore([]);
   const pbHandlers = playbackHandlers({
-    video: new HTMLVideoElement(),
+    video: document.createElement("video"),
     setSubtitleText: () => {},
     subtitleText: "subtitleText",
   });
 
   describe("Testing ControlPanel component", () => {
     it("should display styling for fullscreen video", () => {
-      dispatch(setVideoFullScreenOn(true));
+      const mockedStore = mockStore({ VideoFullScreen: { value: true }, OverlayVisible: { value: false } });
       const { container } = render(
-        <Provider store={getAppStore()}>
+        <Provider store={mockedStore}>
           <ControlPanel buttonClickHandlers={pbHandlers} />
           <div id={"elVideo"} />
         </Provider>

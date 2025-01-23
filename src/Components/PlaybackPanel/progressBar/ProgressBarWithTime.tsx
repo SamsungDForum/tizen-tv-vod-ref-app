@@ -13,7 +13,7 @@ import { RemainingTimeDisplay } from "./RemainingTimeDisplay";
 import { useTypedSelector } from "../../../reduxStore/useTypedSelector";
 import { getNullableVideoElement } from "../../usePlayerFactory/PlayerFactory/classes/utils/getVideoElement";
 
-function ProgresWithTime() {
+function ProgressBarWithTime() {
   const isOverlayVisible = useTypedSelector((state) => state.OverlayVisible.value);
   const isVideoFullScreenOn = useTypedSelector((state) => state.VideoFullScreen.value);
 
@@ -21,7 +21,10 @@ function ProgresWithTime() {
   if (!video) return null;
 
   return (
-    <div className={classNames("controllersContainer", { show: isOverlayVisible && isVideoFullScreenOn })}>
+    <div
+      data-testid={"progressBarWithTime"}
+      className={classNames("controllersContainer", { show: isOverlayVisible && isVideoFullScreenOn })}
+    >
       <div className={"progressWithTime"}>
         <ProgressControl video={video} tabIndex={0} />
         <RemainingTimeDisplay video={video} />
@@ -30,4 +33,4 @@ function ProgresWithTime() {
   );
 }
 
-export default ProgresWithTime;
+export default ProgressBarWithTime;

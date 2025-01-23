@@ -64,7 +64,7 @@ export function onKeyUpEvent(evt: { target: HTMLElement }, state: [boolean, { cu
   }
 }
 
-function onNavigationEvent(
+export function onNavigationEvent(
   evt: { type: string; srcElement: HTMLElement; target: { id?: string } },
   state: [boolean, { current: number }, boolean]
 ) {
@@ -125,11 +125,11 @@ export function tryToHideBackOverlay() {
   if (!navKeys.playerWindowContainsModals()) dispatch(setOverlayIsVisible(false));
 }
 
-function focusSettingsControlsPanel() {
+export function focusSettingsControlsPanel() {
   nav.focus("settings-controls-panel");
 }
 
-function focusVideoTilesSection() {
+export function focusVideoTilesSection() {
   nav.focus("asset-view");
 }
 

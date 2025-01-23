@@ -14,8 +14,10 @@ import { playbackHandlers } from "../../controls/playbackHandlers";
 import { setVideoFullScreenOn } from "../../VideoFullScreenSlice";
 import { RestartSvgIcon } from "../../../../helpers/SvgIcons";
 import { getVideoElement } from "../../../usePlayerFactory/PlayerFactory/classes/utils/getVideoElement";
+import configureStore from "redux-mock-store";
 
 describe("src/Components/PlaybackPanel/controls/tests/ControlPanelButton.test.tsx", () => {
+  const mockStore = configureStore([]);
   const pbProps = { video: getVideoElement(), subtitleText: "", setSubtitleText: vi.fn() };
   it("should fire button and call onSubtitleTextUpdate", () => {
     const onSubtitleTextUpdate = vi.fn(() => playbackHandlers(pbProps).onSubtitleTextUpdate);
@@ -83,12 +85,13 @@ describe("src/Components/PlaybackPanel/controls/tests/ControlPanelButton.test.ts
   });
 
   it("should fire button and call onHandleAbort", () => {
-    dispatch(setVideoFullScreenOn(true));
+    const mockedStore = mockStore({ VideoFullScreen: { value: true } });
+
     const onHandleAbort = vi
       .fn(() => playbackHandlers(pbProps).onHandleAbort)
       .mockImplementation(() => dispatch(setVideoFullScreenOn(false)));
     render(
-      <Provider store={getAppStore()}>
+      <Provider store={mockedStore}>
         <ControlPanelButton className="" icon={<RestartSvgIcon />} onClick={onHandleAbort} />
       </Provider>
     );

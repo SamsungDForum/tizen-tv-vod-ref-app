@@ -4,7 +4,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-.loading-spinner {
+.video-spinner {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -19,8 +19,8 @@
   border-radius: 25px;
   z-index: 2;
 }
-.loading-spinner:before,
-.loading-spinner:after {
+.video-spinner:before,
+.video-spinner:after {
   content: "";
   position: absolute;
   margin: -6px;
@@ -38,13 +38,13 @@
     spinner-fade 1.1s linear infinite;
 }
 
-.loading-spinner:before,
-.loading-spinner:before {
+.video-spinner:before,
+.video-spinner:before {
   border-top-color: rgb(255, 255, 255);
 }
 
-.loading-spinner:after,
-.loading-spinner:after {
+.video-spinner:after,
+.video-spinner:after {
   border-top-color: rgb(255, 255, 255);
   -webkit-animation-delay: 0.44s;
   animation-delay: 0.44s;
