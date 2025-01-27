@@ -48,7 +48,7 @@ function Subtitle({ subtitleText }: { subtitleText: string }) {
     isVideoFullScreenOn ? "video-subtitles-fullscreen" : "video-subtitles-floating"
   }`;
   return (
-    <div data-testid={"subtitle"} className={cssClass}>
+    <div data-testid="subtitle" className={cssClass}>
       {subtitleText}
     </div>
   );

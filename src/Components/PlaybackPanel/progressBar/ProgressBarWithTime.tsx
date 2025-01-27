@@ -22,7 +22,7 @@ function ProgressBarWithTime() {
 
   return (
     <div
-      data-testid={"progressBarWithTime"}
+      data-testid="progressBarWithTime"
       className={classNames("controllersContainer", { show: isOverlayVisible && isVideoFullScreenOn })}
     >
       <div className={"progressWithTime"}>

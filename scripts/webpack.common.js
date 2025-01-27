@@ -65,6 +65,17 @@ module.exports = (env) => {
           use: "ts-loader",
         },
         {
+          test: /\.?(js|jsx|ts|tsx)$/,
+          use: {
+            loader: 'string-replace-loader',
+            options: {
+              search: /data-testid="[^"]*"/g,
+              replace: '',
+              flags: 'g'
+            }
+          }
+        },
+        {
           test: /\.?js$/,
           include: [
             path.resolve(projectRoot, "node_modules", "react-redux", "es"),
@@ -91,7 +102,7 @@ module.exports = (env) => {
           use: {
             loader: "babel-loader",
             options: {
-              presets: ["@babel/preset-env", "@babel/preset-react"],
+              presets: ["@babel/preset-env", "@babel/preset-react"]
             },
           },
         },
