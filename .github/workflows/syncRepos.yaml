@@ -53,10 +53,10 @@ jobs:
 
       - name: Setup SSH
         run: |
-          echo "${{ secrets.SYNC_REPOS_DEPLOY_KEY }}" > ~/.ssh/ghActionsTest
-          chmod 600 ~/.ssh/ghActionsTest
+          echo "${{ secrets.SYNC_REPOS_DEPLOY_KEY }}" > ~/.ssh/syncRefAppRepos
+          chmod 600 ~/.ssh/syncRefAppRepos
           ssh-keyscan github.com >> ~/.ssh/known_hosts
-          git config --global core.sshCommand "ssh -i ~/.ssh/ghActionsTest -o StrictHostKeyChecking=no"
+          git config --global core.sshCommand "ssh -i ~/.ssh/syncRefAppRepos -o StrictHostKeyChecking=no"
 
       - name: Push to destination repository
         run: |
